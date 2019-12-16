@@ -15,5 +15,5 @@ A set of tools and utilities for developing AI pipelines in the Parrot Anafi dro
 ---
 
 
-[danzabilidad]: espetro.shinyapps.io/danzabilidad/
+[danzabilidad]: https://espetro.shinyapps.io/danzabilidad/
 [anafi-tools]: https://github.com/espetro/anafi_tools
