@@ -1,0 +1,46 @@
+baseurl                  = "https://quim.now.sh/"           # Your domain name. Must end with "/"
+languageCode             = "en-us"
+defaultContentLanguage   = "en"
+isMultilingual           = false
+title                    = "Quim Terrasa"
+theme                    = "sam"
+pygmentsStyle            = "monokai"                        # https://help.farbox.com/pygments.html
+pygmentsCodefences       = true
+# googleAnalytics        = ""                               # Tracking code, eg. "UA-111111111-1"
+
+[params]
+    dateform             = "Mon Jan 02, 2006"
+    dateformfull         = "Mon Jan 2 2006 15:04:05 EST"
+    favicon              = "base--32.png"
+    homepage             = "home"                           # What to call the home page link
+    footerText           = "Quim Terrasa."
+
+# Metadata for Open Graph and Twitter
+    description          = "A blog by Quim Terrasa built with Hugo." # Max 160 characters show in search results
+    images               = ["tn.png"]                                # Image that shows on Twitter cards and Open Graph links to the site
+    title                = "Quim Terrasa"
+
+[[params.mainMenu]]
+    link = "/posts"
+    text = "posts"
+
+[[params.mainMenu]]
+    link = "/projects"
+    text = "projects"
+
+[[params.mainMenu]]
+    link = "/about"
+    text = "whoami"
+
+[[params.mainMenu]]
+    link = "/contact"
+    text = "contact"
+
+[imaging]
+    quality = 75
+
+# Example sites
+# https://hugo-sam.netlify.com/
+# https://github.com/janbaudisch/web
+# https://janbaudisch.dev/
+# https://zola-sam.janbaudisch.dev/
