@@ -1,4 +1,4 @@
-baseurl                  = "https://quim.now.sh/"           # Your domain name. Must end with "/"
+baseurl                  = "https://quim.netlify.com/"           # Your domain name. Must end with "/"
 languageCode             = "en-us"
 defaultContentLanguage   = "en"
 isMultilingual           = false
