@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Quim Terrasa</title>
+    <link href="https://espetro.github.io/feed.xml" rel="self" />
+    <link href="https://espetro.github.io" />
+    <updated>2020-07-12T19:01:46+02:00</updated>
+    <author>
+        <name>Quim</name>
+    </author>
+    <id>https://espetro.github.io</id>
+
+    <entry>
+        <title>School projects</title>
+        <author>
+            <name>Quim</name>
+        </author>
+        <link href="https://espetro.github.io/uno.html"/>
+        <id>https://espetro.github.io/uno.html</id>
+
+        <updated>2020-07-12T18:47:04+02:00</updated>
+            <summary>
+                <![CDATA[
+                    A list of older projects that I did as course projects or on my own. Note that they are either partially completed or not&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                <p>A list of older projects that I did as course projects or on my own. Note that they are either partially completed or not fully documented, as they were 100% experimental:</p>
+<ul style="list-style-type: disc;">
+<li>(Spanish) <a href="https://espetro.shinyapps.io/danzabilidad/" target="_blank" rel="noopener noreferrer">Danzabilidad</a>: Charting the most successful dance hits in Spain on how much they can be used to dance. A explanation of the idea and how it is implented is <a href="https://github.com/espetro/danzabilidad">written in GitHub</a>.</li>
+<li>(Spanish) <a href="http://bl.ocks.org/espetro/2ec652970229b5c244e83d8dbe04c8d4">Gender-based violence in Spain</a>: An interactive graph displaying gender-based violence in Spain per region, between 2009 and 2016. A full-page version can be seen <a href="http://bl.ocks.org/espetro/raw/2ec652970229b5c244e83d8dbe04c8d4/">here</a>.</li>
+<li>(Catalan) Closest bike station in Barcelona: A course project I did at the Polytechnic School of Catalonia (UPC); written in Python 3. You can find the code and description <a href="https://gitlab.com/espetro/find-my-barna" target="_blank" rel="noopener noreferrer">here</a>.</li>
+<li>(English) Yet another concise document search engine: A course project I did at Charles University (CUNI) from Prague, Czech Republic; written in Python 3 and R. You can find the code and description <a href="https://gitlab.com/espetro/yetanothersearchengine" target="_blank" rel="noopener noreferrer">here</a>.</li>
+</ul>
+            ]]>
+        </content>
+    </entry>
+</feed>

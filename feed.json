@@ -1,0 +1,27 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Quim Terrasa",
+    "description": "",
+    "home_page_url": "https://espetro.github.io",
+    "feed_url": "https://espetro.github.io/feed.json",
+    "user_comment": "",
+    "author": {
+        "name": "Quim"
+    },
+    "items": [
+        {
+            "id": "https://espetro.github.io/uno.html",
+            "url": "https://espetro.github.io/uno.html",
+            "title": "School projects",
+            "summary": "A list of older projects that I did as course projects or on my own. Note that they are either partially completed or not&hellip;",
+            "content_html": "<p>A list of older projects that I did as course projects or on my own. Note that they are either partially completed or not fully documented, as they were 100% experimental:</p>\n<ul style=\"list-style-type: disc;\">\n<li>(Spanish) <a href=\"https://espetro.shinyapps.io/danzabilidad/\" target=\"_blank\" rel=\"noopener noreferrer\">Danzabilidad</a>: Charting the most successful dance hits in Spain on how much they can be used to dance. A explanation of the idea and how it is implented is <a href=\"https://github.com/espetro/danzabilidad\">written in GitHub</a>.</li>\n<li>(Spanish) <a href=\"http://bl.ocks.org/espetro/2ec652970229b5c244e83d8dbe04c8d4\">Gender-based violence in Spain</a>: An interactive graph displaying gender-based violence in Spain per region, between 2009 and 2016. A full-page version can be seen <a href=\"http://bl.ocks.org/espetro/raw/2ec652970229b5c244e83d8dbe04c8d4/\">here</a>.</li>\n<li>(Catalan) Closest bike station in Barcelona: A course project I did at the Polytechnic School of Catalonia (UPC); written in Python 3. You can find the code and description <a href=\"https://gitlab.com/espetro/find-my-barna\" target=\"_blank\" rel=\"noopener noreferrer\">here</a>.</li>\n<li>(English) Yet another concise document search engine: A course project I did at Charles University (CUNI) from Prague, Czech Republic; written in Python 3 and R. You can find the code and description <a href=\"https://gitlab.com/espetro/yetanothersearchengine\" target=\"_blank\" rel=\"noopener noreferrer\">here</a>.</li>\n</ul>",
+            "author": {
+                "name": "Quim"
+            },
+            "tags": [
+            ],
+            "date_published": "2019-09-03T11:49:00+02:00",
+            "date_modified": "2020-07-12T18:47:04+02:00"
+        }
+    ]
+}
