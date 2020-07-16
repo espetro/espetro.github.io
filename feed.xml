@@ -3,21 +3,90 @@
     <title>Quim Terrasa</title>
     <link href="https://espetro.github.io/feed.xml" rel="self" />
     <link href="https://espetro.github.io" />
-    <updated>2020-07-12T19:01:46+02:00</updated>
+    <updated>2020-07-16T13:14:35+02:00</updated>
     <author>
         <name>Quim</name>
     </author>
     <id>https://espetro.github.io</id>
 
     <entry>
-        <title>School projects</title>
+        <title>Deep Learning and drones: first steps</title>
+        <author>
+            <name>Quim</name>
+        </author>
+        <link href="https://espetro.github.io/deep-learning-and-drones.html"/>
+        <id>https://espetro.github.io/deep-learning-and-drones.html</id>
+            <category term="IA"/>
+
+        <updated>2020-07-16T13:13:59+02:00</updated>
+            <summary>
+                <![CDATA[
+                    GIF by Down The Street Designs Creating autonomous vehicles by using deep learning is an exciting application that everyone is trying right now. Just&hellip;
+                ]]>
+            </summary>
+        <content type="html">
+            <![CDATA[
+                <figure class="post__image post__image--center" ><img src="https://espetro.github.io/media/posts/3/main.gif" alt="A quadcopter with camera looking around" width="400" height="300">
+<figcaption class="center" >GIF by <a href="https://dribbble.com/shots/3648290-Game-of-Drones" target="_blank" rel="noopener noreferrer">Down The Street Designs</a></figcaption>
+</figure>
+<p> </p>
+<p>Creating autonomous vehicles by using deep learning is an exciting application that everyone is trying right now. Just imagine if your car could move by its own around the city...wouldn't it be awesome?!</p>
+<p>So what if you want to develop deep learning models for autonomous vehicles on your own? Well, here's the thing: you usually need a beefy GPU (or multiple GPUs 😢) just to run a simulation and collect your data. In this post, I am going to show you how you can do it, just using a modern CPU 🤠🤠</p>
+<p class="msg msg--highlight ">For a fast (and cheap) prototyping development, <strong>we will use the <a href="https://www.ryzerobotics.com/es/tello" target="_blank" rel="noopener noreferrer">Ryze Tello</a> drone as target device, as it's cheap (under 100€) and it provides an open SDK</strong>. Of course, if you have an autonomous car or professional-grade drone, use it instead! 😉😉</p>
+<p class="msg msg--info">Multiple languages can be used to access the robots' APIs (C, C++, Java, etc.). <strong>For this project, Python 3 will be the main programming language</strong> (with a few blocks of C++).</p>
+<h3 id="mcetoc_1edbclldt0"> Prerequisites</h3>
+<ul>
+<li>A PC with Windows 10 or a Linux distribution (probably MacOS works as well), with at least 6-8 GB of RAM and a CPU with integrated graphics (I am using an i7-8565U with 8 GB of RAM). It'd be great to have a dedicated graphics card.</li>
+<li>A Python 3 installation (I am using an Anaconda environment). On Windows, you will need <a href="https://visualstudio.microsoft.com/visual-cpp-build-tools/" target="_blank" rel="noopener noreferrer">Microsoft's C++ build tools</a> (<a href="https://microsoft.github.io/AirSim/apis/#faq">troubleshooter here</a>).</li>
+<li>Internet connection and at least 10-15 GB of disk space.</li>
+</ul>
+<h2 id="mcetoc_1ed707st50">Step 1: Explore the current options</h2>
+<p>If you are not a experienced researcher on this topic, the first thing you have to know is that you need a simulator. You don't want to crash your real car while improving your learning model, do you?</p>
+<p>Of all vehicle simulators out there, we are interesting in robotics simulators. The most fitted for our task are Gazebo, Webots and AirSim:</p>
+<ol>
+<li><a href="http://gazebosim.org/" target="_blank" rel="noopener noreferrer">Gazebo</a> is the king of robot simulators. It is the most used and scalable one, although the API is clumsy and almost always it requires ROS.</li>
+<li><a href="https://www.cyberbotics.com/" target="_blank" rel="noopener noreferrer">Webots</a> is a recent player in the open-source league, as it was closed source until early 2019. It uses the same physics engine than Gazebo and provides a more versatile API with Python, Java and MATLAB support. It can also <a href="http://robotbenchmark.net/" target="_blank" rel="noopener noreferrer">run on the web</a> and...runs on Windows too!<strong>*</strong></li>
+<li><a href="https://github.com/microsoft/AirSim" target="_blank" rel="noopener noreferrer">AirSim</a> is another new face in the team, as it is in the game from 2017. This is one of the only simulators intentionally created for autonomous vehicles. Aside from other projects, it runs on top of Unity and Unreal Engine, which provides a photorealistic look closer to reality. As with Webots, it also runs on Windows and provides multiple APIs other than C / C++ 😍</li>
+</ol>
+<p class="msg msg--info"><strong>*</strong> Note: usually, robot simulators are only supported on Linux environments such as Ubuntu 16.04 or 18.04.</p>
+<p> </p>
+<p>At first, we will explore AirSim, as it also provides packaged environments for testing and prototyping. However, Webots is the optimal choice if we want to develop a full application, as it doesn't require a dedicated GPU to run simulations. If you have a dedicated GPU, then don't miss the <em>Porting to AirSim</em> subsection at the end!</p>
+<h2 id="mcetoc_1ed71l00s4">Step 2: Install and Quickstart</h2>
+<h3 id="mcetoc_1edbd2e3j1"> AirSim</h3>
+<p>This is, by far, the easiest installation process I have done for robot simulators 😍 AirSim provides <a href="https://github.com/Microsoft/AirSim/releases" target="_blank" rel="noopener noreferrer">packaged environments</a> for Windows and Linux - if you are using MacOS, you will have to build AirSim. These environments contain multiple setups (a mountain area, a neighborhood, an office...) along with a programmable drone or car.</p>
+<p>We will use the <a href="https://github.com/microsoft/AirSim/releases/download/v1.3.1-windows/Blocks.zip" target="_blank" rel="noopener noreferrer">Blocks environment for Windows</a>. We will also need the <em>airsim </em>package from pip (<em>pip install airsim</em>) - if you have installed Jupyter in the same environment, you may run into issues; I recommend to have both installations in different environments (add the <em>airsim</em> environment <a href="https://stackoverflow.com/questions/53004311/how-to-add-conda-environment-to-jupyter-lab" target="_blank" rel="noopener noreferrer">as a kernel!</a>).</p>
+<p> </p>
+<p>Once you have downloaded the environment, unzip it and run the executable in <a href="https://stackoverflow.com/questions/53004311/how-to-add-conda-environment-to-jupyter-lab" target="_blank" rel="noopener noreferrer">low resolution mode</a> (<em>start Blocks -ResX=<span class="hljs-number">640</span> -ResY=<span class="hljs-number">480</span> -windowed</em>). It will ask to either use a car or a drone; choose the drone. Moreover, it also exposes the AirSim API via a <em>msgpack</em> server. Then, open a Python console and run:</p>
+<pre><span class="hljs-keyword">import</span> airsim<br>import os<br><br># Create a directory to store images<br>os.makedirs("./images", exist_ok=True)<br><br><span class="hljs-comment"># connect to the AirSim API and enable the remote controller mode<br></span>client = airsim.MultirotorClient()<br>client.confirmConnection()<br>client.enableApiControl(<span class="hljs-keyword">True</span>)<br>client.armDisarm(<span class="hljs-keyword">True</span>)<br><br><span class="hljs-comment"># Take off! Note that it uses async methods<br></span>client.takeoffAsync().join()<br># Then move to position (-10, 10, -10, 5)<br>client.moveToPositionAsync(<span class="hljs-number">-10</span>, <span class="hljs-number">10</span>, <span class="hljs-number">-10</span>, <span class="hljs-number">5</span>).join()<br><br><span class="hljs-comment"># take RGB images<br></span>responses = client.simGetImages([<br>  airsim.ImageRequest(<span class="hljs-string">"0"</span>, airsim.ImageType.Scene),<br>  airsim.ImageRequest(<span class="hljs-string">"1"</span>, airsim.ImageType.Scene)<br>])<br><br><span class="hljs-keyword">for</span> i, r <span class="hljs-keyword">in</span> enumerate(responses):<br>  airsim.write_file(f"./images/image{i}.png", r.image_data_uint8)</pre>
+<p id="mcetoc_1edbgo51u3">The script above will enable the AirSim API, take off and move the drone, and it will also take 2 RGB images. <strong>It's that simple!</strong></p>
+<h3 id="mcetoc_1edbd2j8m2">Webots</h3>
+<p>Download the installation package available at the <a href="https://www.cyberbotics.com/" target="_blank" rel="noopener noreferrer">landing page</a> and open the app. I definitively recommend following the tutorial series (<a href="https://www.cyberbotics.com/doc/guide/tutorial-1-your-first-simulation-in-webots" target="_blank" rel="noopener noreferrer">one</a> and <a href="https://www.cyberbotics.com/doc/guide/tutorial-4-more-about-controllers?tab-language=python" target="_blank" rel="noopener noreferrer">two</a>) to get a grasp of how robot controller are developed.</p>
+<p class="msg msg--highlight "><strong>Important! <a href="https://www.cyberbotics.com/doc/guide/using-python?tab-language=python" target="_blank" rel="noopener noreferrer">Check the Python version compatibility</a></strong> (depends on your OS).</p>
+<p>Note however that a few changes are needed for Webots to use your custom Anaconda environment. Usually, Webots uses the default Python shell, so unless you have all the packages installed on it, you will need to configure it. Thankfully, it is as simple as abc:</p>
+<ol>
+<li>Go to your project's controller folder (if you don't have one, create it with <em>Tools </em>➡ <em>New Controller</em>) and create a <em>runtime.ini</em> file.</li>
+<li>Activate your Anaconda/pyenv environment and run <em>where python</em> (Windows) / <em>whereis python </em>(Linux) to get the python shell path. Then, add it to the file <a href="https://www.cyberbotics.com/doc/guide/controller-programming?tab-language=python#languages-settings" target="_blank" rel="noopener noreferrer">like it's done here</a>.</li>
+</ol>
+<p>This will allow you to run the webots controller and to use external libraries such as numpy or tensorflow too.</p>
+<hr>
+<p>As you could see from the tutorials, AirSim provides faster prototyping and a more realistic environment, although custom environments require a good GPU and knowledge of UnrealEngine or Unity development. In contrast, Webots can run on a mid-range laptop and uses common robot development practices, at the cost of simpler environments.</p>
+<h2 id="mcetoc_1ed71fumc1"> </h2>
+<h2 id="mcetoc_1edbk4a756"> </h2>
+<h2 id="mcetoc_1edbk2pet4">Step 3: A vision-based obstacle avoidance model</h2>
+<p id="mcetoc_1edbk47705" class="msg msg--info">Be prepared! This step is under preparation 🛠</p>
+<p> </p>
+            ]]>
+        </content>
+    </entry>
+    <entry>
+        <title>College projects</title>
         <author>
             <name>Quim</name>
         </author>
         <link href="https://espetro.github.io/uno.html"/>
         <id>https://espetro.github.io/uno.html</id>
 
-        <updated>2020-07-12T18:47:04+02:00</updated>
+        <updated>2020-07-12T19:18:04+02:00</updated>
             <summary>
                 <![CDATA[
                     A list of older projects that I did as course projects or on my own. Note that they are either partially completed or not&hellip;
