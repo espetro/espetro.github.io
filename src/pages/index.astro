@@ -26,27 +26,42 @@ const projects: CollectionEntry<"projects">[] = (
       <section class="mb-16">
         <div class="rounded-md border bg-transparent">
           <div class="flex flex-col space-y-1.5 p-6 pb-4">
-            <h1 class="text-2xl font-semibold tracking-tight text-black dark:text-white">
+            <h1
+              class="text-2xl font-semibold tracking-tight text-black dark:text-white"
+            >
               Hey, I'm Joaquin.
             </h1>
           </div>
-          <div class="p-6 pt-0 space-y-3">
+          <div class="space-y-16">
             <p class="text-sm text-gray-700 dark:text-gray-300">
-              I'm a <strong class="text-black dark:text-white">Full-Stack Engineer</strong> specialized in 
-              <Link href="https://www.linkedin.com/in/quinoterrasa" external>multi-agent AI systems</Link>. 
-              Currently working at <Link href="https://www.maibornwolff.de" external>MaibornWolff GmbH</Link> in Barcelona, 
-              building useful things for the web with a focus on AI, accessibility, and user experience.
+              I'm a <strong class="text-black dark:text-white"
+                >Full-Stack Engineer</strong
+              > specialized in
+              <Link href="https://www.linkedin.com/in/quinoterrasa" external
+                >multi-agent AI systems</Link
+              >. Currently working at <Link
+                href="https://www.maibornwolff.de"
+                external>MaibornWolff GmbH</Link
+              > in Barcelona, building useful things for the web with a focus on
+              AI, accessibility, and user experience.
             </p>
             <p class="text-sm text-gray-700 dark:text-gray-300">
-              This is my corner of the web — where I share thoughts on software engineering, 
-              AI systems, and technology's impact on society. I'm also passionate about 
-              community building, having organized GDG Málaga and Spain AI.
+              This is my corner of the web — where I share thoughts on software
+              engineering, AI systems, and technology's impact on society. I'm
+              also passionate about community building, having organized GDG
+              Málaga and Spain AI.
             </p>
             <div class="flex flex-wrap gap-2 pt-2">
-              <Link href="/projects" class="inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800">
+              <Link
+                href="/projects"
+                class="inline-flex items-center rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800"
+              >
                 View Projects →
               </Link>
-              <Link href="/blog" class="inline-flex items-center rounded-md border border-gray-300 dark:border-gray-600 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800">
+              <Link
+                href="/blog"
+                class="inline-flex items-center rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800"
+              >
                 Read Blog →
               </Link>
             </div>
@@ -54,79 +69,74 @@ const projects: CollectionEntry<"projects">[] = (
         </div>
       </section>
 
-        <section class="animate space-y-6">
-          <div class="flex flex-wrap items-center justify-between gap-y-2">
-            <h2 class="text-2xl font-bold text-black dark:text-white">
-              Latest posts
-            </h2>
-            <Link href="/blog" class="text-sm"> See all posts </Link>
-          </div>
-          <ul class="not-prose flex flex-col gap-4">
-            {
-              blog.map((post) => (
-                <li>
-                  <ArrowCard entry={post} />
-                </li>
-              ))
-            }
-          </ul>
-        </section>
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-y-2">
+          <h2 class="font-semibold text-black dark:text-white">Latest posts</h2>
+          <Link href="/blog"> See all posts </Link>
+        </div>
+        <ul class="not-prose flex flex-col gap-4">
+          {
+            blog.map((post) => (
+              <li>
+                <ArrowCard entry={post} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
 
-        <section class="animate space-y-6">
-          <div class="flex flex-wrap items-center justify-between gap-y-2">
-            <h2 class="text-2xl font-bold text-black dark:text-white">
-              Recent projects
-            </h2>
-            <Link href="/projects" class="text-sm"> See all projects </Link>
-          </div>
-          <ul class="not-prose flex flex-col gap-4">
-            {
-              projects.map((project) => (
-                <li>
-                  <ArrowCard entry={project} />
-                </li>
-              ))
-            }
-          </ul>
-        </section>
-
-        <section class="animate space-y-4">
-          <h2 class="text-2xl font-bold text-black dark:text-white">
-            Let's Connect
+      <section class="animate space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-y-2">
+          <h2 class="font-semibold text-black dark:text-white">
+            Recent projects
           </h2>
-          <article>
-            <p class="text-sm text-gray-700 dark:text-gray-300">
-              If you want to get in touch about software, AI, or just want to say hi, 
-              feel free to reach out. I'm always interested in interesting conversations and collaborations.
-            </p>
-          </article>
-          <ul class="not-prose flex flex-wrap gap-2">
-            {
-              SOCIALS.map((SOCIAL) => (
-                <li>
-                  <Link
-                    href={SOCIAL.HREF}
-                    external
-                    aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`}
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-gray-300 dark:border-gray-600 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 h-9 px-4"
-                  >
-                    {SOCIAL.NAME}
-                  </Link>
-                </li>
-              ))
-            }
-            <li>
-              <Link
-                href={`mailto:${SITE.EMAIL}`}
-                aria-label={`Email ${SITE.TITLE}`}
-                class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors border border-gray-300 dark:border-gray-600 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 h-9 px-4"
-              >
-                Email Me
-              </Link>
-            </li>
-          </ul>
-        </section>
-      </div>
+          <Link href="/projects"> See all projects </Link>
+        </div>
+        <ul class="not-prose flex flex-col gap-4">
+          {
+            projects.map((project) => (
+              <li>
+                <ArrowCard entry={project} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="animate space-y-4">
+        <h2 class="font-semibold text-black dark:text-white">Let's Connect</h2>
+        <article>
+          <p class="text-sm text-gray-700 dark:text-gray-300">
+            If you want to get in touch about software, AI, or just want to say
+            hi, feel free to reach out. I'm always interested in interesting
+            conversations and collaborations.
+          </p>
+        </article>
+        <ul class="not-prose flex flex-wrap gap-2">
+          {
+            SOCIALS.map((SOCIAL) => (
+              <li class="flex gap-x-2 text-nowrap">
+                <Link
+                  href={SOCIAL.HREF}
+                  external
+                  aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`}
+                >
+                  {SOCIAL.NAME}
+                </Link>
+                {" / "}
+              </li>
+            ))
+          }
+          <li class="line-clamp-1">
+            <Link
+              href={`mailto:${SITE.EMAIL}`}
+              aria-label={`Email ${SITE.TITLE}`}
+            >
+              {SITE.EMAIL}
+            </Link>
+          </li>
+        </ul>
+      </section>
     </aside>
   </Container>
 </Layout>
