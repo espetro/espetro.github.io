@@ -1,0 +1,27 @@
+---
+title: "Me.ai"
+description: "A personalized AI assistant built with modern web technologies"
+date: "2025-01-15"
+demoURL: "https://espetro-me-ai.vercel.app/"
+repoURL: "https://github.com/espetro/me.ai"
+---
+
+Me.ai is a personalized AI assistant project that leverages modern web technologies to create an intelligent, user-friendly interface.
+
+This project explores the intersection of AI and web development, focusing on creating seamless interactions between users and AI systems.
+
+## Features
+
+- Intelligent AI-powered responses
+- Clean, intuitive user interface
+- Responsive design for all devices
+- Fast and performant
+
+## Tech Stack
+
+The project is built with cutting-edge web technologies focusing on performance and user experience.
+
+## Links
+
+- [Live Demo](https://espetro-me-ai.vercel.app/)
+- [Source Code](https://github.com/espetro/me.ai)
