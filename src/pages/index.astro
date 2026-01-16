@@ -24,8 +24,8 @@ const projects: CollectionEntry<"projects">[] = (
   <Container>
     <aside data-pagefind-ignore>
       <section class="mb-16">
-        <div class="rounded-md border bg-transparent">
-          <div class="flex flex-col space-y-1.5 p-6 pb-4">
+        <div class="rounded-md border bg-transparent p-2">
+          <div class="flex flex-col space-y-1.5 p-2 pb-6">
             <h1
               class="text-2xl font-semibold tracking-tight text-black dark:text-white"
             >
@@ -44,48 +44,16 @@ const projects: CollectionEntry<"projects">[] = (
                 external>MaibornWolff GmbH</Link
               > in Barcelona, building useful things for the web with a focus on
               AI, accessibility, and user experience.
+              <br /><br />
+              This is my corner of the web — where I share thoughts on software engineering,
+              AI systems, and technology's impact on society. I'm also passionate
+              about community building, having organized GDG Málaga and Spain AI.
             </p>
-            <p class="text-sm text-gray-700 dark:text-gray-300">
-              This is my corner of the web — where I share thoughts on software
-              engineering, AI systems, and technology's impact on society. I'm
-              also passionate about community building, having organized GDG
-              Málaga and Spain AI.
-            </p>
-            <div class="flex flex-wrap gap-2 pt-2">
-              <Link
-                href="/projects"
-                class="inline-flex items-center rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800"
-              >
-                View Projects →
-              </Link>
-              <Link
-                href="/blog"
-                class="inline-flex items-center rounded-md border border-gray-300 bg-transparent px-3 py-1 text-sm transition-colors hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-800"
-              >
-                Read Blog →
-              </Link>
-            </div>
           </div>
         </div>
       </section>
 
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap items-center justify-between gap-y-2">
-          <h2 class="font-semibold text-black dark:text-white">Latest posts</h2>
-          <Link href="/blog"> See all posts </Link>
-        </div>
-        <ul class="not-prose flex flex-col gap-4">
-          {
-            blog.map((post) => (
-              <li>
-                <ArrowCard entry={post} />
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-
-      <section class="animate space-y-6">
+      <section class="animate space-y-6 pb-12">
         <div class="flex flex-wrap items-center justify-between gap-y-2">
           <h2 class="font-semibold text-black dark:text-white">
             Recent projects
@@ -97,6 +65,22 @@ const projects: CollectionEntry<"projects">[] = (
             projects.map((project) => (
               <li>
                 <ArrowCard entry={project} />
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="animate space-y-6 pb-12">
+        <div class="flex flex-wrap items-center justify-between gap-y-2">
+          <h2 class="font-semibold text-black dark:text-white">Latest posts</h2>
+          <Link href="/blog"> See all posts </Link>
+        </div>
+        <ul class="not-prose flex flex-col gap-4">
+          {
+            blog.map((post) => (
+              <li>
+                <ArrowCard entry={post} />
               </li>
             ))
           }
@@ -132,7 +116,7 @@ const projects: CollectionEntry<"projects">[] = (
               href={`mailto:${SITE.EMAIL}`}
               aria-label={`Email ${SITE.TITLE}`}
             >
-              {SITE.EMAIL}
+              Email
             </Link>
           </li>
         </ul>
