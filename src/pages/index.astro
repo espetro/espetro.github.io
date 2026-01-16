@@ -6,17 +6,16 @@ import ArrowCard from "@components/ArrowCard.astro";
 import Link from "@components/Link.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { sortByDateTimeDesc } from "@lib/utils";
 
-const blog = (await getCollection("blog"))
-  .filter((post) => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+const blog = (await getCollection("blog", (_) => !_.data.draft))
+  .sort(sortByDateTimeDesc)
   .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
 const projects: CollectionEntry<"projects">[] = (
-  await getCollection("projects")
+  await getCollection("projects", (_) => !_.data.draft)
 )
-  .filter((project) => !project.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .sort(sortByDateTimeDesc)
   .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
 ---
 

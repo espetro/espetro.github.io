@@ -19,3 +19,12 @@ export function readingTime(html: string) {
   const readingTimeMinutes = (wordCount / 200 + 1).toFixed();
   return `${readingTimeMinutes} min read`;
 }
+
+type WithDate<T> = T & { date: Date }
+
+interface DataWithDate<T> {
+  data: WithDate<T>
+}
+
+export const sortByDateTimeDesc = <T>(a: DataWithDate<T>, b: DataWithDate<T>) =>
+  b.data.date.valueOf() - a.data.date.valueOf()
