@@ -1,16 +1,16 @@
 import type { Metadata, Site, Socials } from "@types";
 
 export const SITE: Site = {
-  TITLE: "Joaquin Terrasa",
+  TITLE: "Quino Terrasa",
   DESCRIPTION: "Full-Stack Engineer specialized in multi-agent AI systems",
-  EMAIL: "joaquinterrasa@gmail.com",
-  NUM_POSTS_ON_HOMEPAGE: 5,
+  EMAIL: "quinoterrasa.alibi366@passfwd.com",
+  NUM_POSTS_ON_HOMEPAGE: 2,
   NUM_PROJECTS_ON_HOMEPAGE: 3,
 };
 
 export const HOME: Metadata = {
   TITLE: "Home",
-  DESCRIPTION: "Joaquin Terrasa - Full-Stack Engineer specializing in multi-agent AI systems",
+  DESCRIPTION: "Quino Terrasa - Full-Stack Engineer specializing in multi-agent AI systems",
 };
 
 export const BLOG: Metadata = {
