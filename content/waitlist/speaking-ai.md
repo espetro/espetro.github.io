@@ -6,6 +6,7 @@ waitlistURL: https://example.com/waitlist/speaking-ai
 image: /images/speaking-ai.jpeg
 draft: false
 status: coming soon
+randomBackgroundColor: false
 ---
 
 Practice conversational skills in different languages with an intelligent AI agent that provides real-time feedback and personalized learning paths.

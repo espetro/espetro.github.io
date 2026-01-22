@@ -1,9 +1,10 @@
 ---
 interface Props {
   style?: string;
+  class?: string;
 }
 
-const { style } = Astro.props;
+const { style, class: className } = Astro.props;
 // Card component following shadcn design patterns
 // Provides a container with proper border, background, and rounded corners
 ---
@@ -11,7 +12,8 @@ const { style } = Astro.props;
 <div
   class="rounded-lg border border-black/15 dark:border-white/20"
   class:list={[
-    !style && "bg-white dark:bg-black/50"
+    !style && "bg-white dark:bg-black/50",
+    className
   ]}
   style={style}
 >

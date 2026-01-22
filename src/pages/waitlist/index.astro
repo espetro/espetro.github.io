@@ -33,3 +33,20 @@ const data = (await getCollection("waitlist", (_) => !_.data.draft)) //
     </aside>
   </Container>
 </Layout>
+
+<script>
+  function generateRandomPastelColor() {
+    const hue = Math.floor(Math.random() * 360);
+    const saturation = Math.floor(Math.random() * 30) + 10;
+    const lightness = Math.floor(Math.random() * 20) + 70;
+    return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  }
+
+  // Apply random colors to cards with random-bg-card class
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".random-bg-card");
+    cards.forEach((card) => {
+      (card as HTMLElement).style.backgroundColor = generateRandomPastelColor();
+    });
+  });
+</script>
