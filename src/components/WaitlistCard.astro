@@ -20,16 +20,6 @@ const {
   href,
   randomBackgroundColor,
 } = Astro.props;
-
-// Generate random pastel color if enabled
-const backgroundColor = randomBackgroundColor
-  ? (() => {
-      const hue = Math.floor(Math.random() * 360);
-      const saturation = Math.floor(Math.random() * 30) + 10;
-      const lightness = Math.floor(Math.random() * 20) + 70;
-      return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-    })()
-  : undefined;
 ---
 
 <a
@@ -37,7 +27,7 @@ const backgroundColor = randomBackgroundColor
   class="block transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/5"
 >
   <Card
-    style={backgroundColor ? `background-color: ${backgroundColor}` : undefined}
+    class={randomBackgroundColor ? "random-bg-card" : undefined}
   >
     <div class="flex flex-col sm:h-42 sm:flex-row">
       <!-- Main Content -->
@@ -81,3 +71,5 @@ const backgroundColor = randomBackgroundColor
     </div>
   </Card>
 </a>
+
+
