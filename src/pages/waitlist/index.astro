@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import WaitlistCard from "@components/WaitlistCard.astro";
+import { WAITLIST } from "@consts";
+import { sortByDateTimeDesc } from "@lib/utils";
+
+const data = (await getCollection("waitlist", (_) => !_.data.draft)) //
+  .sort(sortByDateTimeDesc);
+---
+
+<Layout title={WAITLIST.TITLE} description={WAITLIST.DESCRIPTION}>
+  <Container>
+    <aside data-pagefind-ignore>
+      <div class="space-y-10">
+        <div class="space-y-4">
+          {
+            data.length > 0 ? (
+              <div class="grid grid-cols-1 gap-4">
+                {data.map(({ id, data: _ }) => (
+                  <WaitlistCard
+                    title={_.title}
+                    description={_.description}
+                    date={_.date}
+                    image={_.image}
+                    waitlistURL={_.waitlistURL}
+                    status={_.status}
+                    href={`/waitlist/${id}`}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p class="text-black/60 dark:text-white/60">
+                No waitlist items available at the moment.
+              </p>
+            )
+          }
+        </div>
+      </div>
+    </aside>
+  </Container>
+</Layout>
