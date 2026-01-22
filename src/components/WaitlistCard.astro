@@ -1,58 +1,83 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import FormattedDate from "./FormattedDate.astro";
+import Card from "./ui/Card.astro";
 
-interface Props {
-  title: string;
-  description: string;
-  date: Date;
-  image?: string;
-  waitlistURL?: string;
-  status?: string;
+type Data = CollectionEntry<"waitlist">["data"];
+
+interface Props extends Omit<Data, "draft"> {
   href?: string;
+  randomBackgroundColor?: boolean;
 }
 
-const { title, description, date, image, waitlistURL, status, href } =
-  Astro.props;
+const {
+  title,
+  description,
+  date,
+  image,
+  waitlistURL,
+  status,
+  href,
+  randomBackgroundColor,
+} = Astro.props;
+
+// Generate random pastel color if enabled
+const backgroundColor = randomBackgroundColor
+  ? (() => {
+      const hue = Math.floor(Math.random() * 360);
+      const saturation = Math.floor(Math.random() * 30) + 10;
+      const lightness = Math.floor(Math.random() * 20) + 70;
+      return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    })()
+  : undefined;
 ---
 
 <a
   href={href}
-  class="flex flex-col rounded-lg border border-black/15 px-4 py-3 pr-10 transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black sm:flex-row dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
+  class="block transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/5"
 >
-  <div class="flex flex-1 flex-col gap-2">
-    <div class="flex flex-wrap items-center gap-2">
-      <h3 class="font-semibold">{title}</h3>
+  <Card
+    style={backgroundColor ? `background-color: ${backgroundColor}` : undefined}
+  >
+    <div class="flex flex-col sm:h-42 sm:flex-row">
+      <!-- Main Content -->
+      <div class="flex flex-1 flex-col gap-2 p-4">
+        <h3 class="font-semibold">{title}</h3>
+        <p class="text-sm">{description}</p>
+        <FormattedDate date={date} />
+
+        <!-- Status and Actions -->
+        <div class="mt-2 flex flex-wrap items-center gap-3">
+          {
+            status && (
+              <span class="inline-flex items-center rounded-full border border-black/15 px-2 py-0.5 text-xs font-medium dark:border-white/20">
+                {status}
+              </span>
+            )
+          }
+          {
+            waitlistURL && (
+              <span class="underline decoration-black/30 underline-offset-[3px] hover:decoration-black/50 dark:decoration-white/30 dark:hover:decoration-white/50">
+                Join waitlist
+              </span>
+            )
+          }
+        </div>
+      </div>
+
+      <!-- Right Image -->
       {
-        status && (
-          <span class="inline-flex items-center rounded-full border border-black/15 px-2 py-0.5 text-xs font-medium dark:border-white/20">
-            {status}
-          </span>
+        image && (
+          <div class="flex flex-shrink-0 items-center justify-center p-4 sm:w-32 sm:p-4">
+            <img
+              src={image}
+              alt={title}
+              class="h-24 w-24 rounded-md object-contain sm:h-28 sm:w-28"
+              loading="lazy"
+            />
+          </div>
         )
       }
     </div>
-    <p class="text-sm">{description}</p>
-    <FormattedDate date={date} />
-    {
-      image && (
-        <div class="mt-3 sm:mt-0 sm:ml-4 sm:w-32 sm:flex-shrink-0">
-          <img
-            src={image}
-            alt={title}
-            class="h-32 w-full rounded-md object-cover sm:h-full"
-            loading="lazy"
-          />
-        </div>
-      )
-    }
-    {
-      waitlistURL && (
-        <a
-          href={waitlistURL}
-          class="join-waitlist-link underline decoration-black/30 underline-offset-[3px] hover:decoration-black/50 dark:decoration-white/30 dark:hover:decoration-white/50"
-        >
-          Join waitlist
-        </a>
-      )
-    }
-  </div>
+  </Card>
 </a>
