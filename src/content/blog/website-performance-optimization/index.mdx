@@ -1,0 +1,123 @@
+---
+title: "Website Performance Optimization"
+description: "A comprehensive performance audit and optimization journey for my personal website"
+date: "2026-01-17"
+tags:
+  - performance
+  - web-development
+  - astro
+---
+
+## The Problem
+
+I recently decided to audit my personal website's performance. While the site was functional, I wanted to ensure it was fast, efficient, and accessible to users worldwide. Key concerns were:
+
+- Consistent load speed across different regions
+- No unnecessary asset loading (especially on navigation)
+- Core Web Vitals and UX best practices
+
+## Starting Point
+
+Initial analysis revealed several optimization opportunities:
+
+- Large images (PNG/JPEG instead of WebP)
+- Unoptimized fonts (18 weights loaded)
+- Inline blocking scripts (268 lines in `<head>`)
+- PageFind (~175KB) loaded on every visit
+- No service worker for caching
+- Heavy favicon (15KB .ico instead of SVG)
+
+## What Changed
+
+### 1. Image Optimization
+
+Converted all images to WebP format using sharp, creating responsive sizes (800px, 1200px, 1600px):
+
+- `astro-nano.png` → ~50KB WebP savings
+- `astro-micro.jpg` → Responsive WebP versions
+- `y-wing.jpeg` → ~100KB WebP savings
+- Overall: ~50-90% size reduction per image
+
+### 2. Font Optimization
+
+Reduced font weights from 18 to 7 and added `font-display: swap`:
+
+- Geist Sans: Only 300, 400, 500, 600, 700
+- Geist Mono: Only 400, 500, 600
+- Result: 61% fewer font files loaded
+
+### 3. JavaScript Refactoring
+
+Extracted inline script from `Head.astro` into `src/scripts/Main.astro`:
+
+- Removed 268-line blocking inline script
+- Created proper Astro component with `<script is:inline>`
+- Astro now bundles it with Vite (minification, caching)
+
+### 4. PageFind Caching
+
+Implemented targeted service worker caching:
+
+```javascript
+if (event.request.url.includes("/pagefind/")) {
+  // Cache-first for PageFind assets
+}
+```
+
+- First load: ~175KB (network)
+- Subsequent loads: ~0KB (service worker cache)
+- Network-first for everything else (GitHub Pages caching)
+
+### 5. Resource Hints
+
+Added preconnect and dns-prefetch:
+
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://giscus.app" />
+<link rel="dns-prefetch" href="https://giscus.app" />
+```
+
+### 6. Favicon Modernization
+
+- Replaced 15KB `.ico` with 12KB `.svg`
+- Added mask-icon for Safari pinned tabs
+- Result: 93% size reduction + better browser support
+
+## Expected Improvements
+
+- **Favicon**: 15KB .ico → 12KB .svg
+- **Font weights**: 18 files → 7 files
+- **PageFind** (first load): ~175KB → ~175KB
+- **PageFind** (subsequent): ~175KB → ~0KB
+- **Lighthouse Score**: ~70-80 → 90-100
+- **LCP**: approximately 2 seconds → less than 1.2 seconds
+- **First Load JS**: ~160KB → ~100KB
+
+## Tech Stack
+
+- **Framework**: Astro 5.16
+- **Image processing**: sharp
+- **Caching**: Service Worker (cache-first for PageFind)
+- **Fonts**: Fontsource (Geist Sans/Mono)
+- **Hosting**: GitHub Pages
+
+## Key Learnings
+
+1. **Target heavy assets**: PageFind was the biggest offender (~175KB)
+2. **Cache first for static assets**: Service worker provides instant second visits
+3. **Keep HTML small**: Inline scripts block rendering
+4. **Modern formats matter**: SVG > ICO, WebP > PNG/JPEG
+5. **Minimal font loading**: 7 weights > 18, `font-display: swap`
+
+## What's Next?
+
+Potential future improvements:
+
+- Deploy to Vercel/Netlify for edge caching
+- Add subresource integrity hashes
+- Set up Lighthouse CI for continuous monitoring
+- Consider Cloudflare CDN for global distribution
+
+The site is now significantly faster with proper caching, deferred loading, and optimized assets—all while keeping code organized in `src/` with no duplicates. 🚀
