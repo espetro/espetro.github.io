@@ -18,16 +18,8 @@ const data = (await getCollection("waitlist", (_) => !_.data.draft)) //
           {
             data.length > 0 ? (
               <div class="grid grid-cols-1 gap-4">
-                {data.map(({ id, data: _ }) => (
-                  <WaitlistCard
-                    title={_.title}
-                    description={_.description}
-                    date={_.date}
-                    image={_.image}
-                    waitlistURL={_.waitlistURL}
-                    status={_.status}
-                    href={`/waitlist/${id}`}
-                  />
+                {data.map(({ id, data }) => (
+                  <WaitlistCard href={`/waitlist/${id}`} {...data} />
                 ))}
               </div>
             ) : (

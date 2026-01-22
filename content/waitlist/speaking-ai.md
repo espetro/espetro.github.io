@@ -3,7 +3,7 @@ title: Speaking AI
 description: A web app to improve your conversational skills in languages with an AI agent
 date: 2025-01-22
 waitlistURL: https://example.com/waitlist/speaking-ai
-image: /assets/images/speaking-ai.jpg
+image: /images/speaking-ai.jpeg
 draft: false
 status: coming soon
 ---

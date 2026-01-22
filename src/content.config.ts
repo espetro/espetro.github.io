@@ -34,6 +34,7 @@ const waitlist = defineCollection({
     waitlistURL: z.string().optional(),
     image: z.string().optional(),
     status: z.string().optional(),
+    randomBackgroundColor: z.boolean().optional()
   }),
 });
 
