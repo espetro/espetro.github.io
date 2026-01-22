@@ -3,7 +3,7 @@ title: i18next-ai
 description: An i18next plugin to generate AI translations
 date: 2025-01-22
 waitlistURL: https://example.com/waitlist/i18next-ai
-image: /images/i18next-ai.jpg
+image: /assets/images/i18next-ai.jpg
 draft: false
 status: coming soon
 ---
