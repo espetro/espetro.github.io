@@ -24,4 +24,17 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { blog, projects };
+const waitlist = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: "./src/content/waitlist" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date(),
+    draft: z.boolean().optional(),
+    waitlistURL: z.string().optional(),
+    image: z.string().optional(),
+    status: z.string().optional(),
+  }),
+});
+
+export const collections = { blog, projects, waitlist };
