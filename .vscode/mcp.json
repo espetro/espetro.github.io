@@ -1,0 +1,20 @@
+{
+    "servers": {
+        "chrome-devtools": {
+            "command": "bunx",
+            "args": [
+                "-y",
+                "chrome-devtools-mcp@latest",
+                // "--auto-connect",
+                // "--channel=beta"
+            ]
+        },
+        "backlog": {
+            "command": "backlog",
+            "args": [
+                "mcp",
+                "start"
+            ]
+        }
+    }
+}
