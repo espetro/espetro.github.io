@@ -2,9 +2,10 @@
 interface Props {
   style?: string;
   class?: string;
+  id?: string;
 }
 
-const { style, class: className } = Astro.props;
+const { style, class: className, id } = Astro.props;
 // Card component following shadcn design patterns
 // Provides a container with proper border, background, and rounded corners
 ---
@@ -16,6 +17,7 @@ const { style, class: className } = Astro.props;
     className
   ]}
   style={style}
+  id={id}
 >
   <slot />
 </div>

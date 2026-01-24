@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import FormattedDate from "./FormattedDate.astro";
 import Card from "./ui/Card.astro";
 
 type Data = CollectionEntry<"waitlist">["data"];
@@ -13,28 +12,41 @@ interface Props extends Omit<Data, "draft"> {
 const {
   title,
   description,
-  date,
   image,
   waitlistURL,
   status,
   href,
   randomBackgroundColor,
 } = Astro.props;
+
+// Generate a random pastel color for this card if needed
+function generateRandomPastelColor() {
+  const hue = Math.floor(Math.random() * 360);
+  const saturation = Math.floor(Math.random() * 30) + 10;
+  const lightness = Math.floor(Math.random() * 20) + 70;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
+// Generate a consistent color for this card instance
+let cardColor = '';
+if (randomBackgroundColor) {
+  cardColor = generateRandomPastelColor();
+}
+
+// Generate a unique ID for this card to ensure consistent colors
+const cardId = `card-${Math.random().toString(36).substring(2, 9)}`;
 ---
 
 <a
   href={href}
   class="block transition-colors duration-300 ease-in-out hover:bg-black/5 dark:hover:bg-white/5"
 >
-  <Card
-    class={randomBackgroundColor ? "random-bg-card" : undefined}
-  >
+  <Card id={cardId} class={randomBackgroundColor ? "random-bg-card" : undefined} style={cardColor ? `background-color: ${cardColor}` : undefined}>
     <div class="flex flex-col sm:h-42 sm:flex-row">
       <!-- Main Content -->
       <div class="flex flex-1 flex-col gap-2 p-4">
         <h3 class="font-semibold">{title}</h3>
         <p class="text-sm">{description}</p>
-        <FormattedDate date={date} />
 
         <!-- Status and Actions -->
         <div class="mt-2 flex flex-wrap items-center gap-3">
@@ -48,7 +60,7 @@ const {
           {
             waitlistURL && (
               <span class="underline decoration-black/30 underline-offset-[3px] hover:decoration-black/50 dark:decoration-white/30 dark:hover:decoration-white/50">
-                Join waitlist
+                View details
               </span>
             )
           }
@@ -72,4 +84,29 @@ const {
   </Card>
 </a>
 
+{randomBackgroundColor && (
+  <script define:vars={{ cardId }}>
+    // Function to generate a random pastel color
+    function generateRandomPastelColor() {
+      const hue = Math.floor(Math.random() * 360);
+      const saturation = Math.floor(Math.random() * 30) + 10;
+      const lightness = Math.floor(Math.random() * 20) + 70;
+      return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+    }
 
+    // Apply color when the script runs
+    function applyColor() {
+      const card = document.getElementById(cardId);
+      if (card && !card.style.backgroundColor) {
+        card.style.backgroundColor = generateRandomPastelColor();
+      }
+    }
+
+    // Apply color immediately
+    applyColor();
+
+    // Also apply color when the page is navigated to (for Astro's client-side navigation)
+    document.addEventListener('astro:page-load', applyColor);
+    document.addEventListener('astro:after-preparation', applyColor);
+  </script>
+)}
