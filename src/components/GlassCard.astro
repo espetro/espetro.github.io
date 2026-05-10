@@ -1,0 +1,44 @@
+---
+interface Props {
+  href?: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+---
+
+{
+  href ? (
+    <a href={href} class:list={["glass-card", className]}>
+      <slot />
+    </a>
+  ) : (
+    <div class:list={["glass-card", className]}>
+      <slot />
+    </div>
+  )
+}
+
+<style>
+  .glass-card {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: transparent;
+    transition:
+      background-color 0.3s var(--easing),
+      border-color 0.3s var(--easing),
+      box-shadow 0.3s var(--easing),
+      backdrop-filter 0.3s var(--easing);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .glass-card:hover {
+    background-color: var(--glass-active-bg);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow), var(--glass-inset);
+    backdrop-filter: blur(12px);
+  }
+</style>
