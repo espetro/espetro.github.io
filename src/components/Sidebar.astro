@@ -1,0 +1,381 @@
+---
+import {
+  House,
+  ReadCvLogo,
+  Briefcase,
+  FolderOpen,
+  User,
+} from "@phosphor-icons/react";
+
+interface NavItem {
+  href: string;
+  label: string;
+  icon: typeof House;
+}
+
+const navItems: NavItem[] = [
+  { href: "/", label: "Home", icon: House },
+  { href: "/blog", label: "Posts", icon: ReadCvLogo },
+  { href: "/work", label: "Work", icon: Briefcase },
+  { href: "/projects", label: "Projects", icon: FolderOpen },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+{/* Desktop Sidebar */}
+<nav class="sidebar-desktop" aria-label="Main navigation">
+  <div class="nav-group main-links">
+    {
+      navItems.map((item) => {
+        const isActive =
+          item.href === "/"
+            ? currentPath === "/"
+            : currentPath.startsWith(item.href);
+        const Icon = item.icon;
+        return (
+          <a
+            href={item.href}
+            class={`nav-link ${isActive ? "active" : ""}`}
+            aria-current={isActive ? "page" : undefined}
+          >
+            <span class="icon-wrapper">
+              <Icon size={22} weight={isActive ? "fill" : "regular"} />
+            </span>
+            <span class="tooltip">{item.label}</span>
+          </a>
+        );
+      })
+    }
+  </div>
+
+  <div class="nav-group about-group" tabindex="-1">
+    <button class="about-toggle" aria-label="About" aria-expanded="false">
+      <span class="icon-wrapper">
+        <User size={22} weight="regular" />
+      </span>
+      <span class="tooltip">About</span>
+    </button>
+    <div class="about-submenu">
+      <a href="/about" class="sub-link">
+        <span>About me</span>
+      </a>
+      <a href="/uses" class="sub-link">
+        <span>Uses</span>
+      </a>
+      <a href="/colophon" class="sub-link">
+        <span>Colophon</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+{/* Mobile Bottom Nav */}
+<nav class="sidebar-mobile" aria-label="Main navigation">
+  <div class="mobile-pill">
+    {
+      navItems.map((item) => {
+        const isActive =
+          item.href === "/"
+            ? currentPath === "/"
+            : currentPath.startsWith(item.href);
+        const Icon = item.icon;
+        return (
+          <a
+            href={item.href}
+            class={`mobile-link ${isActive ? "active" : ""}`}
+            aria-current={isActive ? "page" : undefined}
+          >
+            <Icon size={22} weight={isActive ? "fill" : "regular"} />
+          </a>
+        );
+      })
+    }
+    <div class="mobile-about-group" tabindex="-1">
+      <button class="mobile-about-toggle" aria-label="About" aria-expanded="false">
+        <User size={22} weight="regular" />
+      </button>
+      <div class="mobile-about-submenu">
+        <a href="/about" class="mobile-sub-link">About me</a>
+        <a href="/uses" class="mobile-sub-link">Uses</a>
+        <a href="/colophon" class="mobile-sub-link">Colophon</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* ── Desktop Sidebar ─────────────────────────────────────────────── */
+  .sidebar-desktop {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: var(--sidebar-w);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: var(--space-3);
+  }
+
+  .nav-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    color: var(--muted);
+    transition: color 0.25s var(--easing);
+    text-decoration: none;
+  }
+
+  .nav-link:hover {
+    color: var(--accent);
+  }
+
+  .nav-link:hover .icon-wrapper {
+    transform: rotate(-5deg);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+  }
+
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s var(--spring);
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
+    padding: 4px 10px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--glass-shadow);
+    font-size: var(--size-meta);
+    color: var(--fg);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.25s var(--easing),
+      transform 0.3s var(--spring);
+  }
+
+  .nav-link:hover .tooltip,
+  .about-toggle:hover .tooltip,
+  .about-group:focus-within .tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+  }
+
+  /* About toggle */
+  .about-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: color 0.25s var(--easing);
+  }
+
+  .about-toggle:hover {
+    color: var(--accent);
+  }
+
+  .about-toggle:hover .icon-wrapper {
+    transform: rotate(-5deg);
+  }
+
+  /* About submenu */
+  .about-submenu {
+    position: absolute;
+    left: calc(100% + 10px);
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--glass-shadow);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-4px);
+    transition:
+      opacity 0.25s var(--easing),
+      transform 0.3s var(--spring);
+    z-index: 50;
+  }
+
+  .about-group:focus-within .about-submenu,
+  .about-group:hover .about-submenu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
+  .sub-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: var(--size-meta);
+    color: var(--fg-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      color 0.2s var(--easing),
+      background 0.2s var(--easing);
+  }
+
+  .sub-link:hover {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* ── Mobile Nav ──────────────────────────────────────────────────── */
+  .sidebar-mobile {
+    display: none;
+  }
+
+  /* ── Mobile Responsive ───────────────────────────────────────────── */
+  @media (max-width: 660px) {
+    .sidebar-desktop {
+      display: none;
+    }
+
+    .sidebar-mobile {
+      display: flex;
+      position: fixed;
+      bottom: var(--space-3);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+    }
+
+    .mobile-pill {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 6px 10px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-pill);
+      box-shadow: var(--glass-shadow);
+    }
+
+    .mobile-link,
+    .mobile-about-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-pill);
+      color: var(--muted);
+      text-decoration: none;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition:
+        color 0.25s var(--easing),
+        background 0.25s var(--easing);
+    }
+
+    .mobile-link.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .mobile-link:hover,
+    .mobile-about-toggle:hover {
+      color: var(--accent);
+    }
+
+    /* Mobile about submenu */
+    .mobile-about-group {
+      position: relative;
+    }
+
+    .mobile-about-submenu {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 6px;
+      background: var(--glass-bg);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--glass-shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 0.25s var(--easing),
+        transform 0.3s var(--spring);
+      z-index: 50;
+      min-width: 120px;
+    }
+
+    .mobile-about-group:focus-within .mobile-about-submenu,
+    .mobile-about-group:hover .mobile-about-submenu {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .mobile-sub-link {
+      display: block;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: var(--size-meta);
+      color: var(--fg-soft);
+      text-decoration: none;
+      text-align: center;
+      white-space: nowrap;
+      transition:
+        color 0.2s var(--easing),
+        background 0.2s var(--easing);
+    }
+
+    .mobile-sub-link:hover {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+  }
+</style>

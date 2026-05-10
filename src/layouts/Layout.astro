@@ -1,6 +1,7 @@
 ---
 import Head from "@components/Head.astro";
 import Container from "@components/Container.astro";
+import Sidebar from "@components/Sidebar.astro";
 import { SITE } from "@consts";
 
 interface Props {
@@ -21,13 +22,13 @@ const { title, description, image } = Astro.props;
       <div class="layout">
         <!-- Sidebar (left column) -->
         <aside class="sidebar">
-          <slot name="sidebar" />
+          <Sidebar />
         </aside>
 
         <!-- Main content (right column) -->
-        <div class="main">
+        <main class="main">
           <slot />
-        </div>
+        </main>
       </div>
 
       <!-- Footer -->
@@ -64,6 +65,10 @@ const { title, description, image } = Astro.props;
     max-width: calc(var(--sidebar-w) + var(--max-main));
     width: 100%;
     margin-inline: auto;
+
+    @media (max-width: 660px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   .sidebar {
@@ -71,9 +76,10 @@ const { title, description, image } = Astro.props;
     top: 0;
     align-self: start;
 
-    /* Mobile: sidebar becomes horizontal, hidden by default */
     @media (max-width: 660px) {
-      display: none;
+      position: static;
+      height: 0;
+      overflow: visible;
     }
   }
 
@@ -87,6 +93,7 @@ const { title, description, image } = Astro.props;
 
     @media (max-width: 660px) {
       max-width: 100%;
+      padding-bottom: 6rem;
     }
   }
 
