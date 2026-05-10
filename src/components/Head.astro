@@ -3,14 +3,11 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import Main from "../scripts/Main.astro";
 
-import "@fontsource/geist-sans/300.css";
-import "@fontsource/geist-sans/400.css";
-import "@fontsource/geist-sans/500.css";
-import "@fontsource/geist-sans/600.css";
-import "@fontsource/geist-sans/700.css";
-import "@fontsource/geist-mono/400.css";
-import "@fontsource/geist-mono/500.css";
-import "@fontsource/geist-mono/600.css";
+import "@fontsource/plus-jakarta-sans/300.css";
+import "@fontsource/plus-jakarta-sans/400.css";
+import "@fontsource/plus-jakarta-sans/500.css";
+import "@fontsource/plus-jakarta-sans/600.css";
+import "@fontsource/plus-jakarta-sans/700.css";
 
 interface Props {
   title: string;
@@ -61,10 +58,6 @@ const { title, description, image = "/astro-micro-1200.webp" } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
-
-<!-- PageFind -->
-<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
-<script src="/pagefind/pagefind-ui.js" defer></script>
 
 <ClientRouter />
 
