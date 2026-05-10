@@ -1,113 +1,67 @@
-@import 'tailwindcss';
+@import '@fontsource/plus-jakarta-sans/300.css';
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/500.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
+@import '@fontsource/plus-jakarta-sans/700.css';
 
-@plugin '@tailwindcss/typography';
-
-@custom-variant dark (&:is(.dark *));
-
-@theme {
-  --font-sans: Geist Sans, ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  --font-mono: Geist Mono, ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, 'Liberation Mono', 'Courier New', monospace;
-}
-
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
-}
-
-@layer utilities {
-  html {
-    overflow-y: auto;
-    color-scheme: light;
-    scroll-padding-top: 100px;
-  }
-
-  html.dark {
-    color-scheme: dark;
-  }
-
-  html,
-  body {
-    @apply size-full;
-  }
-
-  body {
-    @apply font-sans antialiased;
-    @apply flex flex-col;
-    @apply bg-neutral-100 dark:bg-neutral-900;
-    @apply text-black/75 dark:text-white/75;
-  }
-
-  header {
-    @apply fixed left-0 right-0 top-0 z-50 py-6;
-    @apply bg-neutral-100/75 dark:bg-neutral-900/75;
-    @apply saturate-200 backdrop-blur-xs;
-  }
-
-  main {
-    @apply flex-1 py-32;
-  }
-
-  footer {
-    @apply py-6 text-sm;
-  }
-
-  article {
-    @apply prose prose-neutral max-w-full dark:prose-invert prose-img:mx-auto prose-img:my-auto;
-    @apply prose-headings:font-semibold;
-    @apply prose-headings:text-black dark:prose-headings:text-white;
-  }
-}
-
-@layer utilities {
-  article a {
-    @apply font-sans text-current underline underline-offset-[3px];
-    @apply decoration-black/30 dark:decoration-white/30;
-    @apply transition-colors duration-300 ease-in-out;
-  }
-  article a:hover {
-    @apply text-black dark:text-white;
-    @apply decoration-black/50 dark:decoration-white/50;
-  }
-}
-
-.animate {
-  @apply -translate-y-3 opacity-0;
-  @apply transition-all duration-300 ease-out;
-}
-
-.animate.show {
-  @apply translate-y-0 opacity-100;
-}
-
-html #back-to-top {
-  @apply pointer-events-none opacity-0;
-}
-
-html.scrolled #back-to-top {
-  @apply pointer-events-auto opacity-100;
-}
-
-/* shiki config */
-pre {
-  @apply border border-black/15 py-5 dark:border-white/20;
-}
-
+/* ── Design Tokens: Light Mode ─────────────────────────────────────── */
 :root {
+  /* Colors */
+  --bg: #faf9f6;
+  --bg-elevated: #f0ede7;
+  --fg: #1a1a1a;
+  --fg-soft: #3d3d3d;
+  --muted: #8a8580;
+  --muted-strong: #6a6660;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.14);
+  --accent: #ea580c;
+  --accent-hover: #f97316;
+  --accent-soft: rgba(234, 88, 12, 0.1);
+
+  /* Typography */
+  --size-micro: 11px;
+  --size-meta: 13px;
+  --size-body: 15px;
+  --size-lead: 17px;
+  --size-h1: 30px;
+  --size-h2: 19px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --space-7: 88px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-squircle: 22px;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --easing: cubic-bezier(0.19, 1, 0.22, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-shadow: 0 2px 16px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+  --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --glass-active-bg: rgba(255, 255, 255, 0.75);
+  --glass-blur: blur(20px) saturate(160%);
+
+  /* Layout */
+  --sidebar-w: 56px;
+  --layout-gap: 88px;
+  --layout-max: 980px;
+  --max-main: 530px;
+
+  /* Shiki: Light */
   --astro-code-foreground: #09090b;
   --astro-code-background: #fafafa;
   --astro-code-token-comment: #a19595;
@@ -119,31 +73,184 @@ pre {
   --astro-code-token-string-expression: #ae42a0;
   --astro-code-token-punctuation: #8996a3;
   --astro-code-token-link: #8d85ff;
+
+  /* Base */
+  color-scheme: light;
 }
 
-.dark {
-  --astro-code-foreground: #fafafa;
-  --astro-code-background: #09090b;
-  --astro-code-token-comment: #a19595;
-  --astro-code-token-keyword: #f47067;
-  --astro-code-token-string: #00a99a;
-  --astro-code-token-function: #6eafad;
-  --astro-code-token-constant: #b3cceb;
-  --astro-code-token-parameter: #4e8fdf;
-  --astro-code-token-string-expression: #bf7db6;
-  --astro-code-token-punctuation: #8996a3;
-  --astro-code-token-link: #8d85ff;
+/* ── Design Tokens: Dark Mode ──────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0b0a;
+    --bg-elevated: #181614;
+    --fg: #f0ede7;
+    --fg-soft: #c8c5be;
+    --muted: #6a6660;
+    --muted-strong: #8a8580;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --accent: #ea580c;
+    --accent-hover: #f97316;
+    --accent-soft: rgba(234, 88, 12, 0.12);
+
+    /* Shiki: Dark */
+    --astro-code-foreground: #fafafa;
+    --astro-code-background: #09090b;
+    --astro-code-token-comment: #a19595;
+    --astro-code-token-keyword: #f47067;
+    --astro-code-token-string: #00a99a;
+    --astro-code-token-function: #6eafad;
+    --astro-code-token-constant: #b3cceb;
+    --astro-code-token-parameter: #4e8fdf;
+    --astro-code-token-string-expression: #bf7db6;
+    --astro-code-token-punctuation: #8996a3;
+    --astro-code-token-link: #8d85ff;
+
+    color-scheme: dark;
+  }
 }
 
-/* copy code button on codeblocks */
+/* ── Base Styles ────────────────────────────────────────────────────── */
+html {
+  overflow-y: auto;
+  scroll-padding-top: 100px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--size-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Keyframes ──────────────────────────────────────────────────────── */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Utility Classes ────────────────────────────────────────────────── */
+.animate {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.4s var(--easing),
+    transform 0.4s var(--easing);
+}
+
+.animate.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Back to top */
+#back-to-top {
+  pointer-events: none;
+  opacity: 0;
+}
+
+html.scrolled #back-to-top {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* Code blocks */
+pre {
+  border: 1px solid var(--border-strong);
+  padding: 20px;
+  overflow-x: auto;
+}
+
+/* Copy code button */
 .copy-code {
-  @apply absolute right-3 top-3 grid size-9 place-content-center rounded-sm border border-black/15 bg-neutral-100 text-center duration-300 ease-in-out dark:border-white/20 dark:bg-neutral-900;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-elevated);
+  transition: background-color 0.3s var(--easing);
+  cursor: pointer;
 }
 
 .copy-code:hover {
-  @apply bg-[#E9E9E9] transition-colors dark:bg-[#232323];
+  background-color: var(--accent-soft);
 }
 
 .copy-code:active {
-  @apply scale-90 transition-transform;
+  transform: scale(0.9);
+  transition: transform 0.15s var(--spring);
+}
+
+/* Link styles for article content */
+article a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-strong);
+  transition: color 0.3s var(--easing), text-decoration-color 0.3s var(--easing);
+}
+
+article a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent-soft);
+}
+
+/* Prose headings in articles */
+article h1,
+article h2,
+article h3,
+article h4 {
+  color: var(--fg);
+  font-weight: 600;
 }
