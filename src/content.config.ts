@@ -1,41 +1,27 @@
 import { defineCollection, z } from "astro:content";
-import { glob } from 'astro/loaders';
+import { glob } from "astro/loaders";
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: "./content/blog" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
   schema: z.object({
+    draft: z.boolean().default(false),
     title: z.string(),
     description: z.string(),
-    date: z.coerce.date(),
-    draft: z.boolean().optional(),
-    tags: z.array(z.string()).optional(),
+    date: z.date(),
+    tags: z.array(z.string()).optional().default([]),
   }),
 });
 
 const projects = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: "./content/projects" }),
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/projects" }),
   schema: z.object({
+    draft: z.boolean().default(false),
     title: z.string(),
     description: z.string(),
-    date: z.coerce.date(),
-    draft: z.boolean().optional(),
-    demoURL: z.string().optional(),
-    repoURL: z.string().optional(),
+    date: z.date(),
+    demoURL: z.string().url().optional(),
+    repoURL: z.string().url().optional(),
   }),
 });
 
-const waitlist = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: "./content/waitlist" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    date: z.coerce.date(),
-    draft: z.boolean().optional(),
-    waitlistURL: z.string().optional(),
-    image: z.string().optional(),
-    status: z.string().optional(),
-    randomBackgroundColor: z.boolean().optional()
-  }),
-});
-
-export const collections = { blog, projects, waitlist };
+export const collections = { blog, projects };

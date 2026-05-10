@@ -24,11 +24,6 @@ export const PROJECTS: Metadata = {
     "A collection of my projects with links to repositories and live demos.",
 };
 
-export const WAITLIST: Metadata = {
-  TITLE: "Waitlist",
-  DESCRIPTION: "Upcoming projects and ideas you can join the waitlist for.",
-};
-
 export const SOCIALS: Socials = [
   {
     NAME: "LinkedIn",
