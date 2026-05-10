@@ -1,8 +1,7 @@
 ---
 import Head from "@components/Head.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
 import Container from "@components/Container.astro";
+import { SITE } from "@consts";
 
 interface Props {
   title: string;
@@ -17,11 +16,82 @@ const { title, description, image } = Astro.props;
   <head>
     <Head title={title} description={description} image={image} />
   </head>
-  <body class="bg-white text-black dark:bg-black dark:text-white">
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
+  <body>
+    <div class="app-window">
+      <div class="layout">
+        <!-- Sidebar (left column) -->
+        <aside class="sidebar">
+          <slot name="sidebar" />
+        </aside>
+
+        <!-- Main content (right column) -->
+        <div class="main">
+          <slot />
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer animate">
+        <Container>
+          <div class="flex items-center justify-between">
+            <div>&copy; {new Date().getFullYear()} &bull; {SITE.TITLE}</div>
+          </div>
+        </Container>
+      </footer>
+    </div>
   </body>
 </html>
+
+<style>
+  :root {
+    --sidebar-w: 56px;
+    --max-main: 530px;
+    --breakpoint: 660px;
+  }
+
+  .app-window {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    flex: 1;
+
+    /* Constrain main content */
+    max-width: calc(var(--sidebar-w) + var(--max-main));
+    width: 100%;
+    margin-inline: auto;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+
+    /* Mobile: sidebar becomes horizontal, hidden by default */
+    @media (max-width: 660px) {
+      display: none;
+    }
+  }
+
+  .main {
+    flex: 1;
+    padding-block: 8rem;
+
+    /* Constrain inner content width */
+    max-width: var(--max-main);
+    padding-inline: 1rem;
+
+    @media (max-width: 660px) {
+      max-width: 100%;
+    }
+  }
+
+  .footer {
+    padding-block: 1.5rem;
+    font-size: var(--size-body);
+  }
+</style>
