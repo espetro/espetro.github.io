@@ -2,6 +2,9 @@
 dist/
 tmp/
 
+# agent QA
+dogfood-output/
+
 # generated types
 .astro/
 

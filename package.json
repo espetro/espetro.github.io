@@ -2,7 +2,7 @@
   "name": "astro-micro",
   "type": "module",
   "version": "0.0.1",
-  "packageManager": "pnpm@10.26.1",
+  "packageManager": "pnpm@10.33.4",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -20,7 +20,7 @@
     "@phosphor-icons/react": "^2.1.10",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
-    "@tailwindcss/vite": "^4.1.13",
+    "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.3.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -28,19 +28,19 @@
     "react-activity-calendar": "^3.2.0",
     "react-dom": "^19.2.6",
     "react-hook-form": "^7.75.0",
-    "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^4.1.13",
-    "typescript": "^5.9.2",
+    "tailwind-merge": "^3.6.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^6.0.3",
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.18",
-    "@types/react": "^19.2.3",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "pagefind": "^1.4.0",
-    "prettier": "^3.6.2",
+    "pagefind": "^1.5.2",
+    "prettier": "^3.8.3",
     "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.14",
+    "prettier-plugin-tailwindcss": "^0.8.0",
     "sharp": "^0.34.5"
   }
 }
