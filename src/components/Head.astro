@@ -65,10 +65,10 @@ const { title, description, image = "/astro-micro-1200.webp" } = Astro.props;
 
 <ClientRouter />
 
-<script is:inline>
-  if ('serviceWorker' in navigator && import.meta.env.PROD) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js');
+<script>
+  if ("serviceWorker" in navigator && import.meta.env.PROD) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/sw.js");
     });
   }
 </script>

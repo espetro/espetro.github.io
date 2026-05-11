@@ -67,19 +67,7 @@ const { title, description, image } = Astro.props;
     margin-inline: auto;
 
     @media (max-width: 660px) {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .sidebar {
-    position: sticky;
-    top: 0;
-    align-self: start;
-
-    @media (max-width: 660px) {
-      position: static;
-      height: 0;
-      overflow: visible;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
@@ -93,7 +81,21 @@ const { title, description, image } = Astro.props;
 
     @media (max-width: 660px) {
       max-width: 100%;
-      padding-bottom: 6rem;
+      min-width: 0;
+      padding-top: 5rem;
+      padding-bottom: 2rem;
+    }
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+
+    @media (max-width: 660px) {
+      position: static;
+      height: 0;
+      overflow: visible;
     }
   }
 

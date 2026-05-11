@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Marquee from "@components/Marquee.astro";
 import GlassRow from "@components/GlassRow.astro";
 import GlassCard from "@components/GlassCard.astro";
+import WorkRow from "@components/WorkRow.astro";
 import ActivitySection from "@components/ActivitySection.astro";
 import { getCollection } from "astro:content";
 
@@ -22,12 +23,32 @@ const allProjects = (await getCollection("projects")).sort(
 );
 const projects = allProjects.slice(0, 2);
 
-// Format date for display
+// Format date for display (short month + day + full year)
 function formatDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "short",
+    day: "numeric",
     year: "numeric",
   });
+}
+
+// Format date for work (short month + day)
+function formatShortDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
+}
+
+// Status pill styles
+const STATUS_PILLS: Record<string, { bg: string; text: string; label: string }> = {
+  "front-burner": { bg: "var(--accent-soft)", text: "var(--accent)", label: "FRONT BURNER" },
+  "back-burner": { bg: "rgba(234, 179, 8, 0.1)", text: "rgb(234, 179, 8)", label: "BACK BURNER" },
+  retired: { bg: "rgba(107, 114, 128, 0.1)", text: "rgb(107, 114, 128)", label: "RETIRED" },
+};
+
+function getStatusPill(status: string) {
+  return STATUS_PILLS[status] ?? STATUS_PILLS["retired"];
 }
 ---
 
@@ -83,8 +104,8 @@ function formatDate(date: Date): string {
         {
           work.length > 0 ? (
             work.map((item) => (
-              <GlassRow
-                date={formatDate(item.data.date)}
+              <WorkRow
+                date={formatShortDate(item.data.date)}
                 title={item.data.title}
                 href={item.data.url}
               />
@@ -105,12 +126,32 @@ function formatDate(date: Date): string {
       <div class="section-content">
         {
           projects.length > 0 ? (
-            projects.map((project) => (
-              <GlassCard href={project.data.url}>
-                <h3 class="project-title">{project.data.title}</h3>
-                <p class="project-description">{project.data.description}</p>
-              </GlassCard>
-            ))
+            projects.map((project) => {
+              const pill = getStatusPill(project.data.status);
+              return (
+                <GlassCard href={project.data.url} class="project-card">
+                  <div class="project-card-inner">
+                    <div class="project-card-header">
+                      <span
+                        class="project-status-pill"
+                        style={`background-color: ${pill.bg}; color: ${pill.text};`}
+                      >
+                        {pill.label}
+                      </span>
+                    </div>
+                    <h3 class="project-title">{project.data.title}</h3>
+                    <p class="project-description">{project.data.description}</p>
+                    {project.data.tech && project.data.tech.length > 0 && (
+                      <div class="project-tech-tags">
+                        {project.data.tech.map((t: string) => (
+                          <span class="project-tech-tag">{t}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </GlassCard>
+              );
+            })
           ) : (
             <p class="empty-state">No projects yet.</p>
           )
@@ -179,17 +220,52 @@ function formatDate(date: Date): string {
   }
 
   /* Project card content */
+  .project-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .project-card-header {
+    display: flex;
+    align-items: center;
+  }
+
+  .project-status-pill {
+    display: inline-block;
+    border-radius: 9999px;
+    padding: 0.125rem 0.5rem;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
   .project-title {
     font-size: var(--size-body);
     font-weight: 600;
     color: var(--fg);
-    margin-bottom: var(--space-1);
   }
 
   .project-description {
     font-size: var(--size-meta);
     color: var(--muted);
     line-height: 1.5;
+  }
+
+  .project-tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-1);
+  }
+
+  .project-tech-tag {
+    border-radius: var(--radius-sm);
+    padding: 0.125rem 0.375rem;
+    font-size: 10px;
+    background-color: var(--bg-elevated);
+    color: var(--muted);
   }
 
   /* Empty and placeholder states */
