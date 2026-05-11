@@ -1,5 +1,6 @@
 ---
 import Layout from "@layouts/Layout.astro";
+import PageHeader from "@/components/PageHeader.astro";
 import GlassRow from "@components/GlassRow.astro";
 import { getCollection } from "astro:content";
 
@@ -21,6 +22,10 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 
 <Layout title="Posts" description="All blog posts">
   <div class="posts-page">
+    <PageHeader
+      title="Posts"
+      description="Notes and essays on faith, tech, and agentic design. For client sites and shipped work, see Work."
+    />
     {years.map((year) => (
       <section class="year-group">
         <h2 class="year-header">{year}</h2>

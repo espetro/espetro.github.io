@@ -1,6 +1,7 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import GlassRow from "@components/GlassRow.astro";
+import PageHeader from "@/components/PageHeader.astro";
 import { getCollection } from "astro:content";
 
 const work = await getCollection("work");
@@ -21,6 +22,10 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 
 <Layout title="Work" description="Work history and experience">
   <div class="work-page">
+    <PageHeader
+      title="Work"
+      description="Selected posts from shipped sites and collaborations. Also see the full posts archive and projects."
+    />
     {years.map((year) => (
       <section class="year-group">
         <h2 class="year-header">{year}</h2>
@@ -29,10 +34,11 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
             <GlassRow
               date={item.data.date.toLocaleDateString("en-US", {
                 month: "short",
-                day: "2-digit",
+                day: "numeric",
               })}
               title={item.data.title}
               href={item.data.url}
+              label={item.data.label}
             >
               {item.data.image && (
                 <img
@@ -96,13 +102,6 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 
   :global(.glass-row:hover .glass-row-title) {
     color: var(--accent);
-  }
-
-  :global(.glass-row) {
-    display: grid;
-    grid-template-columns: 96px 1fr auto;
-    align-items: center;
-    gap: var(--space-3);
   }
 
   .work-thumbnail {

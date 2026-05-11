@@ -18,6 +18,7 @@ const navItems: NavItem[] = [
   { href: "/posts", label: "Posts", icon: ReadCvLogo },
   { href: "/work", label: "Work", icon: Briefcase },
   { href: "/projects", label: "Projects", icon: FolderOpen },
+  { href: "/about", label: "About", icon: User },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -49,19 +50,7 @@ const currentPath = Astro.url.pathname;
     }
   </div>
 
-  <div class="nav-group about-group" tabindex="-1">
-    <button class="about-toggle" aria-label="About" aria-expanded="false">
-      <span class="icon-wrapper">
-        <User size={22} weight="regular" />
-      </span>
-      <span class="tooltip">About</span>
-    </button>
-    <div class="about-submenu">
-      <a href="/about" class="sub-link">
-        <span>About me</span>
-      </a>
-    </div>
-  </div>
+
 </nav>
 
 {/* Mobile Bottom Nav */}
@@ -85,14 +74,7 @@ const currentPath = Astro.url.pathname;
         );
       })
     }
-    <div class="mobile-about-group" tabindex="-1">
-      <button class="mobile-about-toggle" aria-label="About" aria-expanded="false">
-        <User size={22} weight="regular" />
-      </button>
-      <div class="mobile-about-submenu">
-        <a href="/about" class="mobile-sub-link">About me</a>
-      </div>
-    </div>
+
   </div>
 </nav>
 
@@ -172,87 +154,12 @@ const currentPath = Astro.url.pathname;
       transform 0.3s var(--spring);
   }
 
-  .nav-link:hover .tooltip,
-  .about-toggle:hover .tooltip,
-  .about-group:focus-within .tooltip {
+  .nav-link:hover .tooltip {
     opacity: 1;
     transform: translateY(-50%) translateX(0);
   }
 
-  /* About toggle */
-  .about-toggle {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    transition: color 0.25s var(--easing);
-  }
 
-  .about-toggle:hover {
-    color: var(--accent);
-  }
-
-  .about-toggle:hover .icon-wrapper {
-    transform: rotate(-5deg);
-  }
-
-  /* About submenu */
-  .about-submenu {
-    position: absolute;
-    left: calc(100% + 10px);
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 6px;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--glass-shadow);
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-4px);
-    transition:
-      opacity 0.25s var(--easing),
-      transform 0.3s var(--spring);
-    z-index: 50;
-  }
-
-  .about-group:focus-within .about-submenu,
-  .about-group:hover .about-submenu {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateX(0);
-  }
-
-  .sub-link {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 12px;
-    border-radius: var(--radius-sm);
-    font-size: var(--size-meta);
-    color: var(--fg-soft);
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-      color 0.2s var(--easing),
-      background 0.2s var(--easing);
-  }
-
-  .sub-link:hover {
-    color: var(--accent);
-    background: var(--accent-soft);
-  }
 
   /* ── Mobile Nav ──────────────────────────────────────────────────── */
   .sidebar-mobile {
@@ -268,7 +175,7 @@ const currentPath = Astro.url.pathname;
     .sidebar-mobile {
       display: flex;
       position: fixed;
-      bottom: var(--space-3);
+      top: var(--space-3);
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
@@ -285,10 +192,10 @@ const currentPath = Astro.url.pathname;
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-pill);
       box-shadow: var(--glass-shadow);
+      pointer-events: auto;
     }
 
-    .mobile-link,
-    .mobile-about-toggle {
+    .mobile-link {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -300,6 +207,7 @@ const currentPath = Astro.url.pathname;
       border: none;
       background: transparent;
       cursor: pointer;
+      pointer-events: auto;
       transition:
         color 0.25s var(--easing),
         background 0.25s var(--easing);
@@ -310,64 +218,8 @@ const currentPath = Astro.url.pathname;
       background: var(--accent-soft);
     }
 
-    .mobile-link:hover,
-    .mobile-about-toggle:hover {
+    .mobile-link:hover {
       color: var(--accent);
-    }
-
-    /* Mobile about submenu */
-    .mobile-about-group {
-      position: relative;
-    }
-
-    .mobile-about-submenu {
-      position: absolute;
-      bottom: calc(100% + 10px);
-      left: 50%;
-      transform: translateX(-50%) translateY(4px);
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: 6px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-md);
-      box-shadow: var(--glass-shadow);
-      opacity: 0;
-      pointer-events: none;
-      transition:
-        opacity 0.25s var(--easing),
-        transform 0.3s var(--spring);
-      z-index: 50;
-      min-width: 120px;
-    }
-
-    .mobile-about-group:focus-within .mobile-about-submenu,
-    .mobile-about-group:hover .mobile-about-submenu {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .mobile-sub-link {
-      display: block;
-      padding: 6px 12px;
-      border-radius: var(--radius-sm);
-      font-size: var(--size-meta);
-      color: var(--fg-soft);
-      text-decoration: none;
-      text-align: center;
-      white-space: nowrap;
-      transition:
-        color 0.2s var(--easing),
-        background 0.2s var(--easing);
-    }
-
-    .mobile-sub-link:hover {
-      color: var(--accent);
-      background: var(--accent-soft);
     }
   }
 </style>

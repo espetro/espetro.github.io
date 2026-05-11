@@ -1,0 +1,88 @@
+---
+interface Props {
+  date: string;
+  title: string;
+  href?: string;
+  class?: string;
+}
+
+const { date, title, href, class: className } = Astro.props;
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class:list={["work-row", className]}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="work-row-title">{title}</span>
+      <span class="work-row-meta">
+        <span class="work-row-date">{date}</span>
+        <span class="work-row-arrow" aria-hidden="true">→</span>
+      </span>
+    </a>
+  ) : (
+    <div class:list={["work-row", className]}>
+      <span class="work-row-title">{title}</span>
+      <span class="work-row-meta">
+        <span class="work-row-date">{date}</span>
+        <span class="work-row-arrow" aria-hidden="true">→</span>
+      </span>
+    </div>
+  )
+}
+
+<style>
+  .work-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: transparent;
+    transition:
+      background-color 0.3s var(--easing),
+      border-color 0.3s var(--easing),
+      box-shadow 0.3s var(--easing),
+      backdrop-filter 0.3s var(--easing);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .work-row:hover {
+    background-color: var(--glass-active-bg);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow), var(--glass-inset);
+    backdrop-filter: blur(12px);
+  }
+
+  .work-row-title {
+    font-weight: 600;
+    color: var(--fg);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .work-row-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+  }
+
+  .work-row-date {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .work-row-arrow {
+    font-size: var(--size-meta);
+    color: var(--muted);
+  }
+</style>
