@@ -15,7 +15,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { href: "/", label: "Home", icon: House },
-  { href: "/blog", label: "Posts", icon: ReadCvLogo },
+  { href: "/posts", label: "Posts", icon: ReadCvLogo },
   { href: "/work", label: "Work", icon: Briefcase },
   { href: "/projects", label: "Projects", icon: FolderOpen },
 ];
@@ -60,12 +60,6 @@ const currentPath = Astro.url.pathname;
       <a href="/about" class="sub-link">
         <span>About me</span>
       </a>
-      <a href="/uses" class="sub-link">
-        <span>Uses</span>
-      </a>
-      <a href="/colophon" class="sub-link">
-        <span>Colophon</span>
-      </a>
     </div>
   </div>
 </nav>
@@ -97,8 +91,6 @@ const currentPath = Astro.url.pathname;
       </button>
       <div class="mobile-about-submenu">
         <a href="/about" class="mobile-sub-link">About me</a>
-        <a href="/uses" class="mobile-sub-link">Uses</a>
-        <a href="/colophon" class="mobile-sub-link">Colophon</a>
       </div>
     </div>
   </div>
