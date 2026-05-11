@@ -1,0 +1,84 @@
+---
+import Layout from "@layouts/Layout.astro";
+import GlassRow from "@components/GlassRow.astro";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+const sorted = posts.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const limited = sorted.slice(0, 2);
+
+const groups = limited.reduce<Record<string, typeof limited>>((acc, post) => {
+  const year = post.data.date.getFullYear().toString();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(post);
+  return acc;
+}, {});
+
+const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
+---
+
+<Layout title="Posts" description="All blog posts">
+  <div class="posts-page">
+    {years.map((year) => (
+      <section class="year-group">
+        <h2 class="year-header">{year}</h2>
+        <div class="entries">
+          {groups[year].map((post) => (
+            <GlassRow
+              date={post.data.date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "2-digit",
+              })}
+              title={post.data.title}
+              href={`/posts/${post.id}`}
+            />
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .posts-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .year-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .year-header {
+    font-size: var(--size-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .entries {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  :global(.glass-row-date) {
+    font-size: var(--size-meta);
+    color: var(--muted-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.glass-row-title) {
+    font-size: var(--size-body);
+    transition: color 0.2s var(--easing);
+  }
+
+  :global(.glass-row:hover .glass-row-title) {
+    color: var(--accent);
+  }
+</style>

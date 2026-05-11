@@ -2,30 +2,158 @@
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import ArrowCard from "@components/ArrowCard.astro";
+import GlassCard from "@components/GlassCard.astro";
+import Link from "@components/Link.astro";
 import { PROJECTS } from "@consts";
 import { sortByDateTimeDesc } from "@lib/utils";
 
-const data = (await getCollection("projects", (_) => !_.data.draft)) //
+const allProjects = (await getCollection("projects"))
   .sort(sortByDateTimeDesc);
+
+const frontBurner = allProjects.filter((p) => p.data.status === "front-burner").slice(0, 2);
+const backBurner = allProjects.filter((p) => p.data.status === "back-burner");
+const retired = allProjects.filter((p) => p.data.status === "retired");
+
+const statusPill = (status: string) => {
+  const styles: Record<string, { bg: string; text: string; label: string }> = {
+    "front-burner": {
+      bg: "var(--accent-soft)",
+      text: "var(--accent)",
+      label: "FRONT BURNER",
+    },
+    "back-burner": {
+      bg: "rgba(234, 179, 8, 0.1)",
+      text: "rgb(234, 179, 8)",
+      label: "BACK BURNER",
+    },
+    retired: {
+      bg: "rgba(107, 114, 128, 0.1)",
+      text: "rgb(107, 114, 128)",
+      label: "RETIRED",
+    },
+  };
+  return styles[status] ?? styles["retired"];
+};
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { year: "numeric", month: "short" });
 ---
 
 <Layout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
   <Container>
     <aside data-pagefind-ignore>
-      <div class="space-y-10">
-        <div class="animate font-semibold text-black dark:text-white">
-          Projects
+      <div class="space-y-12">
+        <!-- Header -->
+        <div class="animate">
+          <h1 class="font-semibold text-black dark:text-white">Projects</h1>
         </div>
-        <ul class="animate not-prose flex flex-col gap-4">
-          {
-            data.map((entry) => (
-              <li>
-                <ArrowCard entry={entry} />
-              </li>
-            ))
-          }
-        </ul>
+
+        <!-- Front Burner Section -->
+        {frontBurner.length > 0 && (
+          <section class="animate space-y-6">
+            <h2 class="text-[var(--size-h2)] font-semibold text-black dark:text-white">
+              Front Burner
+            </h2>
+            <div class="not-prose grid gap-4 sm:grid-cols-2">
+              {frontBurner.map((project) => {
+                const pill = statusPill(project.data.status);
+                return (
+                  <GlassCard
+                    href={`/projects/${project.id}`}
+                    class="flex flex-col gap-3"
+                  >
+                    {project.data.image && (
+                      <div class="aspect-video w-full overflow-hidden rounded-[var(--radius-sm)]">
+                        <img
+                          src={project.data.image}
+                          alt={project.data.title}
+                          class="h-full w-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <div class="space-y-2">
+                      <span
+                        class="inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                        style={`background-color: ${pill.bg}; color: ${pill.text};`}
+                      >
+                        {pill.label}
+                      </span>
+                      <h3 class="font-semibold text-black dark:text-white">
+                        {project.data.title}
+                      </h3>
+                      <p class="text-sm text-[var(--muted)]">
+                        {project.data.description}
+                      </p>
+                      <time
+                        datetime={project.data.date.toISOString()}
+                        class="text-xs text-[var(--muted)]"
+                      >
+                        {formatDate(project.data.date)}
+                      </time>
+                      {project.data.tech.length > 0 && (
+                        <div class="flex flex-wrap gap-1 pt-1">
+                          {project.data.tech.map((t) => (
+                            <span class="rounded bg-[var(--bg-elevated)] px-1.5 py-0.5 text-[10px] text-[var(--muted-strong)]">
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </GlassCard>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        <!-- Back Burner Section -->
+        {backBurner.length > 0 && (
+          <section class="animate space-y-4">
+            <h2 class="text-[var(--size-h2)] font-semibold text-black dark:text-white">
+              Back Burner
+            </h2>
+            <Link
+              href="/projects?status=back-burner"
+              class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-colors hover:bg-[var(--bg-elevated)]"
+              style={`background-color: rgba(234, 179, 8, 0.1); color: rgb(234, 179, 8);`}
+            >
+              <span
+                class="inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                style="background-color: rgba(234, 179, 8, 0.15); color: rgb(234, 179, 8);"
+              >
+                BACK BURNER
+              </span>
+              <span class="text-[var(--fg-soft)]">
+                {backBurner.length} back-burner project{backBurner.length !== 1 ? "s" : ""}
+              </span>
+            </Link>
+          </section>
+        )}
+
+        <!-- Retired Section -->
+        {retired.length > 0 && (
+          <section class="animate space-y-4">
+            <h2 class="text-[var(--size-h2)] font-semibold text-black dark:text-white">
+              Retired
+            </h2>
+            <Link
+              href="/projects?status=retired"
+              class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm transition-colors hover:bg-[var(--bg-elevated)]"
+              style={`background-color: rgba(107, 114, 128, 0.1); color: rgb(107, 114, 128);`}
+            >
+              <span
+                class="inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                style="background-color: rgba(107, 114, 128, 0.15); color: rgb(107, 114, 128);"
+              >
+                RETIRED
+              </span>
+              <span class="text-[var(--fg-soft)]">
+                {retired.length} retired project{retired.length !== 1 ? "s" : ""}
+              </span>
+            </Link>
+          </section>
+        )}
       </div>
     </aside>
   </Container>

@@ -1,121 +1,208 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Container from "@components/Container.astro";
-import { SITE, HOME, SOCIALS } from "@consts";
-import ArrowCard from "@components/ArrowCard.astro";
-import Link from "@components/Link.astro";
+import Marquee from "@components/Marquee.astro";
+import GlassRow from "@components/GlassRow.astro";
+import GlassCard from "@components/GlassCard.astro";
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
-import { sortByDateTimeDesc } from "@lib/utils";
 
-const blog = (await getCollection("blog", (_) => !_.data.draft))
-  .sort(sortByDateTimeDesc)
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
+// Fetch and sort collections
+const allPosts = (await getCollection("posts")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const posts = allPosts.slice(0, 2);
 
-const projects: CollectionEntry<"projects">[] = (
-  await getCollection("projects", (_) => !_.data.draft)
-)
-  .sort(sortByDateTimeDesc)
-  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
+const allWork = (await getCollection("work")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const work = allWork.slice(0, 2);
+
+const allProjects = (await getCollection("projects")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const projects = allProjects.slice(0, 2);
+
+// Format date for display
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+  });
+}
 ---
 
-<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
-  <Container>
-    <aside data-pagefind-ignore>
-      <section class="mb-16">
-        <div class="rounded-md border bg-transparent p-2">
-          <div class="flex flex-col space-y-1.5 p-2 pb-6">
-            <h1
-              class="text-2xl font-semibold tracking-tight text-black dark:text-white"
-            >
-              Hey, I'm Quino.
-            </h1>
-          </div>
-          <div class="space-y-16">
-            <p class="text-sm text-gray-700 dark:text-gray-300">
-              I'm a <strong class="text-black dark:text-white"
-                >Full-Stack Engineer</strong
-              > specializing in
-              <Link href="https://www.linkedin.com/in/quinoterrasa" external
-                >Agentic AI systems</Link
-              >. Currently working on integrating AI into production systems for DAX firms (BMW, VW) and key players like Liebherr, MAN. I enjoy building useful things for the web with a focus on AI, accessibility, and user experience.
-              <br /><br />
-              This is my corner of the web — where I share thoughts on software engineering,
-              AI systems, and technology's impact on society. I'm also passionate
-              about community building, having organized GDG Málaga and Spain AI.
-            </p>
-          </div>
-        </div>
-      </section>
+<Layout title="Home" description="Quino Terrasa - Full-Stack Engineer">
+  <div class="home">
+    <!-- Section 1: Bio Intro -->
+    <section class="section bio animate">
+      <p class="bio-text">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+        aliquip ex ea commodo consequat. Duis aute irure dolor in
+        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur.
+      </p>
+    </section>
 
-      <section class="animate space-y-6 pb-12">
-        <div class="flex flex-wrap items-center justify-between gap-y-2">
-          <h2 class="font-semibold text-black dark:text-white">
-            Recent projects
-          </h2>
-          <Link href="/projects"> See all projects </Link>
-        </div>
-        <ul class="not-prose flex flex-col gap-4">
-          {
+    <!-- Section 2: Marquee Quote -->
+    <section class="section marquee-section">
+      <Marquee />
+    </section>
+
+    <!-- Section 3: Posts Preview -->
+    <section class="section posts-preview animate">
+      <div class="section-header">
+        <h2 class="section-title">Posts</h2>
+        <a href="/posts" class="view-all">View all posts →</a>
+      </div>
+      <div class="section-content">
+        {
+          posts.length > 0 ? (
+            posts.map((post) => (
+              <GlassRow
+                date={formatDate(post.data.date)}
+                title={post.data.title}
+                href={`/posts/${post.id}`}
+              />
+            ))
+          ) : (
+            <p class="empty-state">No posts yet.</p>
+          )
+        }
+      </div>
+    </section>
+
+    <!-- Section 4: Work Preview -->
+    <section class="section work-preview animate">
+      <div class="section-header">
+        <h2 class="section-title">Work</h2>
+        <a href="/work" class="view-all">View all work →</a>
+      </div>
+      <div class="section-content">
+        {
+          work.length > 0 ? (
+            work.map((item) => (
+              <GlassRow
+                date={formatDate(item.data.date)}
+                title={item.data.title}
+                href={item.data.url}
+              />
+            ))
+          ) : (
+            <p class="empty-state">No work entries yet.</p>
+          )
+        }
+      </div>
+    </section>
+
+    <!-- Section 5: Projects Preview -->
+    <section class="section projects-preview animate">
+      <div class="section-header">
+        <h2 class="section-title">Projects</h2>
+        <a href="/projects" class="view-all">View all projects →</a>
+      </div>
+      <div class="section-content">
+        {
+          projects.length > 0 ? (
             projects.map((project) => (
-              <li>
-                <ArrowCard entry={project} />
-              </li>
+              <GlassCard href={project.data.url}>
+                <h3 class="project-title">{project.data.title}</h3>
+                <p class="project-description">{project.data.description}</p>
+              </GlassCard>
             ))
-          }
-        </ul>
-      </section>
+          ) : (
+            <p class="empty-state">No projects yet.</p>
+          )
+        }
+      </div>
+    </section>
 
-      <section class="animate space-y-6 pb-12">
-        <div class="flex flex-wrap items-center justify-between gap-y-2">
-          <h2 class="font-semibold text-black dark:text-white">Latest posts</h2>
-          <Link href="/blog"> See all posts </Link>
-        </div>
-        <ul class="not-prose flex flex-col gap-4">
-          {
-            blog.map((post) => (
-              <li>
-                <ArrowCard entry={post} />
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-
-      <section class="animate space-y-4">
-        <h2 class="font-semibold text-black dark:text-white">Let's Connect</h2>
-        <article>
-          <p class="text-sm text-gray-700 dark:text-gray-300">
-            If you want to get in touch about software, AI, or just want to say
-            hi, feel free to reach out. I'm always interested in interesting
-            conversations and collaborations.
-          </p>
-        </article>
-        <ul class="not-prose flex flex-wrap gap-2">
-          {
-            SOCIALS.map((SOCIAL) => (
-              <li class="flex gap-x-2 text-nowrap">
-                <Link
-                  href={SOCIAL.HREF}
-                  external
-                  aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`}
-                >
-                  {SOCIAL.NAME}
-                </Link>
-                {" / "}
-              </li>
-            ))
-          }
-          <li class="line-clamp-1">
-            <Link
-              href={`mailto:${SITE.EMAIL}`}
-              aria-label={`Email ${SITE.TITLE}`}
-            >
-              Email
-            </Link>
-          </li>
-        </ul>
-      </section>
-    </aside>
-  </Container>
+    <!-- Section 6: Activity Section Placeholder -->
+    <section class="section activity-placeholder animate">
+      <div class="section-header">
+        <h2 class="section-title">Activity</h2>
+      </div>
+      <div class="section-content">
+        <p class="placeholder-text">Activity feed coming soon.</p>
+      </div>
+    </section>
+  </div>
 </Layout>
+
+<style>
+  .home {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .section-title {
+    font-size: var(--size-h2);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .view-all {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s var(--easing);
+  }
+
+  .view-all:hover {
+    color: var(--accent);
+  }
+
+  .section-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* Bio section */
+  .bio-text {
+    font-size: var(--size-body);
+    color: var(--fg);
+    line-height: 1.7;
+  }
+
+  /* Marquee section */
+  .marquee-section {
+    margin-block: var(--space-2);
+  }
+
+  /* Project card content */
+  .project-title {
+    font-size: var(--size-body);
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: var(--space-1);
+  }
+
+  .project-description {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Empty and placeholder states */
+  .empty-state,
+  .placeholder-text {
+    font-size: var(--size-meta);
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>

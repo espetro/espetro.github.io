@@ -1,0 +1,134 @@
+---
+import Layout from "@layouts/Layout.astro";
+import GlassRow from "@components/GlassRow.astro";
+import { getCollection } from "astro:content";
+
+const work = await getCollection("work");
+const sorted = work.sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
+const limited = sorted.slice(0, 2);
+
+const groups = limited.reduce<Record<string, typeof limited>>((acc, item) => {
+  const year = item.data.date.getFullYear().toString();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(item);
+  return acc;
+}, {});
+
+const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
+---
+
+<Layout title="Work" description="Work history and experience">
+  <div class="work-page">
+    {years.map((year) => (
+      <section class="year-group">
+        <h2 class="year-header">{year}</h2>
+        <div class="entries">
+          {groups[year].map((item) => (
+            <GlassRow
+              date={item.data.date.toLocaleDateString("en-US", {
+                month: "short",
+                day: "2-digit",
+              })}
+              title={item.data.title}
+              href={item.data.url}
+            >
+              {item.data.image && (
+                <img
+                  src={item.data.image}
+                  alt=""
+                  class="work-thumbnail"
+                  loading="lazy"
+                />
+              )}
+            </GlassRow>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="recommendations">
+      <h2 class="section-header">Recommendations</h2>
+      <div class="recommendations-content">
+        <!-- Recommendations will be added later -->
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .work-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .year-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .year-header {
+    font-size: var(--size-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .entries {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  :global(.glass-row-date) {
+    font-size: var(--size-meta);
+    color: var(--muted-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  :global(.glass-row-title) {
+    font-size: var(--size-body);
+    transition: color 0.2s var(--easing);
+  }
+
+  :global(.glass-row:hover .glass-row-title) {
+    color: var(--accent);
+  }
+
+  :global(.glass-row) {
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .work-thumbnail {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  .recommendations {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .section-header {
+    font-size: var(--size-micro);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  .recommendations-content {
+    min-height: 100px;
+  }
+</style>
