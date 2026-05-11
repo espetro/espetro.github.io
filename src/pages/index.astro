@@ -3,6 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Marquee from "@components/Marquee.astro";
 import GlassRow from "@components/GlassRow.astro";
 import GlassCard from "@components/GlassCard.astro";
+import ActivitySection from "@components/ActivitySection.astro";
 import { getCollection } from "astro:content";
 
 // Fetch and sort collections
@@ -117,15 +118,8 @@ function formatDate(date: Date): string {
       </div>
     </section>
 
-    <!-- Section 6: Activity Section Placeholder -->
-    <section class="section activity-placeholder animate">
-      <div class="section-header">
-        <h2 class="section-title">Activity</h2>
-      </div>
-      <div class="section-content">
-        <p class="placeholder-text">Activity feed coming soon.</p>
-      </div>
-    </section>
+    <!-- Section 6: Activity Section -->
+    <ActivitySection />
   </div>
 </Layout>
 
