@@ -46,25 +46,30 @@ const recentCommits = await fetchRecentCommits("espetro");
 </section>
 
 <script is:inline>
-  function scrollCalendarToEnd() {
-    const wrapper = document.querySelector(".calendar-wrapper");
-    if (wrapper) {
-      wrapper.scrollLeft = wrapper.scrollWidth;
-    }
-  }
+  function attachCalendarScroll() {
+    const scrollContainer = document.querySelector(".react-activity-calendar__scroll-container");
+    if (!scrollContainer) return;
 
-  // Run on initial load and after view transitions
-  document.addEventListener("astro:page-load", scrollCalendarToEnd);
+    let lastScrollWidth = 0;
 
-  // Also observe the wrapper for React hydration in case page-load hasn't fired yet
-  const wrapper = document.querySelector(".calendar-wrapper");
-  if (wrapper) {
-    const mo = new MutationObserver(() => {
-      scrollCalendarToEnd();
-      mo.disconnect();
+    const ro = new ResizeObserver(() => {
+      if (scrollContainer.scrollWidth > 0 && scrollContainer.scrollWidth === lastScrollWidth) {
+        scrollContainer.scrollLeft = scrollContainer.scrollWidth;
+        ro.disconnect();
+      }
+      lastScrollWidth = scrollContainer.scrollWidth;
     });
-    mo.observe(wrapper, { childList: true, subtree: true });
+
+    ro.observe(scrollContainer);
+
+    // Fallback: force scroll after 1s in case ResizeObserver never stabilises
+    setTimeout(() => {
+      scrollContainer.scrollLeft = scrollContainer.scrollWidth;
+      ro.disconnect();
+    }, 1000);
   }
+
+  document.addEventListener("astro:page-load", attachCalendarScroll);
 </script>
 
 <style>
