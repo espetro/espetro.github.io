@@ -93,6 +93,13 @@
     --accent-hover: #f97316;
     --accent-soft: rgba(234, 88, 12, 0.12);
 
+    /* Glass */
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-active-bg: rgba(255, 255, 255, 0.10);
+    --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+
     /* Shiki: Dark */
     --astro-code-foreground: #fafafa;
     --astro-code-background: #09090b;
