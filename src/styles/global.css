@@ -261,3 +261,9 @@ article h4 {
   color: var(--fg);
   font-weight: 600;
 }
+
+/* Project card images — explicit aspect-ratio + width constraint */
+.project-image-wrap {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}

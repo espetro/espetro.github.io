@@ -1,76 +1,23 @@
 ---
-import ActivityCalendar from "./ActivityCalendar";
-import { fetchGitHubContributions, fetchRecentCommits } from "@lib/github";
-
-const activities = await fetchGitHubContributions("espetro");
-const recentCommits = await fetchRecentCommits("espetro");
+// Activity section uses the GitHub Contribution Chart API (ghchart.rshah.org)
+// rendered as a static <img> — no server-side fetching or client JS required.
+// Accent color #ea580c matches --accent from the site's CSS variables.
+const username = "espetro";
+const accentColor = "#ea580c";
 ---
 
 <section class="activity-section">
   <h2 class="section-title">Activity</h2>
 
-  {activities.length === 0 ? (
-    <p class="error-message">Unable to load activity</p>
-  ) : (
-    <>
-      <div class="calendar-wrapper">
-        <ActivityCalendar data={activities} />
-      </div>
-
-      {recentCommits.length > 0 && (
-        <div class="commits-list">
-          <h3 class="commits-title">Recent Commits</h3>
-          <ul class="commits">
-            {recentCommits.map((commit) => (
-              <li class="commit-item">
-                <a
-                  href={commit.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="commit-link"
-                >
-                  <span class="commit-repo">&gt; {commit.repo}</span>
-                  {commit.lang && (
-                    <span class="commit-lang">[{commit.lang}]</span>
-                  )}
-                  <span class="commit-sep">—</span>
-                  <span class="commit-message">{commit.message}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </>
-  )}
+  <div class="chart-wrapper">
+    <img
+      src={`https://ghchart.rshah.org/${accentColor.replace("#", "")}/${username}`}
+      alt={`${username}'s GitHub contribution chart`}
+      class="github-chart"
+      loading="lazy"
+    />
+  </div>
 </section>
-
-<script is:inline>
-  function attachCalendarScroll() {
-    const scrollContainer = document.querySelector(".react-activity-calendar__scroll-container");
-    if (!scrollContainer) return;
-
-    let lastScrollWidth = 0;
-
-    const ro = new ResizeObserver(() => {
-      if (scrollContainer.scrollWidth > 0 && scrollContainer.scrollWidth === lastScrollWidth) {
-        scrollContainer.scrollLeft = scrollContainer.scrollWidth;
-        ro.disconnect();
-      }
-      lastScrollWidth = scrollContainer.scrollWidth;
-    });
-
-    ro.observe(scrollContainer);
-
-    // Fallback: force scroll after 1s in case ResizeObserver never stabilises
-    setTimeout(() => {
-      scrollContainer.scrollLeft = scrollContainer.scrollWidth;
-      ro.disconnect();
-    }, 1000);
-  }
-
-  document.addEventListener("astro:page-load", attachCalendarScroll);
-</script>
 
 <style>
   .activity-section {
@@ -84,75 +31,14 @@ const recentCommits = await fetchRecentCommits("espetro");
     color: var(--fg);
   }
 
-  .error-message {
-    color: var(--muted);
-    font-style: italic;
-  }
-
-  .calendar-wrapper {
-    margin-bottom: var(--space-4);
+  .chart-wrapper {
     overflow-x: auto;
   }
 
-  .commits-list {
-    margin-top: var(--space-4);
-  }
-
-  .commits-title {
-    font-size: var(--size-meta);
-    font-weight: 500;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--space-2);
-  }
-
-  .commits {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .commit-item {
-    margin-bottom: var(--space-1);
-  }
-
-  .commit-link {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-2);
-    font-family: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
-    font-size: var(--size-meta);
-    color: var(--fg-soft);
-    text-decoration: none;
-    transition: color 0.2s var(--easing);
-    flex-wrap: wrap;
-    line-height: 1.5;
-  }
-
-  .commit-link:hover {
-    color: var(--accent);
-  }
-
-  .commit-repo {
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-
-  .commit-lang {
-    color: var(--muted-strong);
-    flex-shrink: 0;
-  }
-
-  .commit-sep {
-    color: var(--muted);
-    flex-shrink: 0;
-  }
-
-  .commit-message {
-    color: inherit;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .github-chart {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
   }
 </style>
