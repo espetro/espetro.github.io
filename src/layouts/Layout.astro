@@ -40,6 +40,27 @@ const { title, description, image } = Astro.props;
         </Container>
       </footer>
     </div>
+
+    <script is:inline>
+      function animateOnScroll() {
+        const elements = document.querySelectorAll(".animate");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("show");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        elements.forEach((el) => observer.observe(el));
+      }
+
+      animateOnScroll();
+      document.addEventListener("astro:after-swap", animateOnScroll);
+    </script>
   </body>
 </html>
 
