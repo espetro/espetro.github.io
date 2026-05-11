@@ -1,0 +1,290 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import GlassCard from "@components/GlassCard.astro";
+
+const HOME = {
+  TITLE: "About",
+  DESCRIPTION: "About me - Experience, background, and journey",
+};
+
+const experience = {
+  current: [
+    {
+      company: "Current Company",
+      role: "Senior Engineer",
+      period: "2022 - Present",
+      description: "Building AI-powered systems and leading technical initiatives.",
+    },
+  ],
+  past: [
+    {
+      company: "Previous Company",
+      role: "Full-Stack Developer",
+      period: "2019 - 2022",
+      description: "Developed scalable web applications for enterprise clients.",
+    },
+    {
+      company: "Early Career",
+      role: "Junior Developer",
+      period: "2017 - 2019",
+      description: "Started professional journey with focus on frontend development.",
+    },
+  ],
+  education: [
+    {
+      institution: "University of Technology",
+      degree: "M.Sc. Computer Science",
+      period: "2015 - 2017",
+      description: "Specialized in distributed systems and machine learning.",
+    },
+    {
+      institution: "State University",
+      degree: "B.Sc. Software Engineering",
+      period: "2012 - 2015",
+      description: "Foundation in software engineering principles and practices.",
+    },
+  ],
+};
+---
+
+<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <Container>
+    <section class="about-hero">
+      <div class="photo-container">
+        <div class="photo-wrapper">
+          <img
+            src="https://via.placeholder.com/280x280"
+            alt="Profile photo"
+            class="photo"
+          />
+          <img
+            src="https://via.placeholder.com/280x280/ea580c/ffffff"
+            alt="Avatar"
+            class="avatar"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="bio-section animate">
+      <h2>Background</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+        cillum dolore eu fugiat nulla pariatur.
+      </p>
+    </section>
+
+    <section class="bio-section animate">
+      <h2>Approach</h2>
+      <p>
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+        deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste
+        natus error sit voluptatem accusantium doloremque laudantium, totam rem
+        aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto
+        beatae vitae dicta sunt explicabo.
+      </p>
+    </section>
+
+    <section class="bio-section animate">
+      <h2>Beyond Work</h2>
+      <p>
+        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+        sed quia consequuntur magni dolores eos qui ratione voluptatem sequi
+        nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
+        consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt.
+      </p>
+    </section>
+
+    <section class="experience-section animate">
+      <h2>Experience</h2>
+
+      <div class="timeline-group">
+        <h3 class="timeline-label">Current</h3>
+        <ul class="timeline-list">
+          {
+            experience.current.map((item) => (
+              <li>
+                <GlassCard>
+                  <div class="timeline-item">
+                    <span class="timeline-period">{item.period}</span>
+                    <h4 class="timeline-name">{item.company}</h4>
+                    <p class="timeline-description">{item.description}</p>
+                  </div>
+                </GlassCard>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="timeline-group">
+        <h3 class="timeline-label">Past</h3>
+        <ul class="timeline-list">
+          {
+            experience.past.map((item) => (
+              <li>
+                <GlassCard>
+                  <div class="timeline-item">
+                    <span class="timeline-period">{item.period}</span>
+                    <h4 class="timeline-name">{item.company}</h4>
+                    <p class="timeline-description">{item.description}</p>
+                  </div>
+                </GlassCard>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="timeline-group">
+        <h3 class="timeline-label">Education</h3>
+        <ul class="timeline-list">
+          {
+            experience.education.map((item) => (
+              <li>
+                <GlassCard>
+                  <div class="timeline-item">
+                    <span class="timeline-period">{item.period}</span>
+                    <h4 class="timeline-name">{item.institution}</h4>
+                    <p class="timeline-role">{item.degree}</p>
+                    <p class="timeline-description">{item.description}</p>
+                  </div>
+                </GlassCard>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+  </Container>
+</Layout>
+
+<style>
+  .about-hero {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-5);
+  }
+
+  .photo-container {
+    width: 280px;
+    height: 280px;
+  }
+
+  .photo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .photo,
+  .avatar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s var(--easing), opacity 0.4s var(--easing);
+  }
+
+  .avatar {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .photo-wrapper:hover .photo {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  .photo-wrapper:hover .avatar {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .bio-section {
+    margin-bottom: var(--space-5);
+  }
+
+  .bio-section h2 {
+    font-size: var(--size-h2);
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+    color: var(--fg);
+  }
+
+  .bio-section p {
+    font-size: var(--size-body);
+    color: var(--fg-soft);
+    line-height: 1.7;
+  }
+
+  .experience-section {
+    margin-top: var(--space-6);
+  }
+
+  .experience-section > h2 {
+    font-size: var(--size-h2);
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+    color: var(--fg);
+  }
+
+  .timeline-group {
+    margin-bottom: var(--space-5);
+  }
+
+  .timeline-label {
+    font-size: var(--size-meta);
+    font-weight: 600;
+    color: var(--muted-strong);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-2);
+  }
+
+  .timeline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .timeline-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .timeline-period {
+    font-family: ui-monospace, monospace;
+    font-size: var(--size-micro);
+    color: var(--muted);
+  }
+
+  .timeline-name {
+    font-size: var(--size-body);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .timeline-role {
+    font-size: var(--size-meta);
+    font-weight: 500;
+    color: var(--fg-soft);
+  }
+
+  .timeline-description {
+    font-size: var(--size-meta);
+    color: var(--muted-strong);
+    line-height: 1.5;
+  }
+</style>
