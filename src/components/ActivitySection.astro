@@ -45,6 +45,28 @@ const recentCommits = await fetchRecentCommits("espetro");
   )}
 </section>
 
+<script is:inline>
+  function scrollCalendarToEnd() {
+    const wrapper = document.querySelector(".calendar-wrapper");
+    if (wrapper) {
+      wrapper.scrollLeft = wrapper.scrollWidth;
+    }
+  }
+
+  // Run on initial load and after view transitions
+  document.addEventListener("astro:page-load", scrollCalendarToEnd);
+
+  // Also observe the wrapper for React hydration in case page-load hasn't fired yet
+  const wrapper = document.querySelector(".calendar-wrapper");
+  if (wrapper) {
+    const mo = new MutationObserver(() => {
+      scrollCalendarToEnd();
+      mo.disconnect();
+    });
+    mo.observe(wrapper, { childList: true, subtree: true });
+  }
+</script>
+
 <style>
   .activity-section {
     margin-block: var(--space-5);
