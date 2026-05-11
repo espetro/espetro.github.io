@@ -110,6 +110,7 @@ const currentPath = Astro.url.pathname;
     color: var(--muted);
     transition: color 0.25s var(--easing);
     text-decoration: none;
+    z-index: 50;
   }
 
   .nav-link:hover {
@@ -138,12 +139,10 @@ const currentPath = Astro.url.pathname;
     top: 50%;
     transform: translateY(-50%) translateX(-4px);
     padding: 4px 10px;
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    box-shadow: var(--glass-shadow);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     font-size: var(--size-meta);
     color: var(--fg);
     white-space: nowrap;
