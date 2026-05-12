@@ -1,33 +1,12 @@
 ---
 interface Props {
   title: string;
-  description: string;
 }
 
-const { title, description } = Astro.props;
+const { title } = Astro.props;
 ---
 
-<div class="page-header">
-  <h1>{title}</h1>
-  <p set:html={description} />
+<div class="mb-10">
+  <h1 class="mb-2 text-[30px] font-semibold text-(--fg)">{title}</h1>
+  <slot />
 </div>
-
-<style>
-  .page-header {
-    margin-bottom: var(--space-6);
-  }
-
-  h1 {
-    font-size: var(--size-h1);
-    font-weight: 600;
-    color: var(--fg);
-    margin: 0 0 0.5em;
-  }
-
-  p {
-    font-size: var(--size-body);
-    color: var(--fg-soft);
-    line-height: 1.7;
-    margin: 0;
-  }
-</style>
