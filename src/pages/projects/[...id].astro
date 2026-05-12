@@ -8,7 +8,10 @@ export async function getStaticPaths() {
   const projects = (await getCollection("projects"))
     .filter((p) => !p.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  return projects.map((project) => ({ params: { id: project.id }, props: project }));
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: project,
+  }));
 }
 
 const project = Astro.props;
@@ -17,7 +20,10 @@ const { Content } = await render(project);
 const formatStarted = (date: Date) =>
   date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
-const STATUS_STYLES: Record<string, { bg: string; text: string; label: string }> = {
+const STATUS_STYLES: Record<
+  string,
+  { bg: string; text: string; label: string }
+> = {
   "front-burner": {
     bg: "var(--accent-soft)",
     text: "var(--accent)",
@@ -41,25 +47,44 @@ const pill = STATUS_STYLES[status] ?? STATUS_STYLES["retired"];
 
 <Layout title={project.data.title} description={project.data.description}>
   <Container>
-    <div class="animate"><BackToPrevious href="/projects">Back to projects</BackToPrevious></div>
+    <div class="animate">
+      <BackToPrevious href="/projects">Back to projects</BackToPrevious>
+    </div>
 
     <div class="project-header animate">
       <!-- Row 1: Title + Link chip -->
       <div class="header-top">
         <h1 class="project-title">{project.data.title}</h1>
-        {project.data.link && (
-          <a
-            href={project.data.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-chip"
-          >
-            <span class="link-chip-url">{new URL(project.data.link).hostname}</span>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M2 10L10 2M10 2H4.5M10 2V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        )}
+        {
+          project.data.link && (
+            <a
+              href={project.data.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-chip"
+            >
+              <span class="link-chip-url">
+                {new URL(project.data.link).hostname}
+              </span>
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path
+                  d="M2 10L10 2M10 2H4.5M10 2V7.5"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+          )
+        }
       </div>
 
       <!-- Row 2: Status pill + started date -->
@@ -70,7 +95,9 @@ const pill = STATUS_STYLES[status] ?? STATUS_STYLES["retired"];
         >
           {pill.label}
         </span>
-        <span class="started-date">Started {formatStarted(project.data.date)}</span>
+        <span class="started-date"
+          >Started {formatStarted(project.data.date)}</span
+        >
       </div>
 
       <!-- Row 3: Value proposition -->
@@ -78,22 +105,23 @@ const pill = STATUS_STYLES[status] ?? STATUS_STYLES["retired"];
     </div>
 
     <!-- Preview image / gif -->
-    {project.data.preview && (
-      <div class="project-preview animate">
-        <img
-          src={project.data.preview}
-          alt={`${project.data.title} preview`}
-          loading="lazy"
-          decoding="async"
-        />
-      </div>
-    )}
+    {
+      project.data.preview && (
+        <div class="project-preview animate">
+          <img
+            src={project.data.preview}
+            alt={`${project.data.title} preview`}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      )
+    }
 
     <!-- Article content -->
     <article class="animate content-spacing">
       <Content />
     </article>
-
   </Container>
 </Layout>
 

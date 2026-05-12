@@ -22,14 +22,21 @@ interface Props {
   showArrow?: boolean;
 }
 
-const { title, description, projects, id, showImage = false, showArrow = false } = Astro.props;
+const {
+  title,
+  description,
+  projects,
+  id,
+  showImage = false,
+  showArrow = false,
+} = Astro.props;
 ---
 
 {
   projects.length > 0 && (
     <section class="animate space-y-4" id={id}>
       <div class="space-y-1">
-        <h2 class="text-[var(--size-h2)] font-semibold text-black dark:text-white">
+        <h2 class="font-semibold text-[var(--size-h2)] text-black dark:text-white">
           {title}
         </h2>
         <p class="text-sm text-[var(--muted)]">{description}</p>

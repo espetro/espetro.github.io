@@ -12,10 +12,7 @@ const { style, class: className, id } = Astro.props;
 
 <div
   class="rounded-lg border border-black/15 dark:border-white/20"
-  class:list={[
-    !style && "bg-white dark:bg-black/50",
-    className
-  ]}
+  class:list={[!style && "bg-white dark:bg-black/50", className]}
   style={style}
   id={id}
 >

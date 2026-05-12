@@ -8,7 +8,14 @@ interface Props {
   class?: string;
 }
 
-const { date, title, href, label, arrow = true, class: className } = Astro.props;
+const {
+  date,
+  title,
+  href,
+  label,
+  arrow = true,
+  class: className,
+} = Astro.props;
 ---
 
 {
@@ -19,8 +26,14 @@ const { date, title, href, label, arrow = true, class: className } = Astro.props
         {title}
         {label && <span class="glass-row-label">{label}</span>}
       </span>
-      {arrow && <span class="glass-row-arrow" aria-hidden="true">→</span>}
-      <div class="glass-row-extras"><slot /></div>
+      {arrow && (
+        <span class="glass-row-arrow" aria-hidden="true">
+          →
+        </span>
+      )}
+      <div class="glass-row-extras">
+        <slot />
+      </div>
     </a>
   ) : (
     <div class:list={["glass-row", className]}>
@@ -29,8 +42,14 @@ const { date, title, href, label, arrow = true, class: className } = Astro.props
         {title}
         {label && <span class="glass-row-label">{label}</span>}
       </span>
-      {arrow && <span class="glass-row-arrow" aria-hidden="true">→</span>}
-      <div class="glass-row-extras"><slot /></div>
+      {arrow && (
+        <span class="glass-row-arrow" aria-hidden="true">
+          →
+        </span>
+      )}
+      <div class="glass-row-extras">
+        <slot />
+      </div>
     </div>
   )
 }
@@ -95,7 +114,9 @@ const { date, title, href, label, arrow = true, class: className } = Astro.props
     color: var(--muted);
     font-size: var(--size-body);
     flex-shrink: 0;
-    transition: color 0.2s var(--easing), transform 0.2s var(--easing);
+    transition:
+      color 0.2s var(--easing),
+      transform 0.2s var(--easing);
   }
 
   .glass-row:hover .glass-row-arrow {

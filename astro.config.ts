@@ -6,12 +6,17 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://espetro.github.io",
+  site: "https://illo.fyi",
   output: "static",
   outDir: "./dist",
   integrations: [sitemap(), mdx(), react()],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      watch: {
+        ignored: ["**/.worktrees/**"],
+      },
+    },
   },
   markdown: {
     shikiConfig: {

@@ -10,7 +10,8 @@ export const SITE: Site = {
 
 export const HOME: Metadata = {
   TITLE: "Home",
-  DESCRIPTION: "Quino Terrasa - Full-Stack Engineer specializing in Agentic AI systems",
+  DESCRIPTION:
+    "Quino Terrasa - Full-Stack Engineer specializing in Agentic AI systems",
 };
 
 export const BLOG: Metadata = {
@@ -20,7 +21,8 @@ export const BLOG: Metadata = {
 
 export const PROJECTS: Metadata = {
   TITLE: "Projects",
-  DESCRIPTION: "A collection of my projects with links to repositories and live demos.",
+  DESCRIPTION:
+    "A collection of my projects with links to repositories and live demos.",
 };
 
 export const SOCIALS: Socials = [

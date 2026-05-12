@@ -6,8 +6,9 @@ import FormattedDate from "@components/FormattedDate.astro";
 import { readingTime } from "@lib/utils";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("posts"))
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const posts = (await getCollection("posts")).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+  );
   return posts.map((post) => ({ params: { id: post.id }, props: post }));
 }
 type Props = CollectionEntry<"posts">;
@@ -27,15 +28,32 @@ const { Content } = await render(post);
     </div>
     <article class="animate"><Content /></article>
     <div class="animate mt-6">
-      {post.data.tags?.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-4">
-          {post.data.tags.map((tag) => (
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full border bg-border/12 text-muted-foreground text-[11px] font-medium tracking-tight leading-tight transition-all duration-200">{tag}</span>
-          ))}
-        </div>
-      )}
-      <a href="/posts" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 border rounded-full bg-elevated text-muted-foreground text-xs no-underline transition-all duration-200 hover:text-accent hover:border-accent hover:bg-accent/10">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      {
+        post.data.tags?.length > 0 && (
+          <div class="mb-4 flex flex-wrap gap-2">
+            {post.data.tags.map((tag) => (
+              <span class="bg-border/12 text-muted-foreground inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] leading-tight font-medium tracking-tight transition-all duration-200">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
+      <a
+        href="/posts"
+        class="bg-elevated text-muted-foreground hover:text-accent hover:border-accent hover:bg-accent/10 inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-xs no-underline transition-all duration-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <line x1="19" y1="12" x2="5" y2="12"></line>
           <polyline points="12 19 5 12 12 5"></polyline>
         </svg>

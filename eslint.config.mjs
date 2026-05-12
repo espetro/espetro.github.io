@@ -10,6 +10,12 @@ export default [
     },
   },
   {
-    ignores: ["dist/**", "node_modules/**", ".astro/**", ".worktrees/**", "public/**"],
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      ".astro/**",
+      ".worktrees/**",
+      "public/**",
+    ],
   },
 ];

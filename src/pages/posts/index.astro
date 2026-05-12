@@ -6,7 +6,7 @@ import { getCollection } from "astro:content";
 
 const posts = await getCollection("posts");
 const sorted = posts.sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 const limited = sorted.slice(0, 2);
 
@@ -26,23 +26,25 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
       title="Posts"
       description='Notes and essays on tech, UX, and agentic design. For experiments and shipped projects, see <a href="/projects" style="color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);">Projects</a>.'
     />
-    {years.map((year) => (
-      <section class="year-group">
-        <h2 class="year-header">{year}</h2>
-        <div class="entries">
-          {groups[year].map((post) => (
-            <GlassRow
-              date={post.data.date.toLocaleDateString("en-US", {
-                month: "short",
-                day: "2-digit",
-              })}
-              title={post.data.title}
-              href={`/posts/${post.id}`}
-            />
-          ))}
-        </div>
-      </section>
-    ))}
+    {
+      years.map((year) => (
+        <section class="year-group">
+          <h2 class="year-header">{year}</h2>
+          <div class="entries">
+            {groups[year].map((post) => (
+              <GlassRow
+                date={post.data.date.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "2-digit",
+                })}
+                title={post.data.title}
+                href={`/posts/${post.id}`}
+              />
+            ))}
+          </div>
+        </section>
+      ))
+    }
   </div>
 </Layout>
 
