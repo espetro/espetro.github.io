@@ -51,19 +51,21 @@ const pill = STATUS_STYLES[status] ?? STATUS_STYLES["retired"];
       <BackToPrevious href="/projects">Back to projects</BackToPrevious>
     </div>
 
-    <div class="project-header animate">
+    <div class="animate mt-10 mb-6 flex flex-col gap-3">
       <!-- Row 1: Title + Link chip -->
-      <div class="header-top">
-        <h1 class="project-title">{project.data.title}</h1>
+      <div class="flex flex-wrap items-start justify-between gap-4 max-sm:flex-col max-sm:gap-2">
+        <h1 class="m-0 text-[30px] font-bold leading-[1.1] text-(--fg)">
+          {project.data.title}
+        </h1>
         {
           project.data.link && (
             <a
               href={project.data.link}
               target="_blank"
               rel="noopener noreferrer"
-              class="link-chip"
+              class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-(--border) bg-(--bg-elevated) px-3 py-1.5 text-[13px] text-(--fg) no-underline whitespace-nowrap [transition:background-color_0.2s_var(--easing),border-color_0.2s_var(--easing),color_0.2s_var(--easing)] hover:border-(--accent) hover:bg-(--accent-soft) hover:text-(--accent) max-sm:self-start"
             >
-              <span class="link-chip-url">
+              <span class="max-w-[180px] overflow-hidden text-ellipsis">
                 {new URL(project.data.link).hostname}
               </span>
               <svg
@@ -88,163 +90,42 @@ const pill = STATUS_STYLES[status] ?? STATUS_STYLES["retired"];
       </div>
 
       <!-- Row 2: Status pill + started date -->
-      <div class="header-meta">
+      <div class="flex flex-wrap items-center gap-3">
         <span
-          class="status-pill"
+          class="inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-[0.05em] uppercase"
           style={`background-color: ${pill.bg}; color: ${pill.text};`}
         >
           {pill.label}
         </span>
-        <span class="started-date"
-          >Started {formatStarted(project.data.date)}</span
-        >
+        <span class="text-[13px] text-(--muted)">
+          Started {formatStarted(project.data.date)}
+        </span>
       </div>
 
       <!-- Row 3: Value proposition -->
-      <p class="value-proposition">{project.data.description}</p>
+      <p class="m-0 max-w-[65ch] text-[15px] leading-[1.6] text-(--fg)">
+        {project.data.description}
+      </p>
     </div>
 
     <!-- Preview image / gif -->
     {
       project.data.preview && (
-        <div class="project-preview animate">
+        <div class="animate mb-6 overflow-hidden rounded-[14px] border border-(--border)">
           <img
             src={project.data.preview}
             alt={`${project.data.title} preview`}
             loading="lazy"
             decoding="async"
+            class="block h-auto w-full object-cover"
           />
         </div>
       )
     }
 
     <!-- Article content -->
-    <article class="animate content-spacing prose max-w-none">
+    <article class="animate border-t border-(--border) pt-6 prose max-w-none">
       <Content />
     </article>
   </Container>
 </Layout>
-
-<style>
-  .project-header {
-    margin-top: 2.5rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .project-title {
-    font-size: var(--size-h1);
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--fg);
-    margin: 0;
-  }
-
-  .link-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    padding: 0.375rem 0.75rem;
-    border-radius: 9999px;
-    background-color: var(--bg-elevated);
-    border: 1px solid var(--border);
-    color: var(--fg);
-    text-decoration: none;
-    font-size: var(--size-meta);
-    white-space: nowrap;
-    transition:
-      background-color 0.2s var(--easing),
-      border-color 0.2s var(--easing),
-      color 0.2s var(--easing);
-    flex-shrink: 0;
-  }
-
-  .link-chip:hover {
-    background-color: var(--accent-soft);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .link-chip-url {
-    max-width: 180px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .header-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .status-pill {
-    display: inline-block;
-    border-radius: 9999px;
-    padding: 0.125rem 0.5rem;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .started-date {
-    font-size: var(--size-meta);
-    color: var(--muted);
-  }
-
-  .value-proposition {
-    font-size: var(--size-body);
-    color: var(--fg);
-    line-height: 1.6;
-    max-width: 65ch;
-    margin: 0;
-  }
-
-  .project-preview {
-    margin-bottom: 1.5rem;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-
-  .project-preview img {
-    display: block;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-  }
-
-  .content-spacing {
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .reading-time {
-    font-size: var(--size-meta);
-    color: var(--muted);
-    text-align: center;
-    padding-bottom: 2rem;
-  }
-
-  @media (max-width: 640px) {
-    .header-top {
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .link-chip {
-      align-self: flex-start;
-    }
-  }
-</style>

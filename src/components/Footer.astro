@@ -21,13 +21,17 @@ const LINKS: Link[] = [
 ];
 ---
 
-<footer class="border-t border-[var(--border)] py-6">
+<footer class="border-t border-(--border) py-6">
   <div class="flex flex-col items-center gap-2">
-    <nav class="flex flex-wrap justify-center gap-4" aria-label="Footer navigation">
+    <nav
+      class="flex flex-wrap justify-center gap-4"
+      aria-label="Footer navigation"
+    >
       {
         LINKS.map(({ title, href }) => (
           <a
             href={href}
+            target="_blank"
             class="text-[11px] text-[var(--muted)] no-underline [transition:color_0.3s_var(--easing)] hover:text-[var(--accent)]"
           >
             {title}
