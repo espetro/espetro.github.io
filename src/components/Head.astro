@@ -38,6 +38,14 @@ const { title, description, image = "/astro-micro-1200.webp" } = Astro.props;
   href="/favicon.svg"
   color="#f4664c"
 />
+
+<!-- RSS Feed -->
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title="RSS Feed"
+  href={new URL("rss.xml", Astro.site)}
+/>
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canonical URL -->
