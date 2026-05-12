@@ -24,7 +24,7 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
   <div class="posts-page">
     <PageHeader
       title="Posts"
-      description="Notes and essays on faith, tech, and agentic design. For client sites and shipped work, see Work."
+      description='Notes and essays on tech, UX, and agentic design. For experiments and shipped projects, see <a href="/projects" style="color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);">Projects</a>.'
     />
     {years.map((year) => (
       <section class="year-group">
