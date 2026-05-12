@@ -6,39 +6,14 @@ const username = "espetro";
 const accentColor = "#ea580c";
 ---
 
-<section class="activity-section">
-  <h2 class="section-title">Activity</h2>
+<section class="my-10">
+  <h2 class="mb-4 text-[19px] font-semibold text-(--fg)">Activity</h2>
 
-  <div class="chart-wrapper">
+  <div class="overflow-x-auto">
     <img
       src={`https://ghchart.rshah.org/${accentColor.replace("#", "")}/${username}`}
       alt={`${username}'s GitHub contribution chart`}
-      class="github-chart"
-      loading="lazy"
+      class="block h-auto w-full rounded-[10px]"
     />
   </div>
 </section>
-
-<style>
-  .activity-section {
-    margin-block: var(--space-5);
-  }
-
-  .section-title {
-    font-size: var(--size-h2);
-    font-weight: 600;
-    margin-bottom: var(--space-3);
-    color: var(--fg);
-  }
-
-  .chart-wrapper {
-    overflow-x: auto;
-  }
-
-  .github-chart {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: var(--radius-md);
-  }
-</style>
