@@ -4,6 +4,7 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "strictNullChecks": true,
+    "jsxImportSource": "react",
     "paths": {
       "@*": ["./src/*"]
     }
