@@ -1,8 +1,8 @@
-@import '@fontsource/plus-jakarta-sans/300.css';
-@import '@fontsource/plus-jakarta-sans/400.css';
-@import '@fontsource/plus-jakarta-sans/500.css';
-@import '@fontsource/plus-jakarta-sans/600.css';
-@import '@fontsource/plus-jakarta-sans/700.css';
+@import "@fontsource/plus-jakarta-sans/300.css";
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
 
 /* ── Design Tokens: Light Mode ─────────────────────────────────────── */
 :root {
@@ -95,8 +95,8 @@
 
     /* Glass */
     --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.10);
-    --glass-active-bg: rgba(255, 255, 255, 0.10);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-active-bg: rgba(255, 255, 255, 0.1);
     --glass-inset: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 
@@ -131,7 +131,7 @@ body {
 body {
   background-color: var(--bg);
   color: var(--fg);
-  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   font-size: var(--size-body);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -245,7 +245,9 @@ article a {
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-color: var(--border-strong);
-  transition: color 0.3s var(--easing), text-decoration-color 0.3s var(--easing);
+  transition:
+    color 0.3s var(--easing),
+    text-decoration-color 0.3s var(--easing);
 }
 
 article a:hover {

@@ -20,11 +20,11 @@ export function readingTime(html: string) {
   return `${readingTimeMinutes} min read`;
 }
 
-type WithDate<T> = T & { date: Date }
+type WithDate<T> = T & { date: Date };
 
 interface DataWithDate<T> {
-  data: WithDate<T>
+  data: WithDate<T>;
 }
 
 export const sortByDateTimeDesc = <T>(a: DataWithDate<T>, b: DataWithDate<T>) =>
-  b.data.date.valueOf() - a.data.date.valueOf()
+  b.data.date.valueOf() - a.data.date.valueOf();
