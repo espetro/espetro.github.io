@@ -2,47 +2,37 @@
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import GlassCard from "@components/GlassCard.astro";
+import BioSection from "@components/BioSection.astro";
 
 const HOME = {
   TITLE: "About",
-  DESCRIPTION: "About me - Experience, background, and journey",
+  DESCRIPTION: "About — experience, interests, and what drives me",
 };
 
 const experience = {
   current: [
     {
-      company: "Current Company",
-      role: "Senior Engineer",
-      period: "2022 - Present",
-      description: "Building AI-powered systems and leading technical initiatives.",
+      company: "MaibornWolff GmbH",
+      role: "Senior AI Engineer",
+      period: "Jun 2022 - Present",
+      description:
+        "AI gateway architect for Rohde & Schwarz (K8s, TypeScript, Rust) and HWZ University (NextJS, Azure AI). Built data platforms for Liebherr (Go, Python) and doubled CI/CD speed at Volkswagen (AWS, TypeScript).",
     },
   ],
   past: [
     {
-      company: "Previous Company",
-      role: "Full-Stack Developer",
-      period: "2019 - 2022",
-      description: "Developed scalable web applications for enterprise clients.",
+      company: "StratioBD",
+      role: "Big Data Engineer",
+      period: "Nov 2021 - Jun 2022",
+      description:
+        "Modernized build tooling (Java 11, Scala 2.12), cutting build times 40% and rollout times 20%. Mentored team on scalable Spark optimizations.",
     },
     {
-      company: "Early Career",
-      role: "Junior Developer",
-      period: "2017 - 2019",
-      description: "Started professional journey with focus on frontend development.",
-    },
-  ],
-  education: [
-    {
-      institution: "University of Technology",
-      degree: "M.Sc. Computer Science",
-      period: "2015 - 2017",
-      description: "Specialized in distributed systems and machine learning.",
-    },
-    {
-      institution: "State University",
-      degree: "B.Sc. Software Engineering",
-      period: "2012 - 2015",
-      description: "Foundation in software engineering principles and practices.",
+      company: "Tupl Inc.",
+      role: "Software Engineer",
+      period: "Aug 2020 - Nov 2021",
+      description:
+        "Co-owned a third of the startup platform (React, http4s, Akka) serving Spain, US, and Japan. Reduced API surface by 20% through functional and type-system best practices.",
     },
   ],
 };
@@ -67,97 +57,31 @@ const experience = {
       </div>
     </section>
 
-    <section class="bio-section animate">
-      <h2>Background</h2>
+    <BioSection title="Beyond Work">
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur.
+        I'm always learning a new language — right now Arabic, after Portuguese,
+        Italian, and Catalan. I love trying unfamiliar food, especially anything
+        spicy, and then figuring out how to cook it at home. Most of my side
+        projects start as something I (or my family and friends) actually need.
       </p>
-    </section>
-
-    <section class="bio-section animate">
-      <h2>Approach</h2>
-      <p>
-        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste
-        natus error sit voluptatem accusantium doloremque laudantium, totam rem
-        aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto
-        beatae vitae dicta sunt explicabo.
-      </p>
-    </section>
-
-    <section class="bio-section animate">
-      <h2>Beyond Work</h2>
-      <p>
-        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
-        sed quia consequuntur magni dolores eos qui ratione voluptatem sequi
-        nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-        consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt.
-      </p>
-    </section>
+    </BioSection>
 
     <section class="experience-section animate">
       <h2>Experience</h2>
-
-      <div class="timeline-group">
-        <h3 class="timeline-label">Current</h3>
-        <ul class="timeline-list">
-          {
-            experience.current.map((item) => (
-              <li>
-                <GlassCard>
-                  <div class="timeline-item">
-                    <span class="timeline-period">{item.period}</span>
-                    <h4 class="timeline-name">{item.company}</h4>
-                    <p class="timeline-description">{item.description}</p>
-                  </div>
-                </GlassCard>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div class="timeline-group">
-        <h3 class="timeline-label">Past</h3>
-        <ul class="timeline-list">
-          {
-            experience.past.map((item) => (
-              <li>
-                <GlassCard>
-                  <div class="timeline-item">
-                    <span class="timeline-period">{item.period}</span>
-                    <h4 class="timeline-name">{item.company}</h4>
-                    <p class="timeline-description">{item.description}</p>
-                  </div>
-                </GlassCard>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <div class="timeline-group">
-        <h3 class="timeline-label">Education</h3>
-        <ul class="timeline-list">
-          {
-            experience.education.map((item) => (
-              <li>
-                <GlassCard>
-                  <div class="timeline-item">
-                    <span class="timeline-period">{item.period}</span>
-                    <h4 class="timeline-name">{item.institution}</h4>
-                    <p class="timeline-role">{item.degree}</p>
-                    <p class="timeline-description">{item.description}</p>
-                  </div>
-                </GlassCard>
-              </li>
-            ))
-          }
-        </ul>
+      <div class="experience-card">
+        {
+          [...experience.current, ...experience.past].map((item, index, arr) => (
+            <>
+              <div class="experience-entry">
+                <span class="experience-period">{item.period}</span>
+                <h3 class="experience-company">{item.company}</h3>
+                <p class="experience-role">{item.role}</p>
+                <p class="experience-description">{item.description}</p>
+              </div>
+              {index < arr.length - 1 && <hr class="experience-divider" />}
+            </>
+          ))
+        }
       </div>
     </section>
   </Container>
@@ -208,23 +132,6 @@ const experience = {
     transform: scale(1);
   }
 
-  .bio-section {
-    margin-bottom: var(--space-5);
-  }
-
-  .bio-section h2 {
-    font-size: var(--size-h2);
-    font-weight: 600;
-    margin-bottom: var(--space-3);
-    color: var(--fg);
-  }
-
-  .bio-section p {
-    font-size: var(--size-body);
-    color: var(--fg-soft);
-    line-height: 1.7;
-  }
-
   .experience-section {
     margin-top: var(--space-6);
   }
@@ -236,55 +143,50 @@ const experience = {
     color: var(--fg);
   }
 
-  .timeline-group {
-    margin-bottom: var(--space-5);
+  .experience-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--bg);
   }
 
-  .timeline-label {
-    font-size: var(--size-meta);
-    font-weight: 600;
-    color: var(--muted-strong);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--space-2);
+  .experience-entry {
+    padding: var(--space-4);
   }
 
-  .timeline-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
-  .timeline-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-
-  .timeline-period {
+  .experience-period {
     font-family: ui-monospace, monospace;
     font-size: var(--size-micro);
     color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: var(--space-1);
   }
 
-  .timeline-name {
-    font-size: var(--size-body);
+  .experience-company {
+    font-size: var(--size-h3);
     font-weight: 600;
     color: var(--fg);
+    margin-bottom: var(--space-1);
   }
 
-  .timeline-role {
+  .experience-role {
     font-size: var(--size-meta);
     font-weight: 500;
     color: var(--fg-soft);
+    margin-bottom: var(--space-2);
   }
 
-  .timeline-description {
-    font-size: var(--size-meta);
-    color: var(--muted-strong);
-    line-height: 1.5;
+  .experience-description {
+    font-size: var(--size-body);
+    color: var(--fg-soft);
+    line-height: 1.6;
+  }
+
+  .experience-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
   }
 </style>
