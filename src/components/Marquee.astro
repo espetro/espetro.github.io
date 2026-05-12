@@ -3,99 +3,46 @@ const quote =
   "The only way to do great work is to love what you do. — Steve Jobs";
 ---
 
-<div class="marquee-wrapper" aria-label={quote}>
-  <div class="marquee-fade marquee-fade--left" aria-hidden="true"></div>
+<div class="group relative overflow-hidden py-3" aria-label={quote}>
+  <div
+    class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-(--bg) to-transparent motion-reduce:hidden"
+    aria-hidden="true"
+  ></div>
 
-  <div class="marquee-track">
-    <div class="marquee-content">
+  <div class="overflow-hidden motion-reduce:hidden">
+    <div
+      class="flex w-max whitespace-nowrap text-[13px] text-(--muted) [animation:marquee_100s_linear_infinite] group-hover:[animation-play-state:paused]"
+    >
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
       <span>{quote}</span>
-      <span class="marquee-separator" aria-hidden="true"> · </span>
+      <span class="px-3" aria-hidden="true"> · </span>
+      <span>{quote}</span>
+      <span class="px-3" aria-hidden="true"> · </span>
     </div>
   </div>
 
-  <div class="marquee-fade marquee-fade--right" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-(--bg) to-transparent motion-reduce:hidden"
+    aria-hidden="true"
+  ></div>
 
-  <p class="marquee-static" aria-hidden="true">{quote}</p>
+  <p
+    class="m-0 hidden text-center text-[13px] text-(--muted) motion-reduce:block"
+    aria-hidden="true"
+  >
+    {quote}
+  </p>
 </div>
-
-<style>
-  .marquee-wrapper {
-    position: relative;
-    overflow: hidden;
-    padding-block: var(--space-3);
-  }
-
-  .marquee-track {
-    overflow: hidden;
-  }
-
-  .marquee-content {
-    display: flex;
-    width: max-content;
-    font-size: var(--size-meta);
-    color: var(--muted);
-    white-space: nowrap;
-    animation: marquee 100s linear infinite;
-  }
-
-  .marquee-content:hover {
-    animation-play-state: paused;
-  }
-
-  .marquee-separator {
-    padding-inline: var(--space-3);
-  }
-
-  /* Fade masks */
-  .marquee-fade {
-    position: absolute;
-    inset-block: 0;
-    width: 64px;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .marquee-fade--left {
-    left: 0;
-    background: linear-gradient(to right, var(--bg), transparent);
-  }
-
-  .marquee-fade--right {
-    right: 0;
-    background: linear-gradient(to left, var(--bg), transparent);
-  }
-
-  /* Static fallback for reduced motion */
-  .marquee-static {
-    display: none;
-    font-size: var(--size-meta);
-    color: var(--muted);
-    text-align: center;
-    margin: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track,
-    .marquee-fade {
-      display: none;
-    }
-
-    .marquee-static {
-      display: block;
-    }
-  }
-</style>
