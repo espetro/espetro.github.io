@@ -1,16 +1,8 @@
 ---
+import type { CollectionEntry } from "astro:content";
+
 interface Props {
-  project: {
-    id: string;
-    data: {
-      title: string;
-      description: string;
-      date: Date;
-      category: string;
-      tech: string[];
-      image?: string;
-    };
-  };
+  project: CollectionEntry<"projects">;
 }
 
 const { project } = Astro.props;
@@ -42,133 +34,32 @@ const formatDate = (date: Date) =>
 const pill = categoryPill(project.data.category);
 ---
 
-<div class="project-card-content">
-  <h3 class="project-title">{project.data.title}</h3>
-  <p class="project-description">{project.data.description}</p>
-  <div class="project-meta">
+<div class="flex min-w-0 flex-1 flex-col gap-1">
+  <h3 class="m-0 font-semibold text-(--fg)">
+    {project.data.title}
+  </h3>
+  <p class="m-0 line-clamp-2 leading-normal text-(--size-meta)">
+    {project.data.description}
+  </p>
+  <div class="flex flex-wrap items-center gap-2 text-(--size-micro)">
     <span
-      class="project-pill"
+      class="inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-wider whitespace-nowrap uppercase"
       style={`background-color: ${pill.bg}; color: ${pill.text};`}
     >
       {pill.label}
     </span>
-    <span class="project-date">{formatDate(project.data.date)}</span>
+    <span class="whitespace-nowrap text-(--muted)"
+      >{formatDate(project.data.date)}</span
+    >
     {
       project.data.tech.length > 0 && (
         <>
-          <span class="project-dot">·</span>
-          <span class="project-tech">{project.data.tech.join(", ")}</span>
+          <span class="whitespace-nowrap text-(--muted)">·</span>
+          <span class="whitespace-nowrap text-(--muted)">
+            {project.data.tech.join(", ")}
+          </span>
         </>
       )
     }
   </div>
 </div>
-
-<style>
-  .project-card-image :global(.glass-card) {
-    padding: var(--space-3);
-  }
-
-  .project-card-image-layout {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-  }
-
-  .project-image-wrap {
-    flex-shrink: 0;
-    width: 80px;
-    height: 80px;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: var(--bg-elevated);
-  }
-
-  .project-image-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .project-card-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    flex: 1;
-    min-width: 0;
-  }
-
-  .project-title {
-    font-size: var(--size-body);
-    font-weight: 600;
-    color: var(--fg);
-    margin: 0;
-  }
-
-  .project-description {
-    font-size: var(--size-meta);
-    color: var(--muted);
-    line-height: 1.5;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .project-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--size-micro);
-    flex-wrap: wrap;
-  }
-
-  .project-pill {
-    display: inline-block;
-    border-radius: 9999px;
-    padding: 0.125rem 0.5rem;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-  }
-
-  .project-date,
-  .project-dot,
-  .project-tech {
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .project-arrow {
-    color: var(--muted);
-    font-size: var(--size-body);
-    flex-shrink: 0;
-    transition:
-      color 0.2s var(--easing),
-      transform 0.2s var(--easing);
-  }
-
-  .project-card-image:hover .project-arrow {
-    color: var(--accent);
-    transform: translateX(2px);
-  }
-
-  @media (max-width: 640px) {
-    .project-card-image-layout {
-      gap: var(--space-3);
-    }
-
-    .project-image-wrap {
-      width: 64px;
-      height: 64px;
-    }
-
-    .project-arrow {
-      display: none;
-    }
-  }
-</style>
