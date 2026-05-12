@@ -26,7 +26,7 @@ const { Content } = await render(post);
       </div>
       <h1 class="animate text-3xl font-semibold">{post.data.title}</h1>
     </div>
-    <article class="animate"><Content /></article>
+    <article class="animate prose max-w-none"><Content /></article>
     <div class="animate mt-6">
       {
         post.data.tags?.length > 0 && (

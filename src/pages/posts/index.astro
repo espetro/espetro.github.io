@@ -21,16 +21,25 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 ---
 
 <Layout title="Posts" description="All blog posts">
-  <div class="posts-page">
-    <PageHeader
-      title="Posts"
-      description='Notes and essays on tech, UX, and agentic design. For experiments and shipped projects, see <a href="/projects" style="color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);">Projects</a>.'
-    />
+  <div class="flex flex-col gap-8">
+    <PageHeader title="Posts">
+      <p class="m-0 text-[15px] leading-relaxed text-[var(--fg-soft)]">
+        Notes and essays on tech, UX, and agentic design. For experiments and
+        shipped projects, see <a
+          href="/projects"
+          style="color: var(--accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);"
+          >Projects</a
+        >.
+      </p>
+    </PageHeader>
+
     {
       years.map((year) => (
-        <section class="year-group">
-          <h2 class="year-header">{year}</h2>
-          <div class="entries">
+        <section class="flex flex-col gap-4">
+          <h2 class="text-[11px] tracking-[0.08em] text-[var(--muted)] uppercase">
+            {year}
+          </h2>
+          <div class="flex flex-col gap-2">
             {groups[year].map((post) => (
               <GlassRow
                 date={post.data.date.toLocaleDateString("en-US", {
@@ -49,31 +58,6 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 </Layout>
 
 <style>
-  .posts-page {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .year-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .year-header {
-    font-size: var(--size-micro);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-
-  .entries {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
   :global(.glass-row-date) {
     font-size: var(--size-meta);
     color: var(--muted-strong);
