@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import {
   House,
   ReadCvLogo,
@@ -13,13 +14,14 @@ interface NavItem {
   icon: typeof House;
 }
 
+const allWork = await getCollection("work");
 const navItems: NavItem[] = [
   { href: "/", label: "Home", icon: House },
   { href: "/posts", label: "Posts", icon: ReadCvLogo },
   { href: "/work", label: "Work", icon: Briefcase },
   { href: "/projects", label: "Projects", icon: FolderOpen },
   { href: "/about", label: "About", icon: User },
-];
+].filter(item => item.href !== "/work" || allWork.length > 0);
 
 const currentPath = Astro.url.pathname;
 ---
