@@ -26,33 +26,12 @@ const styles: Record<string, { bg: string; border: string; icon: string }> = {
 const style = styles[type];
 ---
 
-<div class="callout" style={`--bg: ${style.bg}; --border: ${style.border};`}>
-  <span class="callout-icon">{style.icon}</span>
-  <div class="callout-content">
+<div
+  class="callout my-4 flex gap-2 rounded-md bg-(--bg) p-4 text-[15px] leading-relaxed text-(--fg)"
+  style={`--bg: ${style.bg}; --border: ${style.border};`}
+>
+  <span class="callout-icon shrink-0 text-[1.25em]">{style.icon}</span>
+  <div class="callout-content flex-1">
     <slot />
   </div>
 </div>
-
-<style>
-  .callout {
-    display: flex;
-    gap: var(--space-2);
-    padding: var(--space-3);
-    border-left: 4px solid var(--border);
-    background-color: var(--bg);
-    border-radius: var(--radius-sm);
-    margin: var(--space-3) 0;
-    font-size: var(--size-body);
-    line-height: 1.6;
-    color: var(--fg);
-  }
-
-  .callout-icon {
-    flex-shrink: 0;
-    font-size: 1.25em;
-  }
-
-  .callout-content {
-    flex: 1;
-  }
-</style>
