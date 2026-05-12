@@ -21,16 +21,18 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 ---
 
 <Layout title="Work" description="Work history and experience">
-  <div class="work-page">
+  <div class="flex flex-col gap-8">
     <PageHeader
       title="Work"
       description="Selected posts from shipped sites and collaborations. Also see the full posts archive and projects."
     />
     {
       years.map((year) => (
-        <section class="year-group">
-          <h2 class="year-header">{year}</h2>
-          <div class="entries">
+        <section class="flex flex-col gap-4">
+          <h2 class="text-[11px] tracking-[0.08em] text-[var(--muted)] uppercase">
+            {year}
+          </h2>
+          <div class="flex flex-col gap-2">
             {groups[year].map((item) => (
               <GlassRow
                 date={item.data.date.toLocaleDateString("en-US", {
@@ -45,7 +47,7 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
                   <img
                     src={item.data.image}
                     alt=""
-                    class="work-thumbnail"
+                    class="h-10 w-10 rounded-[6px] border border-[var(--border)] object-cover"
                     loading="lazy"
                   />
                 )}
@@ -56,9 +58,11 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
       ))
     }
 
-    <section class="recommendations">
-      <h2 class="section-header">Recommendations</h2>
-      <div class="recommendations-content">
+    <section class="flex flex-col gap-4 border-t border-[var(--border)] pt-6">
+      <h2 class="text-[11px] tracking-[0.08em] text-[var(--muted)] uppercase">
+        Recommendations
+      </h2>
+      <div class="min-h-[100px]">
         <!-- Recommendations will be added later -->
       </div>
     </section>
@@ -66,31 +70,6 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 </Layout>
 
 <style>
-  .work-page {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-8);
-  }
-
-  .year-group {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-
-  .year-header {
-    font-size: var(--size-micro);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-
-  .entries {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-  }
-
   :global(.glass-row-date) {
     font-size: var(--size-meta);
     color: var(--muted-strong);
@@ -104,32 +83,5 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 
   :global(.glass-row:hover .glass-row-title) {
     color: var(--accent);
-  }
-
-  .work-thumbnail {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--border);
-  }
-
-  .recommendations {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--border);
-  }
-
-  .section-header {
-    font-size: var(--size-micro);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-
-  .recommendations-content {
-    min-height: 100px;
   }
 </style>
