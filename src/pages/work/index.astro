@@ -22,10 +22,10 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 
 <Layout title="Work" description="Work history and experience">
   <div class="flex flex-col gap-8">
-    <PageHeader
-      title="Work"
-      description="Selected posts from shipped sites and collaborations. Also see the full posts archive and projects."
-    />
+    <PageHeader title="Work">
+      Selected posts from shipped sites and collaborations. Also see the full
+      posts archive and projects.
+    </PageHeader>
     {
       years.map((year) => (
         <section class="flex flex-col gap-4">

@@ -1,59 +1,40 @@
 ---
 import { SITE, SOCIALS } from "@consts";
 
-const email = SITE.EMAIL;
 const github = SOCIALS.find((s) => s.NAME === "GitHub")?.HREF ?? "#";
 const twitter = SOCIALS.find((s) => s.NAME === "Twitter")?.HREF ?? "#";
 const linkedin = SOCIALS.find((s) => s.NAME === "LinkedIn")?.HREF ?? "#";
-const rss = "/rss.xml";
+
+const currentYear = new Date().getFullYear();
+
+interface Link {
+  title: string;
+  href: string;
+}
+
+const LINKS: Link[] = [
+  { title: "Email", href: `mailto:${SITE.EMAIL}` },
+  { title: "LinkedIn", href: linkedin },
+  { title: "X.com", href: twitter },
+  { title: "GitHub", href: github },
+  { title: "RSS", href: `/rss.xml` },
+];
 ---
 
-<footer class="footer">
-  <div class="inner">
-    <nav class="links" aria-label="Footer navigation">
-      <a href={`mailto:${email}`}>Email</a>
-      <a href={linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href={twitter} target="_blank" rel="noopener noreferrer">X.com</a>
-      <a href={github} target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href={rss}>RSS</a>
+<footer class="border-t border-[var(--border)] py-6">
+  <div class="flex flex-col items-center gap-2">
+    <nav class="flex flex-wrap justify-center gap-4" aria-label="Footer navigation">
+      {
+        LINKS.map(({ title, href }) => (
+          <a
+            href={href}
+            class="text-[11px] text-[var(--muted)] no-underline [transition:color_0.3s_var(--easing)] hover:text-[var(--accent)]"
+          >
+            {title}
+          </a>
+        ))
+      }
     </nav>
-    <span class="copyright">&copy; {new Date().getFullYear()}</span>
+    <span class="text-[11px] text-[var(--muted)]">&copy; {currentYear}</span>
   </div>
 </footer>
-
-<style>
-  .footer {
-    padding-block: var(--space-4);
-  }
-
-  .inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-2);
-  }
-
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-3);
-  }
-
-  .links a {
-    font-size: var(--size-micro);
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.3s var(--easing);
-  }
-
-  .links a:hover {
-    color: var(--accent);
-  }
-
-  .copyright {
-    font-size: var(--size-micro);
-    color: var(--muted);
-    margin-left: 10px;
-  }
-</style>
