@@ -1,9 +1,7 @@
 ---
-import { getCollection } from "astro:content";
 import {
   HouseIcon,
   ReadCvLogoIcon,
-  BriefcaseIcon,
   FolderOpenIcon,
   UserIcon,
 } from "@phosphor-icons/react";
@@ -14,21 +12,22 @@ interface NavItem {
   icon: typeof HouseIcon;
 }
 
-const allWork = await getCollection("work");
 const navItems: NavItem[] = [
   { href: "/", label: "Home", icon: HouseIcon },
   { href: "/posts", label: "Posts", icon: ReadCvLogoIcon },
-  { href: "/work", label: "Work", icon: BriefcaseIcon },
   { href: "/projects", label: "Projects", icon: FolderOpenIcon },
   { href: "/about", label: "About", icon: UserIcon },
-].filter((item) => item.href !== "/work" || allWork.length > 0);
+];
 
 const currentPath = Astro.url.pathname;
 ---
 
 {/* Desktop Sidebar */}
-<nav class="sidebar-desktop" aria-label="Main navigation">
-  <div class="nav-group main-links">
+<nav
+  class="sticky top-0 hidden h-screen w-14 flex-col items-center justify-between py-4 min-[661px]:flex"
+  aria-label="Main navigation"
+>
+  <div class="flex flex-col items-center gap-1">
     {
       navItems.map((item) => {
         const isActive =
@@ -39,13 +38,18 @@ const currentPath = Astro.url.pathname;
         return (
           <a
             href={item.href}
-            class={`nav-link ${isActive ? "active" : ""}`}
+            class:list={[
+              "group relative z-50 flex h-10 w-10 items-center justify-center rounded-[10px] no-underline [transition:color_0.25s_var(--easing)] hover:text-(--accent)",
+              isActive ? "text-(--accent)" : "text-(--muted)",
+            ]}
             aria-current={isActive ? "page" : undefined}
           >
-            <span class="icon-wrapper">
+            <span class="flex items-center justify-center [transition:transform_0.3s_var(--spring)] group-hover:rotate-[-5deg]">
               <Icon size={22} weight={isActive ? "fill" : "regular"} />
             </span>
-            <span class="tooltip">{item.label}</span>
+            <span class="pointer-events-none absolute top-1/2 left-[calc(100%+10px)] -translate-x-1 -translate-y-1/2 rounded-md border border-(--border) bg-(--bg-elevated) px-2.5 py-1 text-[13px] whitespace-nowrap text-(--fg) opacity-0 shadow-[0_2px_8px_rgba(0,0,0,0.08)] [transition:opacity_0.25s_var(--easing),transform_0.3s_var(--spring)] group-hover:translate-x-0 group-hover:opacity-100">
+              {item.label}
+            </span>
           </a>
         );
       })
@@ -54,8 +58,13 @@ const currentPath = Astro.url.pathname;
 </nav>
 
 {/* Mobile Bottom Nav */}
-<nav class="sidebar-mobile" aria-label="Main navigation">
-  <div class="mobile-pill">
+<nav
+  class="fixed top-4 right-0 left-0 z-100 hidden justify-center max-[660px]:flex"
+  aria-label="Main navigation"
+>
+  <div
+    class="pointer-events-auto flex items-center gap-0.5 rounded-full border border-(--glass-border) bg-(--glass-bg) px-2.5 py-1.5 shadow-(--glass-shadow) [backdrop-filter:var(--glass-blur)] [-webkit-backdrop-filter:var(--glass-blur)]"
+  >
     {
       navItems.map((item) => {
         const isActive =
@@ -66,7 +75,12 @@ const currentPath = Astro.url.pathname;
         return (
           <a
             href={item.href}
-            class={`mobile-link ${isActive ? "active" : ""}`}
+            class:list={[
+              "pointer-events-auto flex h-10 w-10 items-center justify-center rounded-full bg-transparent no-underline [transition:color_0.25s_var(--easing),background_0.25s_var(--easing)] hover:text-(--accent)",
+              isActive
+                ? "bg-(--accent-soft) text-(--accent)"
+                : "text-(--muted)",
+            ]}
             aria-current={isActive ? "page" : undefined}
           >
             <Icon size={22} weight={isActive ? "fill" : "regular"} />
@@ -76,147 +90,3 @@ const currentPath = Astro.url.pathname;
     }
   </div>
 </nav>
-
-<style>
-  /* ── Desktop Sidebar ─────────────────────────────────────────────── */
-  .sidebar-desktop {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    width: var(--sidebar-w);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding-block: var(--space-3);
-  }
-
-  .nav-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-1);
-  }
-
-  .nav-link {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-md);
-    color: var(--muted);
-    transition: color 0.25s var(--easing);
-    text-decoration: none;
-    z-index: 50;
-  }
-
-  .nav-link:hover {
-    color: var(--accent);
-  }
-
-  .nav-link:hover .icon-wrapper {
-    transform: rotate(-5deg);
-  }
-
-  .nav-link.active {
-    color: var(--accent);
-  }
-
-  .icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s var(--spring);
-  }
-
-  /* Tooltip */
-  .tooltip {
-    position: absolute;
-    left: calc(100% + 10px);
-    top: 50%;
-    transform: translateY(-50%) translateX(-4px);
-    padding: 4px 10px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    font-size: var(--size-meta);
-    color: var(--fg);
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition:
-      opacity 0.25s var(--easing),
-      transform 0.3s var(--spring);
-  }
-
-  .nav-link:hover .tooltip {
-    opacity: 1;
-    transform: translateY(-50%) translateX(0);
-  }
-
-  /* ── Mobile Nav ──────────────────────────────────────────────────── */
-  .sidebar-mobile {
-    display: none;
-  }
-
-  /* ── Mobile Responsive ───────────────────────────────────────────── */
-  @media (max-width: 660px) {
-    .sidebar-desktop {
-      display: none;
-    }
-
-    .sidebar-mobile {
-      display: flex;
-      position: fixed;
-      top: var(--space-3);
-      left: 0;
-      right: 0;
-      justify-content: center;
-      z-index: 100;
-    }
-
-    .mobile-pill {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      padding: 6px 10px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--radius-pill);
-      box-shadow: var(--glass-shadow);
-      pointer-events: auto;
-    }
-
-    .mobile-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-pill);
-      color: var(--muted);
-      text-decoration: none;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-      pointer-events: auto;
-      transition:
-        color 0.25s var(--easing),
-        background 0.25s var(--easing);
-    }
-
-    .mobile-link.active {
-      color: var(--accent);
-      background: var(--accent-soft);
-    }
-
-    .mobile-link:hover {
-      color: var(--accent);
-    }
-  }
-</style>
