@@ -4,8 +4,6 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import { readingTime } from "@lib/utils";
-import BackToPrevious from "@components/BackToPrevious.astro";
-import TableOfContents from "@components/TableOfContents.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("posts"))
@@ -20,23 +18,83 @@ const { Content, headings } = await render(post);
 
 <Layout title={post.data.title} description={post.data.description}>
   <Container>
-    <div class="animate"><BackToPrevious href="/posts">Back to posts</BackToPrevious></div>
     <div class="my-10 space-y-1">
       <div class="animate flex items-center gap-1.5">
         <FormattedDate date={post.data.date} />
-        &bull;
         {post.body && <div>{readingTime(post.body)}</div>}
       </div>
       <h1 class="animate text-3xl font-semibold">{post.data.title}</h1>
+    </div>
+    <article class="animate"><Content /></article>
+    <div class="animate back-pill-wrap">
       {post.data.tags?.length > 0 && (
-        <div class="animate flex gap-2 pt-1">
+        <div class="tags-row">
           {post.data.tags.map((tag) => (
-            <a href={`/tags/${tag}`} class="rounded-sm border px-2 py-0.5 text-xs">{tag}</a>
+            <span class="tag-chip">{tag}</span>
           ))}
         </div>
       )}
+      <a href="/posts" class="back-pill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        all posts
+      </a>
     </div>
-    {headings.length > 0 && <TableOfContents headings={headings} />}
-    <article class="animate"><Content /></article>
   </Container>
 </Layout>
+
+<style>
+  .back-pill-wrap {
+    margin-top: var(--space-6);
+  }
+
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .tag-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 100px;
+    border: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
+    background: color-mix(in oklch, var(--border) 12%, transparent);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    transition:
+      border-color 0.25s var(--easing),
+      background-color 0.25s var(--easing),
+      color 0.25s var(--easing);
+  }
+
+  .back-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--bg-elevated);
+    color: var(--muted);
+    font-size: var(--size-meta);
+    text-decoration: none;
+    transition:
+      color 0.25s var(--easing),
+      border-color 0.25s var(--easing),
+      background-color 0.25s var(--easing);
+  }
+
+  .back-pill:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+</style>
