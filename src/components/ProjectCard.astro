@@ -24,7 +24,7 @@ const glassCardClass = showImage ? "project-card-image" : "project-card-simple";
 ---
 
 <GlassCard href={`/projects/${project.id}`} class={glassCardClass}>
-  <div class={showImage && "project-card-image-layout"}>
+  <div class={showImage ? "project-card-image-layout" : undefined}>
     {
       showImage && project.data.image && (
         <div class="project-image-wrap">

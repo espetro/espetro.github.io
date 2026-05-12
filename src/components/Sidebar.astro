@@ -1,27 +1,27 @@
 ---
 import { getCollection } from "astro:content";
 import {
-  House,
-  ReadCvLogo,
-  Briefcase,
-  FolderOpen,
-  User,
+  HouseIcon,
+  ReadCvLogoIcon,
+  BriefcaseIcon,
+  FolderOpenIcon,
+  UserIcon,
 } from "@phosphor-icons/react";
 
 interface NavItem {
   href: string;
   label: string;
-  icon: typeof House;
+  icon: typeof HouseIcon;
 }
 
 const allWork = await getCollection("work");
 const navItems: NavItem[] = [
-  { href: "/", label: "Home", icon: House },
-  { href: "/posts", label: "Posts", icon: ReadCvLogo },
-  { href: "/work", label: "Work", icon: Briefcase },
-  { href: "/projects", label: "Projects", icon: FolderOpen },
-  { href: "/about", label: "About", icon: User },
-].filter(item => item.href !== "/work" || allWork.length > 0);
+  { href: "/", label: "Home", icon: HouseIcon },
+  { href: "/posts", label: "Posts", icon: ReadCvLogoIcon },
+  { href: "/work", label: "Work", icon: BriefcaseIcon },
+  { href: "/projects", label: "Projects", icon: FolderOpenIcon },
+  { href: "/about", label: "About", icon: UserIcon },
+].filter((item) => item.href !== "/work" || allWork.length > 0);
 
 const currentPath = Astro.url.pathname;
 ---
@@ -51,8 +51,6 @@ const currentPath = Astro.url.pathname;
       })
     }
   </div>
-
-
 </nav>
 
 {/* Mobile Bottom Nav */}
@@ -76,7 +74,6 @@ const currentPath = Astro.url.pathname;
         );
       })
     }
-
   </div>
 </nav>
 
@@ -159,8 +156,6 @@ const currentPath = Astro.url.pathname;
     opacity: 1;
     transform: translateY(-50%) translateX(0);
   }
-
-
 
   /* ── Mobile Nav ──────────────────────────────────────────────────── */
   .sidebar-mobile {
