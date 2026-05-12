@@ -20,135 +20,71 @@ const {
 
 {
   href ? (
-    <a href={href} class:list={["glass-row", className]}>
-      <span class="glass-row-date">{date}</span>
-      <span class="glass-row-title">
+    <a
+      href={href}
+      class:list={[
+        "group grid grid-cols-[96px_1fr_auto] items-center gap-3 rounded-[10px] border border-transparent bg-transparent p-3 text-inherit no-underline",
+        "max-sm:grid-cols-[auto_1fr]",
+        "hover:border-(--glass-border) hover:bg-(--glass-active-bg) hover:shadow-[var(--glass-shadow),var(--glass-inset)] hover:backdrop-blur-md",
+        "[transition:background-color_0.3s_var(--easing),border-color_0.3s_var(--easing),box-shadow_0.3s_var(--easing),backdrop-filter_0.3s_var(--easing)]",
+        className,
+      ]}
+    >
+      <span class="text-[13px] whitespace-nowrap text-(--muted) max-sm:col-start-1 max-sm:row-start-1">
+        {date}
+      </span>
+      <span class="max-sm:text-ellipsis-none flex min-w-0 items-center gap-2 overflow-hidden font-semibold text-ellipsis whitespace-nowrap text-(--fg) max-sm:col-start-2 max-sm:row-start-1 max-sm:overflow-visible max-sm:whitespace-normal">
         {title}
-        {label && <span class="glass-row-label">{label}</span>}
+        {label && (
+          <span class="shrink-0 rounded-md border border-[color-mix(in_srgb,var(--accent)_20%,transparent)] bg-(--accent-soft) px-[0.4em] py-[0.1em] text-[11px] font-medium whitespace-nowrap text-(--accent)">
+            {label}
+          </span>
+        )}
       </span>
       {arrow && (
-        <span class="glass-row-arrow" aria-hidden="true">
+        <span
+          class="shrink-0 text-[15px] text-(--muted) [transition:color_0.2s_var(--easing),transform_0.2s_var(--easing)] group-hover:translate-x-0.5 group-hover:text-(--accent) max-sm:hidden"
+          aria-hidden="true"
+        >
           →
         </span>
       )}
-      <div class="glass-row-extras">
+      <div class="col-span-full">
         <slot />
       </div>
     </a>
   ) : (
-    <div class:list={["glass-row", className]}>
-      <span class="glass-row-date">{date}</span>
-      <span class="glass-row-title">
+    <div
+      class:list={[
+        "group grid grid-cols-[96px_1fr_auto] items-center gap-3 rounded-[10px] border border-transparent bg-transparent p-3",
+        "max-sm:grid-cols-[auto_1fr]",
+        "hover:border-(--glass-border) hover:bg-(--glass-active-bg) hover:shadow-[var(--glass-shadow),var(--glass-inset)] hover:backdrop-blur-md",
+        "[transition:background-color_0.3s_var(--easing),border-color_0.3s_var(--easing),box-shadow_0.3s_var(--easing),backdrop-filter_0.3s_var(--easing)]",
+        className,
+      ]}
+    >
+      <span class="text-[13px] whitespace-nowrap text-(--muted) max-sm:col-start-1 max-sm:row-start-1">
+        {date}
+      </span>
+      <span class="flex min-w-0 items-center gap-2 overflow-hidden font-semibold text-ellipsis whitespace-nowrap text-(--fg) max-sm:col-start-2 max-sm:row-start-1 max-sm:overflow-visible max-sm:whitespace-normal">
         {title}
-        {label && <span class="glass-row-label">{label}</span>}
+        {label && (
+          <span class="shrink-0 rounded-md border border-[color-mix(in_srgb,var(--accent)_20%,transparent)] bg-(--accent-soft) px-[0.4em] py-[0.1em] text-[11px] font-medium whitespace-nowrap text-(--accent)">
+            {label}
+          </span>
+        )}
       </span>
       {arrow && (
-        <span class="glass-row-arrow" aria-hidden="true">
+        <span
+          class="shrink-0 text-[15px] text-(--muted) [transition:color_0.2s_var(--easing),transform_0.2s_var(--easing)] group-hover:translate-x-0.5 group-hover:text-(--accent) max-sm:hidden"
+          aria-hidden="true"
+        >
           →
         </span>
       )}
-      <div class="glass-row-extras">
+      <div class="col-span-full">
         <slot />
       </div>
     </div>
   )
 }
-
-<style>
-  .glass-row {
-    display: grid;
-    grid-template-columns: 96px 1fr auto;
-    align-items: center;
-    gap: var(--space-3);
-    border: 1px solid transparent;
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-    background: transparent;
-    transition:
-      background-color 0.3s var(--easing),
-      border-color 0.3s var(--easing),
-      box-shadow 0.3s var(--easing),
-      backdrop-filter 0.3s var(--easing);
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .glass-row:hover {
-    background-color: var(--glass-active-bg);
-    border-color: var(--glass-border);
-    box-shadow: var(--glass-shadow), var(--glass-inset);
-    backdrop-filter: blur(12px);
-  }
-
-  .glass-row-date {
-    font-size: var(--size-meta);
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .glass-row-title {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-weight: 600;
-    color: var(--fg);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-  }
-
-  .glass-row-label {
-    font-size: var(--size-micro);
-    font-weight: 500;
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
-    border-radius: var(--radius-sm);
-    padding: 0.1em 0.4em;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .glass-row-arrow {
-    color: var(--muted);
-    font-size: var(--size-body);
-    flex-shrink: 0;
-    transition:
-      color 0.2s var(--easing),
-      transform 0.2s var(--easing);
-  }
-
-  .glass-row:hover .glass-row-arrow {
-    color: var(--accent);
-    transform: translateX(2px);
-  }
-
-  .glass-row-extras {
-    grid-column: 1 / -1;
-  }
-
-  @media (max-width: 640px) {
-    .glass-row {
-      grid-template-columns: auto 1fr;
-      gap: var(--space-2) var(--space-3);
-    }
-
-    .glass-row-date {
-      grid-row: 1;
-      grid-column: 1;
-    }
-
-    .glass-row-title {
-      grid-row: 1;
-      grid-column: 2;
-      white-space: normal;
-      overflow: visible;
-      text-overflow: clip;
-    }
-
-    .glass-row-arrow {
-      display: none;
-    }
-  }
-</style>
