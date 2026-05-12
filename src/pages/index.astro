@@ -9,17 +9,17 @@ import { getCollection } from "astro:content";
 
 // Fetch and sort collections
 const allPosts = (await getCollection("posts")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const posts = allPosts.slice(0, 2);
 
 const allWork = (await getCollection("work")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const work = allWork.slice(0, 2);
 
 const allProjects = (await getCollection("projects")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 const projects = allProjects.slice(0, 2);
 
@@ -41,10 +41,25 @@ function formatShortDate(date: Date): string {
 }
 
 // Status pill styles
-const STATUS_PILLS: Record<string, { bg: string; text: string; label: string }> = {
-  "front-burner": { bg: "var(--accent-soft)", text: "var(--accent)", label: "FRONT BURNER" },
-  "back-burner": { bg: "rgba(234, 179, 8, 0.1)", text: "rgb(234, 179, 8)", label: "BACK BURNER" },
-  retired: { bg: "rgba(107, 114, 128, 0.1)", text: "rgb(107, 114, 128)", label: "RETIRED" },
+const STATUS_PILLS: Record<
+  string,
+  { bg: string; text: string; label: string }
+> = {
+  "front-burner": {
+    bg: "var(--accent-soft)",
+    text: "var(--accent)",
+    label: "FRONT BURNER",
+  },
+  "back-burner": {
+    bg: "rgba(234, 179, 8, 0.1)",
+    text: "rgb(234, 179, 8)",
+    label: "BACK BURNER",
+  },
+  retired: {
+    bg: "rgba(107, 114, 128, 0.1)",
+    text: "rgb(107, 114, 128)",
+    label: "RETIRED",
+  },
 };
 
 function getStatusPill(status: string) {
@@ -57,7 +72,11 @@ function getStatusPill(status: string) {
     <!-- Section 1: Bio Intro + Quote -->
     <section class="section bio animate">
       <p class="bio-text">
-        I'm a Senior AI Engineer working at the intersection of agentic systems and full-stack product engineering, from architecture decisions to shipped mobile and web experiences. This is my corner of the web where you can find what I'm currently tinkering with and where I share my thoughts.
+        I'm a Senior AI Engineer working at the intersection of agentic systems
+        and full-stack product engineering, from architecture decisions to
+        shipped mobile and web experiences. This is my corner of the web where
+        you can find what I'm currently tinkering with and where I share my
+        thoughts.
       </p>
       <Marquee />
     </section>
@@ -86,29 +105,31 @@ function getStatusPill(status: string) {
     </section>
 
     <!-- Section 4: Work Preview -->
-    {allWork.length > 0 && (
-    <section class="section work-preview animate">
-      <div class="section-header">
-        <h2 class="section-title">Work</h2>
-        <a href="/work" class="view-all">View all work →</a>
-      </div>
-      <div class="section-content">
-        {
-          work.length > 0 ? (
-            work.map((item) => (
-              <WorkRow
-                date={formatShortDate(item.data.date)}
-                title={item.data.title}
-                href={item.data.url}
-              />
-            ))
-          ) : (
-            <p class="empty-state">No work entries yet.</p>
-          )
-        }
-      </div>
-    </section>
-    )}
+    {
+      allWork.length > 0 && (
+        <section class="section work-preview animate">
+          <div class="section-header">
+            <h2 class="section-title">Work</h2>
+            <a href="/work" class="view-all">
+              View all work →
+            </a>
+          </div>
+          <div class="section-content">
+            {work.length > 0 ? (
+              work.map((item) => (
+                <WorkRow
+                  date={formatShortDate(item.data.date)}
+                  title={item.data.title}
+                  href={item.data.url}
+                />
+              ))
+            ) : (
+              <p class="empty-state">No work entries yet.</p>
+            )}
+          </div>
+        </section>
+      )
+    }
 
     <!-- Section 5: Projects Preview -->
     <section class="section projects-preview animate">
@@ -133,7 +154,9 @@ function getStatusPill(status: string) {
                       </span>
                     </div>
                     <h3 class="project-title">{project.data.title}</h3>
-                    <p class="project-description">{project.data.description}</p>
+                    <p class="project-description">
+                      {project.data.description}
+                    </p>
                     {project.data.tech && project.data.tech.length > 0 && (
                       <div class="project-tech-tags">
                         {project.data.tech.map((t: string) => (

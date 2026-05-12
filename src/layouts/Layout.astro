@@ -45,7 +45,7 @@ const { title, description, image } = Astro.props;
               }
             });
           },
-          { threshold: 0.1 }
+          { threshold: 0.1 },
         );
         elements.forEach((el) => observer.observe(el));
       }
@@ -113,5 +113,4 @@ const { title, description, image } = Astro.props;
       overflow: visible;
     }
   }
-
 </style>

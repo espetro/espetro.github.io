@@ -6,7 +6,7 @@ import { getCollection } from "astro:content";
 
 const work = await getCollection("work");
 const sorted = work.sort(
-  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
 const limited = sorted.slice(0, 2);
 
@@ -26,33 +26,35 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
       title="Work"
       description="Selected posts from shipped sites and collaborations. Also see the full posts archive and projects."
     />
-    {years.map((year) => (
-      <section class="year-group">
-        <h2 class="year-header">{year}</h2>
-        <div class="entries">
-          {groups[year].map((item) => (
-            <GlassRow
-              date={item.data.date.toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-              })}
-              title={item.data.title}
-              href={item.data.url}
-              label={item.data.label}
-            >
-              {item.data.image && (
-                <img
-                  src={item.data.image}
-                  alt=""
-                  class="work-thumbnail"
-                  loading="lazy"
-                />
-              )}
-            </GlassRow>
-          ))}
-        </div>
-      </section>
-    ))}
+    {
+      years.map((year) => (
+        <section class="year-group">
+          <h2 class="year-header">{year}</h2>
+          <div class="entries">
+            {groups[year].map((item) => (
+              <GlassRow
+                date={item.data.date.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                })}
+                title={item.data.title}
+                href={item.data.url}
+                label={item.data.label}
+              >
+                {item.data.image && (
+                  <img
+                    src={item.data.image}
+                    alt=""
+                    class="work-thumbnail"
+                    loading="lazy"
+                  />
+                )}
+              </GlassRow>
+            ))}
+          </div>
+        </section>
+      ))
+    }
 
     <section class="recommendations">
       <h2 class="section-header">Recommendations</h2>
