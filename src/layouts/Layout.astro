@@ -72,15 +72,17 @@ const { title, description, image } = Astro.props;
   .layout {
     display: grid;
     grid-template-columns: var(--sidebar-w) 1fr;
+    gap: 8rem;
     flex: 1;
 
     /* Constrain main content */
-    max-width: calc(var(--sidebar-w) + var(--max-main));
+    max-width: calc(var(--sidebar-w) + 8rem + var(--max-main));
     width: 100%;
     margin-inline: auto;
 
     @media (max-width: 660px) {
       grid-template-columns: minmax(0, 1fr);
+      gap: 0;
     }
   }
 
