@@ -4,43 +4,39 @@ import { SITE, SOCIALS } from "@consts";
 const email = SITE.EMAIL;
 const github = SOCIALS.find((s) => s.NAME === "GitHub")?.HREF ?? "#";
 const twitter = SOCIALS.find((s) => s.NAME === "Twitter")?.HREF ?? "#";
+const linkedin = SOCIALS.find((s) => s.NAME === "LinkedIn")?.HREF ?? "#";
 const rss = "/rss.xml";
 ---
 
 <footer class="footer">
   <div class="inner">
-    <span class="copyright">&copy; 2025</span>
     <nav class="links" aria-label="Footer navigation">
       <a href={`mailto:${email}`}>Email</a>
+      <a href={linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <a href={twitter} target="_blank" rel="noopener noreferrer">X.com</a>
       <a href={github} target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href={rss} target="_blank" rel="noopener noreferrer">RSS</a>
+      <a href={rss}>RSS</a>
     </nav>
+    <span class="copyright">&copy; {new Date().getFullYear()}</span>
   </div>
 </footer>
 
 <style>
   .footer {
-    border-top: 1px solid var(--border);
     padding-block: var(--space-4);
   }
 
   .inner {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
-    flex-wrap: wrap;
     gap: var(--space-2);
-  }
-
-  .copyright {
-    font-size: var(--size-micro);
-    color: var(--muted);
   }
 
   .links {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: var(--space-3);
   }
 
@@ -53,5 +49,11 @@ const rss = "/rss.xml";
 
   .links a:hover {
     color: var(--accent);
+  }
+
+  .copyright {
+    font-size: var(--size-micro);
+    color: var(--muted);
+    margin-left: 10px;
   }
 </style>
