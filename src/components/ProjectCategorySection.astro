@@ -1,22 +1,11 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import ProjectCard from "./ProjectCard.astro";
 
-interface Project {
-  id: string;
-  data: {
-    title: string;
-    description: string;
-    date: Date;
-    category: string;
-    tech: string[];
-    image?: string;
-  };
-}
-
 interface Props {
-  title: string;
-  description: string;
-  projects: Project[];
+  title?: string;
+  description?: string;
+  projects: CollectionEntry<"projects">[];
   id?: string;
   showImage?: boolean;
   showArrow?: boolean;
@@ -35,12 +24,14 @@ const {
 {
   projects.length > 0 && (
     <section class="animate space-y-4" id={id}>
-      <div class="space-y-1">
-        <h2 class="font-semibold text-[var(--size-h2)] text-black dark:text-white">
-          {title}
-        </h2>
-        <p class="text-sm text-[var(--muted)]">{description}</p>
-      </div>
+      {title && description && (
+        <div class="space-y-1">
+          <h2 class="font-semibold text-(--size-h2) dark:text-white">
+            {title}
+          </h2>
+          <p class="text-sm text-(--muted)">{description}</p>
+        </div>
+      )}
       <div class="flex flex-col gap-2">
         {projects.map((project) => (
           <ProjectCard

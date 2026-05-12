@@ -1,19 +1,11 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import GlassCard from "./GlassCard.astro";
 import ProjectCardContent from "./ProjectCardContent.astro";
 import { ArrowRightIcon } from "@phosphor-icons/react";
+
 interface Props {
-  project: {
-    id: string;
-    data: {
-      title: string;
-      description: string;
-      date: Date;
-      category: string;
-      tech: string[];
-      image?: string;
-    };
-  };
+  project: CollectionEntry<"projects">;
   showImage?: boolean;
   showArrow?: boolean;
 }
@@ -24,129 +16,31 @@ const glassCardClass = showImage ? "project-card-image" : "project-card-simple";
 ---
 
 <GlassCard href={`/projects/${project.id}`} class={glassCardClass}>
-  <div class={showImage ? "project-card-image-layout" : undefined}>
+  <div class={showImage ? "flex items-center gap-6" : undefined}>
     {
-      showImage && project.data.image && (
-        <div class="project-image-wrap">
+      showImage && project.data.preview && (
+        <div class="h-20 w-20 shrink-0 overflow-hidden rounded-[var(--radius-md)] bg-[var(--bg-elevated)]">
           <img
-            src={project.data.image}
+            src={project.data.preview}
             alt={project.data.title}
             loading="lazy"
             decoding="async"
+            class="h-full w-full object-cover"
           />
         </div>
       )
     }
     <ProjectCardContent project={project} />
-    {showArrow && <ArrowRightIcon />}
+    {
+      showArrow && (
+        <ArrowRightIcon className="shrink-0 text-[var(--muted)] text-[var(--size-body)] transition-all duration-200 ease-[var(--easing)] group-hover/project-card-image:text-[var(--accent)] group-hover/project-card-image:translate-x-0.5" />
+      )
+    }
   </div>
 </GlassCard>
 
 <style>
   .project-card-image :global(.glass-card) {
     padding: var(--space-3);
-  }
-
-  .project-card-image-layout {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
-  }
-
-  .project-image-wrap {
-    flex-shrink: 0;
-    width: 80px;
-    height: 80px;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: var(--bg-elevated);
-  }
-
-  .project-image-wrap img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .project-card-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    flex: 1;
-    min-width: 0;
-  }
-
-  .project-title {
-    font-size: var(--size-body);
-    font-weight: 600;
-    color: var(--fg);
-    margin: 0;
-  }
-
-  .project-description {
-    font-size: var(--size-meta);
-    color: var(--muted);
-    line-height: 1.5;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .project-meta {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--size-micro);
-    flex-wrap: wrap;
-  }
-
-  .project-pill {
-    display: inline-block;
-    border-radius: 9999px;
-    padding: 0.125rem 0.5rem;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-  }
-
-  .project-date,
-  .project-dot,
-  .project-tech {
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .project-arrow {
-    color: var(--muted);
-    font-size: var(--size-body);
-    flex-shrink: 0;
-    transition:
-      color 0.2s var(--easing),
-      transform 0.2s var(--easing);
-  }
-
-  .project-card-image:hover .project-arrow {
-    color: var(--accent);
-    transform: translateX(2px);
-  }
-
-  @media (max-width: 640px) {
-    .project-card-image-layout {
-      gap: var(--space-3);
-    }
-
-    .project-image-wrap {
-      width: 64px;
-      height: 64px;
-    }
-
-    .project-arrow {
-      display: none;
-    }
   }
 </style>
