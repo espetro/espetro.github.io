@@ -120,7 +120,7 @@ function getStatusPill(status: string) {
         {
           projects.length > 0 ? (
             projects.map((project) => {
-              const pill = getStatusPill(project.data.status);
+              const pill = getStatusPill(project.data.category);
               return (
                 <GlassCard href={project.data.url} class="project-card">
                   <div class="project-card-inner">

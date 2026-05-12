@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<"posts">;
 
 const post = Astro.props;
-const { Content, headings } = await render(post);
+const { Content } = await render(post);
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
@@ -26,15 +26,15 @@ const { Content, headings } = await render(post);
       <h1 class="animate text-3xl font-semibold">{post.data.title}</h1>
     </div>
     <article class="animate"><Content /></article>
-    <div class="animate back-pill-wrap">
+    <div class="animate mt-6">
       {post.data.tags?.length > 0 && (
-        <div class="tags-row">
+        <div class="flex flex-wrap gap-2 mb-4">
           {post.data.tags.map((tag) => (
-            <span class="tag-chip">{tag}</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full border bg-border/12 text-muted-foreground text-[11px] font-medium tracking-tight leading-tight transition-all duration-200">{tag}</span>
           ))}
         </div>
       )}
-      <a href="/posts" class="back-pill">
+      <a href="/posts" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 border rounded-full bg-elevated text-muted-foreground text-xs no-underline transition-all duration-200 hover:text-accent hover:border-accent hover:bg-accent/10">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="19" y1="12" x2="5" y2="12"></line>
           <polyline points="12 19 5 12 12 5"></polyline>
@@ -44,57 +44,3 @@ const { Content, headings } = await render(post);
     </div>
   </Container>
 </Layout>
-
-<style>
-  .back-pill-wrap {
-    margin-top: var(--space-6);
-  }
-
-  .tags-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .tag-chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 3px 10px;
-    border-radius: 100px;
-    border: 1px solid color-mix(in oklch, var(--border) 60%, transparent);
-    background: color-mix(in oklch, var(--border) 12%, transparent);
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    line-height: 1.4;
-    transition:
-      border-color 0.25s var(--easing),
-      background-color 0.25s var(--easing),
-      color 0.25s var(--easing);
-  }
-
-  .back-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-pill);
-    background: var(--bg-elevated);
-    color: var(--muted);
-    font-size: var(--size-meta);
-    text-decoration: none;
-    transition:
-      color 0.25s var(--easing),
-      border-color 0.25s var(--easing),
-      background-color 0.25s var(--easing);
-  }
-
-  .back-pill:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-    background: var(--accent-soft);
-  }
-</style>
