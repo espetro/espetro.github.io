@@ -5,6 +5,7 @@ import Container from "@components/Container.astro";
 import ProjectCategorySection from "@components/ProjectCategorySection.astro";
 import { PROJECTS } from "@consts";
 import { sortByDateTimeDesc } from "@lib/utils";
+import PageHeader from "@components/PageHeader.astro";
 
 const allProjects = (await getCollection("projects"))
   .filter((p) => !p.data.draft)
@@ -24,38 +25,31 @@ const sectionDescriptions: Record<string, string> = {
 ---
 
 <Layout title={PROJECTS.TITLE} description={PROJECTS.DESCRIPTION}>
-  <Container>
-    <aside data-pagefind-ignore>
-      <div class="space-y-16">
-        <!-- Header -->
-        <div class="animate space-y-2">
-          <h1 class="font-semibold text-black dark:text-white">Projects</h1>
-          <p class="text-[var(--fg-soft)]">
-            Apps and experiments—design, code, and AI.
-          </p>
-        </div>
+  <div class="flex flex-col gap-8">
+    <!-- Header -->
+    <PageHeader title="Projects">
+      <p class="text-(--fg-soft)">Apps and experiments—design, code, and AI.</p>
+    </PageHeader>
 
-        <ProjectCategorySection
-          title="Front Burner"
-          description={sectionDescriptions["front-burner"]}
-          projects={frontBurner}
-          id="front-burner"
-        />
+    <ProjectCategorySection
+      title="Front Burner"
+      description={sectionDescriptions["front-burner"]}
+      projects={frontBurner}
+      id="front-burner"
+    />
 
-        <ProjectCategorySection
-          title="Back Burner"
-          description={sectionDescriptions["back-burner"]}
-          projects={backBurner}
-          id="back-burner"
-        />
+    <ProjectCategorySection
+      title="Back Burner"
+      description={sectionDescriptions["back-burner"]}
+      projects={backBurner}
+      id="back-burner"
+    />
 
-        <ProjectCategorySection
-          title="Retired"
-          description={sectionDescriptions["retired"]}
-          projects={retired}
-          id="retired"
-        />
-      </div>
-    </aside>
-  </Container>
+    <ProjectCategorySection
+      title="Retired"
+      description={sectionDescriptions["retired"]}
+      projects={retired}
+      id="retired"
+    />
+  </div>
 </Layout>
