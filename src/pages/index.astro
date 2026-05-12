@@ -26,7 +26,10 @@ const frontBurner = allProjects.filter(
   (p) => p.data.category === "front-burner",
 );
 
-// Format date for display (short month + day + full year)
+/**
+ * Format date for display (short month + day + full year)
+ * @deprecated Move to a separate component in style of ProjectCategorySection and ProjectCard
+ *  */
 function formatDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "short",
@@ -35,38 +38,15 @@ function formatDate(date: Date): string {
   });
 }
 
-// Format date for work (short month + day)
+/**
+ * Format date for work (short month + day)
+ * @deprecated Move to a separate component in style of ProjectCategorySection and ProjectCard
+ *  */
 function formatShortDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
-}
-
-// Status pill styles
-const STATUS_PILLS: Record<
-  string,
-  { bg: string; text: string; label: string }
-> = {
-  "front-burner": {
-    bg: "var(--accent-soft)",
-    text: "var(--accent)",
-    label: "FRONT BURNER",
-  },
-  "back-burner": {
-    bg: "rgba(234, 179, 8, 0.1)",
-    text: "rgb(234, 179, 8)",
-    label: "BACK BURNER",
-  },
-  retired: {
-    bg: "rgba(107, 114, 128, 0.1)",
-    text: "rgb(107, 114, 128)",
-    label: "RETIRED",
-  },
-};
-
-function getStatusPill(status: string) {
-  return STATUS_PILLS[status] ?? STATUS_PILLS["retired"];
 }
 ---
 
