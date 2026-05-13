@@ -24,7 +24,7 @@ const currentPath = Astro.url.pathname;
 
 {/* Desktop Sidebar */}
 <nav
-  class="sticky top-0 hidden h-screen w-14 flex-col items-center justify-between py-4 min-[661px]:flex"
+  class="sticky top-0 hidden h-screen w-14 flex-col items-center justify-start py-4 min-[661px]:flex"
   aria-label="Main navigation"
 >
   <div class="flex flex-col items-center gap-1">
@@ -54,13 +54,11 @@ const currentPath = Astro.url.pathname;
         );
       })
     }
-  </div>
 
-  <div class="flex h-10 w-10 items-center justify-center">
     <button
       onclick="window.__toggleTheme()"
       aria-label="Toggle theme"
-      class="theme-orb"></button>
+      class="theme-orb mt-2"></button>
   </div>
 </nav>
 
