@@ -96,7 +96,8 @@ const { title, description, image, ogType, jsonLd } = Astro.props;
 
   .main {
     flex: 1;
-    padding-block: 8rem;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
 
     /* Constrain inner content width */
     max-width: var(--max-main);
@@ -118,6 +119,7 @@ const { title, description, image, ogType, jsonLd } = Astro.props;
     @media (max-width: 660px) {
       position: static;
       height: 0;
+      min-height: 0;
       overflow: visible;
     }
   }
