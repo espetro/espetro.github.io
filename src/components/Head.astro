@@ -92,10 +92,18 @@ const personSchema = {
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- Structured Data -->
-<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify(personSchema)}
+/>
 {
   jsonLd && (
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(jsonLd)}
+    />
   )
 }
 
