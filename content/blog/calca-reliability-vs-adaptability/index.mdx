@@ -1,0 +1,93 @@
+---
+title: "Calca's Dual Evolution: Reliability for All, Adaptability for Power Users"
+description: "How Calca evolves to serve non-technical users without dumbing down power-user capabilities — and why clean architecture makes both possible"
+date: 2026-05-13
+tags:
+  - calca
+  - ai
+  - agentic
+  - ux
+  - power-users
+  - reliability
+draft: true
+---
+
+## The Opposite Ends of the Spectrum
+
+There's a constant tension in tool design: features that help beginners often frustrate experts, and features that empower experts often intimidate beginners. Agentic design tools feel this tension acutely.
+
+On one end, you have **non-technical users** who want the AI to just work. They don't want to understand model parameters, tool chains, or agentic loops. They want to describe what they want and get something good back. Reliability, simplicity, and predictability matter more than flexibility.
+
+On the other end, you have **power users** — developers, designers, technical leads — who want to tune every dimension. They want to swap models, inspect agentic reasoning, customize tool chains, and extend the system. Flexibility and control matter more than guardrails.
+
+Most tools pick one end and optimize for it. Calca is trying to serve both. Here's how.
+
+## Making Calca More Reliable for Non-Technical Users
+
+Reliability for non-technical users isn't about removing features — it's about **opinionated defaults and graceful degradation**.
+
+### Opinionated Defaults
+
+Calca configures itself sensibly out of the box. New users don't make architectural decisions. Which model? A good one. How many agentic iterations? Enough to be useful, not so many that it becomes confusing. What actions can the AI take? The safe set.
+
+The goal is that a user who has never heard of "agentic loops" can open Calca, describe what they want, and get a result they recognize as good. No configuration required.
+
+### Graceful Degradation
+
+When things go wrong — and they will, because AI is probabilistic — Calca fails in ways that are understandable. Instead of a cryptic error or an infinite loop, users see:
+
+- What the AI was trying to do (in plain language)
+- Why it stopped (constraint hit, confidence low, user boundary reached)
+- What the user can do next (retry, simplify, escalate to a human decision)
+
+This is harder to build than just showing an error code. But it transforms a frustrating failure into a learning moment.
+
+### Progressive Disclosure
+
+Calca's interface reveals complexity gradually. The first screen is simple: describe your goal, see results. As users become more comfortable, more options appear — not all at once, but as they're relevant. This keeps the initial experience calm while allowing later depth.
+
+## Making Calca More Adaptive for Power Users
+
+For power users, reliability doesn't mean约束 — it means **transparency and control**.
+
+### Full Model Access
+
+Power users can configure everything about the AI layer: which model, temperature, tool chain, iteration limits, and more. This isn't hidden — it's accessible through a settings panel that experienced users will recognize.
+
+But we don't expose this by default. The settings panel is there when you need it, invisible when you don't.
+
+### Agentic Traceability
+
+When the AI acts autonomously, power users can inspect **why**. Every decision the agent makes is logged, traceable, and reversible. You can see:
+
+- What prompt the agent received
+- What tools it called and in what order
+- What outputs each tool produced
+- Where it decided to stop or loop
+
+This turns agentic behavior from a black box into a debuggable system. Power users don't just trust the AI — they understand it.
+
+### Extension Points
+
+The clean architecture Calca is built on means the system can be extended in ways that wouldn't be possible in a monolith. The detached canvas (discussed in the previous post) is one example. But the architecture also supports:
+
+- Custom tools that plug into the agentic layer
+- New AI providers without rewriting the integration layer
+- Alternative interaction modes (CLI, TUI, API) built on top of the same core
+
+## The Architecture Is the Product
+
+Here's the thesis I'll leave you with: **in an agentic design tool, the architecture IS the product**.
+
+The reliability/adaptability dual evolution isn't achieved through UI design alone. It's achieved by building a system where:
+
+- Boundaries are clear (so non-technical users can't accidentally break things)
+- Composability is natural (so power users can recombine pieces)
+- Defaults are smart (so beginners get value on day one)
+- Extension is safe (so the system grows with its users)
+
+Calca's clean architecture isn't a technical nicety. It's the reason both trajectories — reliability and adaptability — can progress simultaneously without the team having to maintain two separate products.
+
+I'm still learning how to balance these forces. If you're building agentic tools and have thoughts on this, I'd love to hear them.
+
+**Repository:** https://github.com/espetro/calca
