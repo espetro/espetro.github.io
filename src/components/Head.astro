@@ -13,11 +13,31 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  ogType?: string;
+  jsonLd?: Record<string, unknown>;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = "/astro-micro-1200.webp" } = Astro.props;
+const {
+  title,
+  description,
+  image = "/astro-micro-1200.webp",
+  ogType = "website",
+  jsonLd,
+} = Astro.props;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Quino Terrasa",
+  url: "https://illo.fyi",
+  sameAs: [
+    "https://www.linkedin.com/in/quinoterrasa",
+    "https://github.com/espetro",
+    "https://x.com/josocjoq",
+  ],
+};
 ---
 
 <!-- Phosphor Icons -->
@@ -58,7 +78,7 @@ const { title, description, image = "/astro-micro-1200.webp" } = Astro.props;
 <meta name="theme-color" content="#f4664c" />
 
 <!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
@@ -70,6 +90,14 @@ const { title, description, image = "/astro-micro-1200.webp" } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+{
+  jsonLd && (
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  )
+}
 
 <ClientRouter />
 
