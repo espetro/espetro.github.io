@@ -6,8 +6,7 @@ import { PROJECTS } from "@consts";
 import { sortByDateTimeDesc } from "@lib/utils";
 import PageHeader from "@components/PageHeader.astro";
 
-const allProjects = (await getCollection("projects"))
-  .filter((p) => !p.data.draft)
+const allProjects = (await getCollection("projects")) //
   .sort(sortByDateTimeDesc);
 
 const frontBurner = allProjects.filter(
