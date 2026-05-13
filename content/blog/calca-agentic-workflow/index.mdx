@@ -1,0 +1,77 @@
+---
+title: "From 'User Prompts, AI Acts' to 'AI Acts, User Reviews'"
+description: "The evolution of the agentic workflow in Calca — and how clean architecture makes it possible to detach the canvas for CLI and TUI tooling"
+date: 2026-05-13
+tags:
+  - calca
+  - ai
+  - agentic
+  - architecture
+  - workflow
+  - canvas
+draft: true
+---
+
+## The Current Workflow: User Prompts, AI Acts
+
+Today's AI-assisted tools — including Calca in its current form — follow a predictable pattern:
+
+1. User has an intent
+2. User articulates that intent as a prompt
+3. AI interprets the prompt and acts
+4. User evaluates the result
+5. Loop back to step 1
+
+This is a powerful pattern. It lowers the barrier to entry, keeps humans in control, and produces results that feel aligned with user intent. But it's still fundamentally **human-driven**. The AI is a very capable assistant, but it's always reacting to human direction.
+
+## The Goal: AI Acts, User Reviews
+
+The vision for Calca's evolution is different: **the AI agent should be able to act autonomously, with the user reviewing and course-correcting rather than directing**.
+
+This sounds like a small shift, but it changes everything:
+
+- The AI can explore design spaces the user didn't explicitly think to prompt
+- The user shifts from being a director to being an art director — setting standards, not specifying every move
+- Iteration speed increases dramatically because the AI doesn't wait for human input between every action
+
+## Clean Architecture as the Enabler
+
+Achieving this shift isn't just about better AI models. It's about **architecture**. If the AI is going to act autonomously, you need:
+
+1. **Isolated, composable actions** — The AI must be able to invoke well-defined operations without pulling in the entire application state
+2. **Reversible operations** — Autonomous action without the ability to undo is dangerous
+3. **A canvas that can run independently** — The rendering/display layer shouldn't be coupled to the agentic execution layer
+
+This is why Calca was built with clean architecture from day one. Key components are intentionally decoupled:
+
+- The **canvas engine** knows nothing about the AI layer
+- The **agentic layer** can operate on structured data without touching the UI
+- **State flows in one direction** — making it possible to trace what the AI did and reverse it if needed
+
+## The Detached Canvas: Next Iteration
+
+The upcoming architectural shift I'm most excited about is **fully detaching the canvas from the app**.
+
+Today, the canvas is part of the Calca application. You launch Calca, you see the canvas, you work with it. But imagine if the canvas were a standalone runtime — a lightweight environment that can run headless, in a terminal, in a web page, or in the full desktop app.
+
+This opens up possibilities that are hard to justify when the canvas is coupled to the app:
+
+### CLI-like Tooling
+
+A TUI (terminal user interface) that wraps the canvas engine. The AI agent runs in the terminal, users review outputs visually through the canvas, and the entire experience is keyboard-driven. Power users who live in the terminal get their workflow back.
+
+### Embedded Skill for Other Tools
+
+The canvas could run as a **skill** — a callable, composable unit — inside other applications. Imagine a design tool that can invoke Calca's canvas for a specific task, then return control. The canvas becomes infrastructure.
+
+### Headless Batch Processing
+
+Autonomous agents could run the canvas in headless mode — generating design outputs without rendering, purely as data transformations. This is the purest form of "AI acts, user reviews later."
+
+## What Clean Architecture Requires
+
+I want to be honest: clean architecture has a cost. It takes more time upfront. You have to define boundaries, write adapter layers, resist the temptation to couple components for short-term convenience. It would have been faster to build Calca as a monolith.
+
+But the payoff is the ability to evolve. Every new capability I've added to Calca — new AI providers, new UI paradigms, new interaction patterns — has been faster because the architecture already existed. The detached canvas is the next proof point.
+
+In the final post of this series, I'll discuss how Calca continues to evolve in two seemingly opposite directions simultaneously: more reliable for non-technical users, and more adaptive for power users.

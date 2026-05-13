@@ -1,0 +1,59 @@
+---
+title: "Bootstrapping an Agentic Tool Without Massive Scaling"
+description: "How Calca handles the traffic and data bandwidth explosion that comes with agentic tooling — by building local-first on both desktop and web"
+date: 2026-05-13
+tags:
+  - calca
+  - ai
+  - agentic
+  - local-first
+  - architecture
+  - scaling
+draft: true
+---
+
+## The Agentic Scaling Problem
+
+Agentic tooling changes everything about how users interact with software — including the traffic and data bandwidth it generates. Traditional apps follow a predictable request/response pattern. Agentic apps don't: an AI agent can make dozens of tool calls in seconds, each potentially involving large payloads (images, documents, generated assets), context windows that grow with every turn, and feedback loops that re-trigger actions autonomously.
+
+If you try to build this as a traditional SaaS product, you immediately hit a scaling wall. The infrastructure costs become prohibitive before you've even found product-market fit.
+
+## The Local-First Bet
+
+Calca sidesteps this problem by being **local-first**. The application runs primarily on the user's own machine. Data stays local. AI inference happens either locally (via Ollama or similar) or is proxied through lightweight external APIs that don't need to store or process the full context.
+
+This has several advantages:
+
+### 1. Infrastructure Costs Stay Flat
+
+Because the heavy lifting happens on-device, you don't pay per-request for every agentic action. A user can run 100 agentic iterations without generating 100 API calls to your servers.
+
+### 2. Privacy by Default
+
+Design work often involves sensitive IP — early concepts, client names, strategic assets. Local-first means that data never leaves the user's machine unless they explicitly choose to share it.
+
+### 3. Offline Resilience
+
+Core functionality works without an internet connection. This isn't just nice-to-have for creative professionals — it's becoming a baseline expectation.
+
+## Desktop and Web, Not Just One
+
+The local-first approach extends to both the desktop application and a lightweight web version. The desktop app is the full-fat experience — rich integrations, local model support, full agentic capabilities. The web version is intentionally constrained: it's fast, it's accessible, but it doesn't try to replicate everything.
+
+This isn't a "web vs desktop" dichotomy. It's a spectrum. Users can start on the web, discover Calca, and graduate to the desktop app when they need more power. Or they can live entirely in the browser for lightweight work.
+
+## What This Means for Development
+
+Building local-first apps requires different architectural decisions:
+
+- **State management must handle offline-first gracefully**
+- **Sync (when needed) must be explicit and user-controlled**
+- **The canvas/engine layer must be portable across runtimes**
+
+In the next post, I'll talk about how Calca's clean architecture enables exactly this kind of portability — including an upcoming project to make the canvas fully detached from the app, enabling CLI-like and TUI tooling.
+
+## The Trade-off
+
+Local-first isn't without its challenges. Distribution is harder. Updates are more complex. The user experience for syncing and sharing requires careful design. But for bootstrapping an agentic tool without venture-backed scaling, it's the only viable path I've found.
+
+If you're building agentic tools and trying to figure out how to scale without massive infrastructure investment, local-first isn't a compromise — it's a competitive advantage.
