@@ -10,16 +10,17 @@ import { sortByDateTimeDesc } from "@lib/utils";
 
 // Fetch and sort collections
 const allPosts = (await getCollection("posts")) //
+  .filter((p) => !p.data.draft)
   .sort(sortByDateTimeDesc);
 
 const posts = allPosts.slice(0, 2);
 
 const allWork = (await getCollection("work")) //
   .sort(sortByDateTimeDesc);
+
 const work = allWork.slice(0, 2);
 
 const allProjects = (await getCollection("projects")) //
-  .filter((p) => !p.data.draft)
   .sort(sortByDateTimeDesc);
 
 const frontBurner = allProjects.filter(

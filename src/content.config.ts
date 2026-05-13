@@ -9,6 +9,7 @@ const posts = defineCollection({
     date: z.date(),
     description: z.string(),
     tags: z.array(z.string()).default([]),
+    draft: z.boolean().optional(),
   }),
 });
 
@@ -38,7 +39,6 @@ const projects = defineCollection({
     repoURL: z.string().optional(),
     link: z.string().optional(),
     tagline: z.string(),
-    draft: z.boolean().optional(),
   }),
 });
 
