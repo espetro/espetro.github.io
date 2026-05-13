@@ -7,11 +7,12 @@ const quote =
   <div
     class="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-linear-to-r from-(--bg) to-transparent motion-reduce:hidden"
     aria-hidden="true"
-  ></div>
+  >
+  </div>
 
   <div class="overflow-hidden motion-reduce:hidden">
     <div
-      class="flex w-max whitespace-nowrap text-[13px] text-(--muted) [animation:marquee_100s_linear_infinite] group-hover:[animation-play-state:paused]"
+      class="flex w-max [animation:marquee_100s_linear_infinite] text-[13px] whitespace-nowrap text-(--muted) group-hover:[animation-play-state:paused]"
     >
       <span>{quote}</span>
       <span class="px-3" aria-hidden="true"> · </span>
@@ -37,7 +38,8 @@ const quote =
   <div
     class="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-linear-to-l from-(--bg) to-transparent motion-reduce:hidden"
     aria-hidden="true"
-  ></div>
+  >
+  </div>
 
   <p
     class="m-0 hidden text-center text-[13px] text-(--muted) motion-reduce:block"
