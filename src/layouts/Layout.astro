@@ -24,14 +24,16 @@ const { title, description, image, ogType, jsonLd } = Astro.props;
       jsonLd={jsonLd}
     />
     <script is:inline>
-      (function () {
+      function applyTheme() {
         const stored = localStorage.getItem("theme");
         const prefersDark = window.matchMedia(
           "(prefers-color-scheme: dark)",
         ).matches;
         const isDark = stored ? stored === "dark" : prefersDark;
-        if (isDark) document.documentElement.classList.add("dark");
-      })();
+        document.documentElement.classList.toggle("dark", isDark);
+      }
+      applyTheme();
+      document.addEventListener("astro:after-swap", applyTheme);
     </script>
   </head>
   <body>
