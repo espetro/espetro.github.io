@@ -68,20 +68,3 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
     </section>
   </div>
 </Layout>
-
-<style>
-  :global(.glass-row-date) {
-    font-size: var(--size-meta);
-    color: var(--muted-strong);
-    font-variant-numeric: tabular-nums;
-  }
-
-  :global(.glass-row-title) {
-    font-size: var(--size-body);
-    transition: color 0.2s var(--easing);
-  }
-
-  :global(.glass-row:hover .glass-row-title) {
-    color: var(--accent);
-  }
-</style>
