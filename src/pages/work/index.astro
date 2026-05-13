@@ -46,7 +46,7 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
                 {item.data.image && (
                   <img
                     src={item.data.image}
-                    alt=""
+                    alt={item.data.title}
                     class="h-10 w-10 rounded-[6px] border border-[var(--border)] object-cover"
                     loading="lazy"
                   />
