@@ -23,6 +23,16 @@ const { title, description, image, ogType, jsonLd } = Astro.props;
       ogType={ogType}
       jsonLd={jsonLd}
     />
+    <script is:inline>
+      (function () {
+        const stored = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const isDark = stored ? stored === "dark" : prefersDark;
+        if (isDark) document.documentElement.classList.add("dark");
+      })();
+    </script>
   </head>
   <body>
     <div class="app-window">
@@ -60,6 +70,13 @@ const { title, description, image, ogType, jsonLd } = Astro.props;
 
       animateOnScroll();
       document.addEventListener("astro:after-swap", animateOnScroll);
+    </script>
+
+    <script is:inline>
+      window.__toggleTheme = function () {
+        const isDark = document.documentElement.classList.toggle("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      };
     </script>
   </body>
 </html>

@@ -55,6 +55,13 @@ const currentPath = Astro.url.pathname;
       })
     }
   </div>
+
+  <div class="flex h-10 w-10 items-center justify-center">
+    <button
+      onclick="window.__toggleTheme()"
+      aria-label="Toggle theme"
+      class="theme-orb"></button>
+  </div>
 </nav>
 
 {/* Mobile Bottom Nav */}
@@ -88,5 +95,50 @@ const currentPath = Astro.url.pathname;
         );
       })
     }
+
+    <div class="mx-0.5 h-6 w-px bg-(--glass-border)"></div>
+
+    <button
+      onclick="window.__toggleTheme()"
+      aria-label="Toggle theme"
+      class="mobile-theme-orb"></button>
   </div>
 </nav>
+
+<style>
+  .theme-orb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    box-shadow: 0 0 0 6px var(--accent-soft);
+    border: none;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .theme-orb:hover {
+    box-shadow: 0 0 0 8px var(--accent-soft);
+  }
+
+  .mobile-theme-orb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    box-shadow: 0 0 0 5px var(--accent-soft);
+    border: none;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .mobile-theme-orb:hover {
+    box-shadow: 0 0 0 7px var(--accent-soft);
+  }
+</style>
