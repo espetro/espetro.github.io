@@ -7,16 +7,22 @@ interface Props {
 
 const { project } = Astro.props;
 
+interface Style {
+  bg: string;
+  text: string;
+  label: string;
+}
+
 const categoryPill = (category: string) => {
-  const styles: Record<string, { bg: string; text: string; label: string }> = {
+  const styles: Record<string, Style> = {
     "front-burner": {
       bg: "var(--accent-soft)",
       text: "var(--accent)",
       label: "FRONT BURNER",
     },
     "back-burner": {
-      bg: "rgba(234, 179, 8, 0.1)",
-      text: "rgb(234, 179, 8)",
+      bg: "var(--back-burner-soft)",
+      text: "var(--back-burner)",
       label: "BACK BURNER",
     },
     retired: {
