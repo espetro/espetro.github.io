@@ -19,7 +19,7 @@ const glassCardClass = showImage ? "project-card-image" : "project-card-simple";
   <div class={showImage ? "flex items-center gap-6" : undefined}>
     {
       showImage && project.data.preview && (
-        <div class="h-20 w-20 shrink-0 overflow-hidden rounded-[var(--radius-md)] bg-[var(--bg-elevated)]">
+        <div class="h-20 w-20 shrink-0 overflow-hidden rounded-md bg-(--bg-elevated)">
           <img
             src={project.data.preview}
             alt={project.data.title}
@@ -33,7 +33,7 @@ const glassCardClass = showImage ? "project-card-image" : "project-card-simple";
     <ProjectCardContent project={project} />
     {
       showArrow && (
-        <ArrowRightIcon className="shrink-0 text-[var(--muted)] text-[var(--size-body)] transition-all duration-200 ease-[var(--easing)] group-hover/project-card-image:text-[var(--accent)] group-hover/project-card-image:translate-x-0.5" />
+        <ArrowRightIcon className="shrink-0 text-(--muted) transition-all duration-200 ease-(--easing) group-hover/project-card-image:text-(--accent) group-hover/project-card-image:translate-x-0.5" />
       )
     }
   </div>
