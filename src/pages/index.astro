@@ -4,33 +4,23 @@ import Marquee from "@components/Marquee.astro";
 import GlassRow from "@components/GlassRow.astro";
 import WorkRow from "@components/WorkRow.astro";
 import ActivitySection from "@components/ActivitySection.astro";
+import CurrentlyWorkingOn from "@components/CurrentlyWorkingOn.astro";
 import { getCollection } from "astro:content";
-import ProjectCategorySection from "@components/ProjectCategorySection.astro";
 import { sortByDateTimeDesc } from "@lib/utils";
+import { currentProjects, ossTools } from "@data/landing-data";
 
-// Fetch and sort collections
-const allPosts = (await getCollection("posts")) //
+const allPosts = (await getCollection("posts"))
   .filter((p) => !p.data.draft)
   .sort(sortByDateTimeDesc);
 
 const posts = allPosts.slice(0, 2);
 
-const allWork = (await getCollection("work")) //
-  .sort(sortByDateTimeDesc);
-
+const allWork = (await getCollection("work")).sort(sortByDateTimeDesc);
 const work = allWork.slice(0, 2);
 
-const allProjects = (await getCollection("projects")) //
-  .sort(sortByDateTimeDesc);
-
-const frontBurner = allProjects.filter(
-  (p) => p.data.category === "front-burner",
-);
-
 /**
- * Format date for display (short month + day + full year)
- * @deprecated Move to a separate component in style of ProjectCategorySection and ProjectCard
- *  */
+ * @deprecated Move to a separate component
+ */
 function formatDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "short",
@@ -40,9 +30,8 @@ function formatDate(date: Date): string {
 }
 
 /**
- * Format date for work (short month + day)
- * @deprecated Move to a separate component in style of ProjectCategorySection and ProjectCard
- *  */
+ * @deprecated Move to a separate component
+ */
 function formatShortDate(date: Date): string {
   return date.toLocaleDateString("en-US", {
     month: "short",
@@ -53,20 +42,26 @@ function formatShortDate(date: Date): string {
 
 <Layout title="Home" description="Quino Terrasa - Full-Stack Engineer">
   <div class="flex flex-col gap-6">
-    <!-- Section 1: Bio Intro + Quote -->
+    <!-- Section 1: Bio Intro -->
     <section class="bio animate flex flex-col gap-4">
-      <h1 class="sr-only">Quino Terrasa — Senior AI Engineer</h1>
+      <h1 class="text-fg text-[30px] font-bold leading-tight">Hey, I'm Quino</h1>
       <p class="text-fg text-[15px] leading-[1.7]">
-        I'm a Senior AI Engineer working at the intersection of agentic systems
-        and full-stack product engineering, from architecture decisions to
-        shipped mobile and web experiences. This is my corner of the web where
-        you can find what I'm currently tinkering with and where I share my
-        thoughts.
+        I build products from 0 to 1 — combining AI engineering and full-stack
+        product craft to ship mobile and web experiences that feel great and work
+        brilliantly. Product Engineer, AI Engineer, maker.
       </p>
       <Marquee />
     </section>
 
-    <!-- Section 3: Posts Preview -->
+    <!-- Section 2: Currently Working On -->
+    <section class="projects-preview animate">
+      <CurrentlyWorkingOn projects={currentProjects} ossTools={ossTools} />
+    </section>
+
+    <!-- Section 3: Activity -->
+    <ActivitySection />
+
+    <!-- Section 4: Posts Preview -->
     <section class="posts-preview animate flex flex-col gap-4">
       <div class="flex items-center justify-between gap-4">
         <h2 class="text-fg text-[19px] font-semibold">Posts</h2>
@@ -93,7 +88,7 @@ function formatShortDate(date: Date): string {
       </div>
     </section>
 
-    <!-- Section 4: Work Preview -->
+    <!-- Section 5: Work Preview -->
     {
       allWork.length > 0 && (
         <section class="work-preview animate flex flex-col gap-4">
@@ -122,30 +117,5 @@ function formatShortDate(date: Date): string {
         </section>
       )
     }
-
-    <!-- Section 5: Projects Preview -->
-    <section class="projects-preview animate flex flex-col gap-4">
-      <div class="flex items-center justify-between gap-4">
-        <h2 class="text-fg text-[19px] font-semibold">Projects</h2>
-        <a
-          href="/projects"
-          class="text-muted hover:text-accent text-[13px] no-underline transition-colors duration-300"
-          >View all projects →</a
-        >
-      </div>
-      <div class="flex flex-col gap-2">
-        {
-          frontBurner.length > 0 ? (
-            <ProjectCategorySection projects={frontBurner} id="front-burner" />
-          ) : (
-            // TODO show back-burner and retired projects in GlassRow style
-            <p class="text-muted text-[13px] italic">No projects yet.</p>
-          )
-        }
-      </div>
-    </section>
-
-    <!-- Section 6: Activity Section -->
-    <ActivitySection />
   </div>
 </Layout>
