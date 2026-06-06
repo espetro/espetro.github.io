@@ -1,0 +1,35 @@
+---
+import type { currentProjects as CurrentProjects, ossTools as OssTools } from "@data/landing-data";
+
+interface Props {
+  projects: typeof CurrentProjects;
+  ossTools: typeof OssTools;
+}
+const { projects, ossTools } = Astro.props;
+---
+
+<div class="flex flex-col gap-4">
+  <div class="flex items-center justify-between gap-4">
+    <h2 class="text-fg text-[19px] font-semibold">Currently working on…</h2>
+  </div>
+
+  <p class="text-[17px] leading-[1.8] text-(--fg-soft)">
+    {projects.map((p, i) => (
+      <>
+        <a href={p.url} class="pixel-name font-bold text-(--fg) no-underline">{p.name}</a>
+        {" — "}{p.description}
+        {i < projects.length - 1 ? "; " : "."}
+      </>
+    ))}
+  </p>
+
+  <p class="text-[15px] leading-[1.7] text-(--muted)">
+    {"I'm also maintaining open-source tooling: "}
+    {ossTools.map((t, i) => (
+      <>
+        <a href={t.url} class="pixel-name font-bold text-(--fg-soft) no-underline">{t.name}</a>
+        {i < ossTools.length - 1 ? ", " : "."}
+      </>
+    ))}
+  </p>
+</div>
