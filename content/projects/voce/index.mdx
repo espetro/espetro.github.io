@@ -1,0 +1,26 @@
+---
+title: "Voce"
+description: "A macOS menubar app that learns your voice and filters incoming audio in real-time so only your speech comes through on calls."
+date: 2026-05-01
+category: "front-burner"
+tech: ["Rust", "ONNX", "CoreML"]
+repoURL: "https://github.com/espetro/voce"
+tagline: "Your voice. Only your voice."
+---
+
+Voce is a privacy-first, on-device macOS app that performs real-time speaker identification and voice filtering. It learns your voice during a short enrollment step, then uses that model to pass only your speech and silence everyone else's — no cloud, no latency, no data leaving your machine.
+
+## Features
+
+- On-device speaker enrollment and identification
+- Real-time audio filtering via virtual audio device (BlackHole)
+- CoreML acceleration on Apple Silicon
+- Runs as a lightweight macOS menubar app
+
+## Tech Stack
+
+Built in Rust with ONNX Runtime and CoreML for inference, `cpal` for audio I/O, and `wry`/`winit` for the menubar UI. Targets Apple Silicon (M1/M2/M3).
+
+## Links
+
+- [Source Code](https://github.com/espetro/voce)
