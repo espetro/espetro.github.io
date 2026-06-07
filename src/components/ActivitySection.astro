@@ -1,19 +1,45 @@
 ---
-// Activity section uses the GitHub Contribution Chart API (ghchart.rshah.org)
-// rendered as a static <img> — no server-side fetching or client JS required.
-// Accent color #ea580c matches --accent from the site's CSS variables.
 const username = "espetro";
-const accentColor = "#ea580c";
+const svgText = await fetch(`https://ghchart.rshah.org/FF6B6B/${username}`)
+  .then(r => r.text());
+
+const rectFillMatches = [...svgText.matchAll(/<rect[^>]*\bfill="(#[0-9a-fA-F]{6})"/g)];
+const rectFills = [...new Set(rectFillMatches.map((m: RegExpMatchArray) => m[1]))];
+
+function hexLuminance(hex: string): number {
+  const [r, g, b] = [hex.slice(1,3), hex.slice(3,5), hex.slice(5,7)]
+    .map(c => { const v = parseInt(c, 16) / 255; return v <= 0.03928 ? v/12.92 : ((v+0.055)/1.055)**2.4; });
+  return 0.2126*r + 0.7152*g + 0.0722*b;
+}
+const sorted = rectFills.sort((a: string, b: string) => hexLuminance(b) - hexLuminance(a));
+// sorted[0] = lightest (empty cells), sorted[4] = most active
+
+const canRecolor = sorted.length === 5;
+
+const injectedStyle = canRecolor ? `<style>
+  #activity-chart rect[fill="${sorted[0]}"] { fill: var(--bg-elevated); }
+  #activity-chart rect[fill="${sorted[1]}"] { fill: color-mix(in srgb, var(--accent) 20%, var(--bg-elevated)); }
+  #activity-chart rect[fill="${sorted[2]}"] { fill: color-mix(in srgb, var(--accent) 45%, var(--bg-elevated)); }
+  #activity-chart rect[fill="${sorted[3]}"] { fill: color-mix(in srgb, var(--accent) 70%, var(--bg-elevated)); }
+  #activity-chart rect[fill="${sorted[4]}"] { fill: var(--accent); }
+  #activity-chart text { fill: var(--muted); }
+</style>` : "";
+
+let finalSvg = svgText
+  .replace("<svg", `<svg id="activity-chart"`)
+  .replace(/<g/, `${injectedStyle}<g`);
 ---
 
 <section class="my-10">
   <h2 class="mb-4 text-[19px] font-semibold text-(--fg)">Activity</h2>
-
   <div class="overflow-x-auto">
-    <img
-      src={`https://ghchart.rshah.org/${accentColor.replace("#", "")}/${username}`}
-      alt={`${username}'s GitHub contribution chart`}
-      class="block h-auto w-full rounded-[10px]"
-    />
+    {canRecolor
+      ? <Fragment set:html={finalSvg} />
+      : <img
+          src={`https://ghchart.rshah.org/FF6B6B/${username}`}
+          alt={`${username}'s GitHub contribution chart`}
+          class="block h-auto w-full rounded-[10px]"
+        />
+    }
   </div>
 </section>
