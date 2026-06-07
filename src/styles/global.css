@@ -13,6 +13,7 @@
 @import "@fontsource/plus-jakarta-sans/500.css";
 @import "@fontsource/plus-jakarta-sans/600.css";
 @import "@fontsource/plus-jakarta-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/800-italic.css";
 
 /* ── Design Tokens: Light Mode ─────────────────────────────────────── */
 :root {
@@ -149,21 +150,6 @@ body {
   }
 }
 
-@keyframes pixel-glow-pulse {
-  0%, 100% { text-shadow: 0 0 6px rgba(255, 255, 255, 0.7); }
-  50%       { text-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 0 0 28px rgba(255, 255, 255, 0.4); }
-}
-
-.pixel-name {
-  font-family: "NothingFont", monospace;
-  font-size: inherit;
-  transition: text-shadow 0.3s var(--easing);
-}
-
-.pixel-name:hover {
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5);
-  animation: pixel-glow-pulse 1.4s ease-in-out infinite;
-}
 
 /* ── Reduced Motion ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
