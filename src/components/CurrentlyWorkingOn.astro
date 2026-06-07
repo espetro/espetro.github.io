@@ -16,7 +16,7 @@ const { projects, ossTools } = Astro.props;
   <p class="text-[17px] leading-[1.8] text-(--fg-soft)">
     {projects.map((p, i) => (
       <>
-        <a href={p.url} class="pixel-name font-bold text-(--fg) no-underline">{p.name}</a>
+        <a href={p.url} class="font-extrabold italic no-underline text-(--accent)">{p.name}</a>
         {" — "}{p.description}
         {i < projects.length - 1 ? "; " : "."}
       </>
@@ -27,7 +27,7 @@ const { projects, ossTools } = Astro.props;
     {"I'm also maintaining open-source tooling: "}
     {ossTools.map((t, i) => (
       <>
-        <a href={t.url} class="pixel-name font-bold text-(--fg-soft) no-underline">{t.name}</a>
+        <a href={t.url} class="font-extrabold italic no-underline text-(--fg-soft)">{t.name}</a>
         {i < ossTools.length - 1 ? ", " : "."}
       </>
     ))}
