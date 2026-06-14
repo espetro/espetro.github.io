@@ -1,0 +1,71 @@
+---
+title: "I Just Wanted to Play With My Friends"
+description: "How I Reverse-Engineered a 4-Layer Emulation Stack and Learned Where AI-Assisted Development Breaks"
+date: 2026-06-14
+tags:
+  - gaming
+  - emulation
+  - apple-silicon
+  - reverse-engineering
+  - agentic-engineering
+  - rust
+  - cpp
+  - rosetta
+  - wine
+  - cross-platform
+draft: false
+---
+
+Three years ago, I moved away from Málaga. I left behind a lot, but I made an agreement: to keep playing World of Warcraft with them every Thursday. It wasn't about much about the game, but about us.
+
+There was only a tiiiiiiiny issue: we played on the 2010 version, so that meant the game client was a 16+ years old 32-bit Windows app, and to make it harder, I'm using a MacBook.
+
+> In case you don't know what I'm talking about here: Macbooks nowadays run on Apple Silicon, which is based on ARM and only supports 64-bit apps. The game on the other hand was built for a 32-bit Windows platform based on Intel x86. So it's not only the OS switch, but also the CPU platform and 32/64-bit spec.
+
+At first, I could just make it because I had Parallels Desktop, which lets you run a Windows VM, but eventually after some time it stopped working after upgrading to newer OS versions. Then, I decided to give it some time; no free alternative existed, and as I'm travelling often, I didn't conceive the idea of getting another Windows laptop.
+
+However, after some time, I found hope.
+
+## Giving it another try
+
+Somewhere I read about [TurtleSilicon](https://github.com/henhouse/TurtleSilicon), an early attempt at running WoW on Apple Silicon. This one essentially relied on [CodeWeavers](https://www.codeweavers.com/), which ships a beefy version of the Wine emulator and it's pretty big in the Apple Gaming community. This one again worked for some time until I upgraded the OS version again.
+
+I really liked this approach as it was lean: you essentially need Rosetta 2, which comes built-in, then Wine/CodeWeavers, and finally an extra layer that covers the gaps in emulation the other 2 can't. The core problem is that 2010 WoW uses an instruction set (x87) that Rosetta 2 doesn't support, so the community (see [here](https://github.com/Gcenx/winerosetta) and [here](https://github.com/Lifeisawful/rosettax87)) built compatibility layers on top.
+
+After some time, I decided to give it a go. In the end, it's all low-level code but nowadays with Agentic Engineering patterns, one can accomplish more complex tasks by focusing on management and architecture. I read about [WowSilicon](https://github.com/WoWSilicon/WoWSilicon/), which continued what was built for TurtleSilicon, and seeing this ongoing community effort, I extracted the core architectural patterns.
+
+Through trial, error, and a lot of reverse engineering, I got it working. The issue here wasn't limited to how complex the system already seems, but on how flimsy the interconnection is: all three of Apple Rosetta, 2010 WoW and WoWSilicon runtimes lacked a clear API and were barely documented.
+
+Eventually, I [got it](https://github.com/espetro/wowplay) working, not only for CrossOver but also for Whisky (an OSS Wine fork for macOS). Two runtimes, one goal. I built it all on hexagonal architecture so the core logic would never know about `libloading`, `rosettax87_jit`, or CrossOver's internals. Adapters would handle the messy reality.
+
+I built a GUI so users wouldn't need to touch the CLI. I documented everything: the pitfalls, the workarounds, the invisible dependencies. I even built a minimum reproducible example (MRE) harness so I could test modifications safely, without running the full game.
+
+## Aiming to make it 100% OSS
+
+There was only one missing point: my app was all OSS but for one module, which was also key, as it bumped the FPS on the emulated game from ~20fps to ~60fps. So I set my goal on building a harness for this metric, so that I could then simply run an [autoresearch](https://github.com/karpathy/autoresearch) loop to optimize against it.
+
+The profiling required touching the Rosetta x87 instruction handler: C++ code that translates legacy x87 floating-point instructions from a 32-bit program (WoW) running inside Wine (32-on-64 thunking) being emulated by Rosetta 2 (x86_64 → ARM64) on Apple Silicon. It sounds complex and it indeed is hella complex.
+
+I had never touched C++ in this project before. Everything else was orchestration in Rust; safe, high-level, composable. This was quite different; delving into the compatiblity layer internals, handling poorly-documented Rosetta and 2010 WoW instruction handling and translation.
+
+As I didn't want to accept, it broke. I don't know exactly what, but I felt it broke at multiple points: DLLs should've been of a fixed size that I didn't know of, instructions weren't being captured, or something else I'll never be sure about. The x87 translator never worked again.
+
+## What this experience taught me
+
+**Orchestration is not comprehension.** I learned to wire black boxes together. I did not learn what was inside them. AI-assisted development excels at composition, but it won't give you the years of CPU architecture knowledge needed to modify a JIT translator.
+
+**Know your agentic boundary.** Rust and Zig have safety rails. C++ at the translation layer does not. One touch, and the abyss reaches back.
+
+**Test harnesses have blind spots.** My MRE validated logic beautifully. It could not validate binary layout, permission models, or the invisible invariants of closed systems.
+
+## Wrapping up
+
+I never got to play with my friends again. Not on macOS, anyway.
+
+But the project taught me emulation workflows, multi-runtime architecture, open-source practices, and the hard boundaries of AI-assisted systems programming. If I ever revisit this, I'll stay in memory-safe land. I'll build a SwiftUI shell from day one. I'll test on a clean Mac, not my developer machine.
+
+And I'll never touch the C++ translation layer. Some pipes are not meant to be opened.
+
+---
+
+The code is open source. The game is not. But the architecture lives on at https://github.com/espetro/wowplay , a monument to wanting to play with your friends, and learning exactly where to stop.
