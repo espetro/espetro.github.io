@@ -2,8 +2,12 @@ import type { Metadata, Site, Socials } from "@types";
 
 export const SITE: Site = {
   TITLE: "Quino Terrasa",
-  DESCRIPTION: "Full-Stack Engineer specializing in Agentic AI systems",
+  DESCRIPTION:
+    "Product & Forward-Deployed Engineer — I build and ship agentic AI products end-to-end.",
   EMAIL: "quinoterrasa.alibi366@passfwd.com",
+  // TODO: swap to the real Substack URL once the newsletter launches
+  NEWSLETTER_URL: "https://illo.fyi/newsletter",
+  SHOW_SPEAKING: false,
   NUM_POSTS_ON_HOMEPAGE: 2,
   NUM_PROJECTS_ON_HOMEPAGE: 3,
 };
@@ -11,7 +15,7 @@ export const SITE: Site = {
 export const HOME: Metadata = {
   TITLE: "Home",
   DESCRIPTION:
-    "Quino Terrasa - Full-Stack Engineer specializing in Agentic AI systems",
+    "Quino Terrasa - Product & Forward-Deployed Engineer — I build and ship agentic AI products end-to-end.",
 };
 
 export const BLOG: Metadata = {
