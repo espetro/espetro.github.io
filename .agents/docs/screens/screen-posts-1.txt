@@ -1,0 +1,31 @@
+screen: posts-1
+name: Posts index
+route: /posts
+file: src/pages/posts/index.astro
+
+All non-draft posts grouped by year (desc), GlassRow list.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Quino Terrasa            about  posts  projects  work   │
+│                                                          │
+│  Posts                                                   │
+│  Notes and essays on tech, UX, and agentic design. For   │
+│  experiments and shipped projects, see Projects.         │
+│                                                          │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ ✉  Newsletter                                      │  │  minimal alert callout
+│  │    Notes on building agentic AI products, straight │  │  (accent-soft bg)
+│  │    to your inbox. Read the newsletter →            │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│  2026                                                    │
+│  Aug 22   Stash v2 is out: why your browser tabs ...   → │
+│  Jun 07   Why AI Agents Need Deny-by-Default Perm...   → │
+│                                                          │
+│  2025                                                    │
+│  ...                                                     │
+│                                                          │
+│  ── footer ──                                            │
+└──────────────────────────────────────────────────────────┘
+```

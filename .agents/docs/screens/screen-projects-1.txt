@@ -1,0 +1,36 @@
+screen: projects-1
+name: Projects index
+route: /projects
+file: src/pages/projects/index.astro
+
+Projects grouped in three category sections.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Quino Terrasa            about  posts  projects  work   │
+│                                                          │
+│  Projects                                                │
+│  Apps and experiments—design, code, and AI.              │
+│                                                          │
+│  Front Burner                                            │
+│  Current focus—shipping and active builds.               │
+│  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐         │
+│  │ Clar        │ │ Calca       │ │ Voce        │         │
+│  │ (card)      │ │ (card)      │ │ (card)      │         │
+│  └─────────────┘ └─────────────┘ └─────────────┘         │
+│                                                          │
+│  Back Burner                                             │
+│  N projects on the back burner—they may still continue.  │
+│  ┌─────────────┐ ┌─────────────┐                         │
+│  │ ...         │ │ ...         │                         │
+│  └─────────────┘ └─────────────┘                         │
+│                                                          │
+│  Retired                                                 │
+│  N past projects from the archive.                       │
+│  ┌─────────────┐                                         │
+│  │ ...         │                                         │
+│  └─────────────┘                                         │
+│                                                          │
+│  ── footer ──                                            │
+└──────────────────────────────────────────────────────────┘
+```

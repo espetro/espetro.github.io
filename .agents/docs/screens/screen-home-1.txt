@@ -1,0 +1,68 @@
+screen: home-1
+name: Home
+route: /
+file: src/pages/index.astro
+
+Single-column landing funnel. Section order is contractual:
+Hero → Currently working on → Contributions → Activity → Posts → Work.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Quino Terrasa            about  posts  projects  work   │  header
+│                                                          │
+│  Hey, I'm Quino                                          │
+│  Product & Forward-Deployed Engineer — I build and ship  │
+│  agentic AI products end-to-end. Combining AI            │
+│  engineering and full-stack product craft to ship mobile │
+│  and web experiences that feel great and work            │
+│  brilliantly.                                            │
+│                                                          │
+│  [ Read the blog ]  ( Read the newsletter )              │  blog=plain, newsletter=accent bg
+│  [ Reach out ]                                           │  next row, bordered
+│                                                          │
+│  The only way to do great work is to love what yo... ·   │  marquee (extra space above)
+│                                                          │
+│  Currently working on                                    │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ Clar — privacy-first, local-first AI email layer   │  │
+│  │ Voce — real-time voice filter for calls            │  │
+│  │ Calca — NL prompts → polished UI, infinite canvas  │  │
+│  │ oss: tauri-pilot · intl-ai · unplugin-agent-plugins│  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│  Contributions                                           │  animated stacked list,
+│  ┌──────────────────────────────────────────────────┐    │  3 visible, auto-advance 4s,
+│  │ (◉) vercel-labs/fx        ★ 12.3k [merged]       │    │  pause on hover/focus,
+│  │     Add foo to bar                                 │    │  reduced-motion: static list
+│  │     +120 / −45   💬 8   Aug 20, 2026            →  │    │
+│  ├──────────────────────────────────────────────────┤    │
+│  │ (◉) browseros-ai/BrowserOS ★ 5.1k [merged]       │    │
+│  │     Fix baz                                        │    │
+│  │     +88 / −12    💬 3   Aug 12, 2026            →  │    │
+│  ├──────────────────────────────────────────────────┤    │
+│  │ (◉) open-circle/formisch  ★ 980   [open]         │    │
+│  │     Improve quux                                   │    │
+│  │     +40 / −6     💬 1   Aug 02, 2026            →  │    │
+│  └──────────────────────────────────────────────────┘    │
+│                    ● ○ ○ ○                               │  dot pager
+│                                                          │
+│  Activity                                                │
+│  ░░▒▒██ GitHub contribution chart (recolored) ▓▓▒▒░░     │
+│                                                          │
+│  Posts                                        View all → │
+│  Aug 22, 2026   Stash v2 is out ...                    → │
+│  Jun 14, 2026   I Just Wanted to Play With My Friends  → │
+│                                                          │
+│  Work                                         View all → │
+│  (empty — section hidden while work collection is empty) │
+│                                                          │
+│  ── footer: socials · rss · © ──                         │
+└──────────────────────────────────────────────────────────┘
+```
+
+Interactions:
+- "Read the newsletter" and "Reach out" fire PostHog events
+  (`newsletter_cta`, `reach_out_cta`) via `data-track` attributes.
+- Contributions: rows link to the PR; viewport shows exactly 3 rows,
+  slides vertically every 4s with blur+fade crossfade; dots jump to a page.
+- Marquee pauses on hover; `prefers-reduced-motion` shows a static quote.

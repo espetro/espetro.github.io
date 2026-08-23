@@ -1,0 +1,16 @@
+# Screen index — illo.fyi
+
+generated: 2026-08-23
+
+| screen            | route              | file                              |
+|-------------------|--------------------|-----------------------------------|
+| screen-home-1     | /                  | src/pages/index.astro             |
+| screen-posts-1    | /posts             | src/pages/posts/index.astro       |
+| screen-posts-2    | /posts/[id]        | src/pages/posts/[...id].astro     |
+| screen-projects-1 | /projects          | src/pages/projects/index.astro    |
+| screen-projects-2 | /projects/[id]     | src/pages/projects/[...id].astro  |
+| screen-about-1    | /about             | src/pages/about/index.astro       |
+| screen-work-1     | /work              | src/pages/work/index.astro        |
+
+Non-HTML routes: /llms.txt, /llms-full.txt, /about.md, /rss.xml
+(agent-readable; see src/pages/llms*.ts, public/about.md, src/pages/rss.xml.ts).
