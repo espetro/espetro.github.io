@@ -1,0 +1,88 @@
+---
+title: "One Box, One Database: Running a Real SaaS on a VPS with SQLite"
+description: "How Brioso runs production on a single VPS with SQLite and Litestream, and why replacing the managed database was the highest-ROI infrastructure decision I made"
+date: 2026-08-22
+tags:
+  - brioso
+  - architecture
+  - sqlite
+  - vps
+  - infrastructure
+  - bootstrapping
+draft: true
+---
+
+## Two invoices
+
+Here are two ways to host the same product. The first invoice has six line items: an app platform, a managed Postgres, a queue service, a serverless function provider, an auth SaaS, and an observability suite. Each line is small. Together they add up to a few hundred dollars a month before you have paying customers, and each one comes with its own console, its own IAM model, and its own way of paging you at 3am.
+
+The second invoice is one line: a VPS for 24 euros a month.
+
+Brioso, my audio generation product, runs on the second one. One machine, one Nitro process, one SQLite file, backups to object storage. It serves the whole site, handles checkout, dispatches generation jobs to a GPU under my desk with a serverless fallback, and I can hold the entire architecture in my head. This post is about what that stack looks like, what it trades away, and the one piece of it I'd defend hardest: dropping the managed database entirely.
+
+## The tour
+
+First, the honest comparison. Here is roughly what each world looks like for a bootstrapped product:
+
+| Dimension | VPS + SQLite | Cloud-first services |
+|---|---|---|
+| Cost curve | Fixed, flat until the box saturates | Near-zero at 0, scales linearly per service |
+| Ops surface | One machine, SSH, systemd, one bill | 6-10 consoles, IAM, per-service quotas |
+| Failure mode | One blast radius | Distributed, each service fails independently |
+| Data locality | Same-disk reads, no conn pool | Network RTT per query, connection limits |
+| Scaling | Vertical, manual | Horizontal, mostly automatic |
+| Learning curve | Linux literacy | Familiar, resume-friendly |
+
+The cloud-first column is not a strawman. If you already know it, it is genuinely faster to assemble on day one, and when you outgrow a single box it keeps going. Most of my career was spent in that column and I still reach for it when the shape of the problem demands it.
+
+The Brioso stack, concretely:
+
+- A single Nitro process serving the entire site, deployed with systemd blue-green slots on ports 3000 and 3002 behind a local Caddy, with a Cloudflare tunnel in front.
+- SQLite in WAL mode as the only database, replicated continuously to Cloudflare R2 with Litestream.
+- Inference on a home GPU polling worker, with a RunPod serverless fallback chain when the GPU is busy or down.
+- Secrets in Infisical, telemetry through PostHog and Phoenix, admin surface on a small Windmill install.
+
+None of this is exotic. It is mostly the boring stuff people ran before "cloud" was a noun, plus modern touches where they earn their keep.
+
+## The decision that paid for itself: no managed database
+
+If I had to pick one decision from this stack and defend it, it is not the VPS. The VPS is just a box; you can rent boxes anywhere. The decision with the highest return on investment was replacing the managed database with SQLite plus WAL plus Litestream. Here is why.
+
+It eliminates an entire service category. No managed Postgres instance, no connection pooler to size, no migration runner to host, no backup configuration to test and then worry about. That is four things I never think about, at a recurring cost of zero.
+
+### Localhost I/O instead of network I/O
+
+With WAL mode enabled, readers do not block the writer and the writer does not block readers. Every query from the app is a read from a file on the same disk as the process. There is no pool to exhaust, no cold start to eat, no network round trip contributing to your p99. Queries that would be dominated by latency on a managed database become microseconds of local I/O. For a product where most requests touch the database several times, this shows up everywhere: page renders, checkout, the job queue sweep.
+
+### Backups that cost pennies
+
+Litestream streams the WAL to object storage continuously. R2 storage costs fractions of a cent per gigabyte, and there are no egress bills. That gets you point-in-time restore, which is precisely the capability managed Postgres reserves for its most expensive tiers. My disaster recovery story is "restore the file from R2 onto any machine and point the app at it." A database restore becomes a file copy, not an escalation.
+
+### Deploys that are actually boring
+
+Zero-downtime on this setup works because a SQLite cutover is a file path change, not a DNS failover dance. The blue-green slots let the new process warm up, health checks pass, Caddy flips the upstream, and the old process drains. When your database is a local file, the deploy unit collapses to the process itself. There is no connection draining across a network boundary to reason about.
+
+### The honest limits
+
+This is not free lunch, and a post that pretended otherwise would be selling you something.
+
+SQLite has a single writer. If your workload becomes write-heavy, that one lock is your ceiling, and no amount of replicas fixes it. You scale vertically, and eventually you hit the top of what one machine does. Multi-region writes are simply not this model; if you need them, you need something else. And your blast radius is one box: if the machine dies, you are down until you restore elsewhere, and your recovery time is measured in minutes, not in the seconds a multi-region managed setup can give you.
+
+The way I think about it: this architecture is a runway, not a destination. It is long enough to get you through the phase where money is scarce and every dollar of infra is a dollar not spent finding product-market fit. You will know when you reach the end of it, because the single writer will tell you, loudly.
+
+## When not to do this
+
+Some honest disqualifiers:
+
+- **You do not want to be on call for Linux.** If disk pressure, systemd units, and Caddy config are things you never want to debug, the VPS path will make you miserable. The cloud-first stack is a legitimate choice for reasons of temperament, not just scale.
+- **Your team is larger than a handful of people.** One machine is an operational bottleneck in a way one cloud account is not. Permissions, audit trails, and separation of duties all exist for reasons.
+- **You are write-heavy from day one.** High-ingestion telemetry, event streams, anything where the write path dominates: use the right tool. The single-writer ceiling is real.
+- **Compliance requires managed guarantees.** Some contracts specify things that are simpler to satisfy with a managed provider's paperwork than with your own runbooks.
+
+For everything else, and that is a surprisingly large category, the single box with a local database is underused.
+
+## Closing
+
+The cloud-first stack optimizes for scale you do not have yet, and charges you rent for the option. The VPS plus SQLite stack optimizes for the stage you are actually in, and its failure mode, one box going down for a few minutes, is a survivable risk for most products at most stages. Brioso runs on a 24 euro machine with a database file it can copy anywhere, backups that cost pennies, and an ops surface I can survey in one terminal window.
+
+When the traffic demands it, I will move the pieces that need moving. But I will move them one at a time, with evidence, instead of paying for all of them up front. That is the whole trick.
