@@ -6,6 +6,14 @@ category: "front-burner"
 tech: ["Rust", "ONNX", "CoreML"]
 repoURL: "https://github.com/espetro/voce"
 tagline: "Your voice. Only your voice."
+caseStudy:
+  problem: "Open-plan offices, shared homes and public spaces leak background voices into your calls. Existing noise cancellation removes noise, not other people speaking, and cloud-based voice filters add latency and privacy concerns."
+  build: "A macOS menubar app that learns your voice in a short enrollment step, then runs on-device speaker identification and real-time filtering through a BlackHole virtual audio device. Built in Rust with ONNX Runtime and CoreML acceleration on Apple Silicon, cpal for audio I/O and wry/winit for the UI."
+  stack: ["Rust", "ONNX Runtime", "CoreML", "cpal", "BlackHole"]
+  outcome: "Real-time, fully on-device voice filtering: only your speech reaches the call, with zero latency and zero data leaving your machine."
+  links:
+    - label: "Source Code"
+      url: "https://github.com/espetro/voce"
 ---
 
 Voce is a privacy-first, on-device macOS app that performs real-time speaker identification and voice filtering. It learns your voice during a short enrollment step, then uses that model to pass only your speech and silence everyone else's — no cloud, no latency, no data leaving your machine.
