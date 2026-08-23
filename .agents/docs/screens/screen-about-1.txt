@@ -1,0 +1,37 @@
+screen: about-1
+name: About
+route: /about
+file: src/pages/about/index.astro
+
+Bio, beyond-work note, experience timeline. Speaking section is built
+(src/components/Speaking.astro) but hidden behind SITE.SHOW_SPEAKING=false.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Quino Terrasa            about  posts  projects  work   │
+│                                                          │
+│  About                                     ┌────────┐    │
+│  (bio paragraph ...)                       │ avatar │    │
+│                                            └────────┘    │
+│                                                          │
+│  Beyond Work                                             │
+│  Languages, food, side projects ...                      │
+│                                                          │
+│  Experience                                              │
+│  CURRENT                                                 │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ JUN 2022 - PRESENT                                 │  │
+│  │ MaibornWolff GmbH                                  │  │
+│  │ Senior AI Engineer                                 │  │
+│  │ AI gateway architect for ...                       │  │
+│  └────────────────────────────────────────────────────┘  │
+│  PAST                                                    │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ ...                                                │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│  [Speaking section — hidden, flag SHOW_SPEAKING=false]   │
+│                                                          │
+│  ── footer ──                                            │
+└──────────────────────────────────────────────────────────┘
+```

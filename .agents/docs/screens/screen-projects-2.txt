@@ -1,0 +1,39 @@
+screen: projects-2
+name: Project detail
+route: /projects/[id]
+file: src/pages/projects/[...id].astro
+
+Project page; renders a "From 0 to 1" case-study section when the
+optional `caseStudy` frontmatter is present (Clar, Calca, Voce).
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Quino Terrasa            about  posts  projects  work   │
+│                                                          │
+│  ← all projects                                          │
+│  Clar                                                    │
+│  tagline · meta links (demo / repo)                      │
+│                                                          │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ (preview image, if any)                            │  │
+│  └────────────────────────────────────────────────────┘  │
+│                                                          │
+│  ────────────────────────────────────────────────────    │
+│  From 0 to 1                               (if present)  │
+│  PROBLEM                                                 │
+│  ...                                                     │
+│  BUILD                                                   │
+│  ...                                                     │
+│  OUTCOME                                                 │
+│  ...                                                     │
+│  STACK                                                   │
+│  TS · Rust · ...                                         │
+│  LINKS                                                   │
+│  Repo · Demo                                             │
+│  ────────────────────────────────────────────────────    │
+│                                                          │
+│  (article body ...)                                      │
+│                                                          │
+│  ── footer ──                                            │
+└──────────────────────────────────────────────────────────┘
+```

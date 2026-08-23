@@ -1,0 +1,27 @@
+screen: work-1
+name: Work index
+route: /work
+file: src/pages/work/index.astro
+
+Work entries grouped by year + a Recommendations placeholder.
+Currently renders empty-state until the `work` content collection
+(content/work/) is populated.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Quino Terrasa            about  posts  projects  work   │
+│                                                          │
+│  Work                                                    │
+│  (intro copy)                                            │
+│                                                          │
+│  2026                                                    │
+│  Mon DD   Title        [image]                         → │
+│  ...                                                     │
+│                                                          │
+│  ────────────────────────────────────────────────────    │
+│  RECOMMENDATIONS                                         │
+│  (placeholder — to be added later)                       │
+│                                                          │
+│  ── footer ──                                            │
+└──────────────────────────────────────────────────────────┘
+```

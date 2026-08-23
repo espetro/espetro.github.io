@@ -1,0 +1,29 @@
+screen: posts-2
+name: Post detail
+route: /posts/[id]
+file: src/pages/posts/[...id].astro
+
+Article page with newsletter callout after the content.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│  Quino Terrasa            about  posts  projects  work   │
+│                                                          │
+│  Aug 22, 2026 · 8 min read                               │
+│  Stash v2 is out: why your browser tabs need an          │
+│  AI-first workflow                                       │
+│                                                          │
+│  (article prose ...)                                     │
+│                                                          │
+│  ┌────────────────────────────────────────────────────┐  │
+│  │ ✉  Newsletter                                      │  │  minimal alert callout
+│  │    Notes on building agentic AI products, straight │  │  (accent-soft bg)
+│  │    to your inbox. Read the newsletter →            │  │
+│  └────────────────────────────────────────────────────┘  │  data-track=newsletter_cta
+│                                                          │
+│  #tag1  #tag2                                            │
+│  ← all posts                                             │
+│                                                          │
+│  ── footer ──                                            │
+└──────────────────────────────────────────────────────────┘
+```
