@@ -4,7 +4,9 @@ import Marquee from "@components/Marquee.astro";
 import GlassRow from "@components/GlassRow.astro";
 import WorkRow from "@components/WorkRow.astro";
 import ActivitySection from "@components/ActivitySection.astro";
+import Contributions from "@components/Contributions.astro";
 import CurrentlyWorkingOn from "@components/CurrentlyWorkingOn.astro";
+import { HOME, SITE } from "@consts";
 import { getCollection } from "astro:content";
 import { sortByDateTimeDesc } from "@lib/utils";
 import { currentProjects, ossTools } from "@data/landing-data";
@@ -13,7 +15,7 @@ const allPosts = (await getCollection("posts"))
   .filter((p) => !p.data.draft)
   .sort(sortByDateTimeDesc);
 
-const posts = allPosts.slice(0, 2);
+const posts = allPosts.slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
 const allWork = (await getCollection("work")).sort(sortByDateTimeDesc);
 const work = allWork.slice(0, 2);
@@ -40,17 +42,44 @@ function formatShortDate(date: Date): string {
 }
 ---
 
-<Layout title="Home" description="Quino Terrasa - Full-Stack Engineer">
+<Layout title="Home" description={HOME.DESCRIPTION}>
   <div class="flex flex-col gap-6">
     <!-- Section 1: Bio Intro -->
     <section class="bio animate flex flex-col gap-4">
       <h1 class="text-fg text-[30px] font-bold leading-tight">Hey, I'm Quino</h1>
       <p class="text-fg text-[15px] leading-[1.7]">
-        I build products from 0 to 1 — combining AI engineering and full-stack
-        product craft to ship mobile and web experiences that feel great and work
-        brilliantly. Product Engineer, AI Engineer, maker.
+        Product & Forward-Deployed Engineer — I build and ship agentic AI
+        products end-to-end. Combining AI engineering and full-stack product
+        craft to ship mobile and web experiences that feel great and work
+        brilliantly.
       </p>
-      <Marquee />
+      <div class="flex flex-wrap items-center gap-3">
+        <a
+          href="/posts"
+          class="text-fg hover:text-accent inline-flex items-center rounded-full px-2 py-2 text-[13px] font-semibold no-underline transition-colors duration-300"
+          style="transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1)"
+          >Read the blog</a
+        >
+        <a
+          href={SITE.NEWSLETTER_URL}
+          data-track="newsletter_cta"
+          class="bg-accent text-bg inline-flex items-center rounded-full px-4 py-2 text-[13px] font-semibold no-underline transition-transform duration-300"
+          style="transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1)"
+          >Read the newsletter</a
+        >
+      </div>
+      <div>
+        <a
+          href={`mailto:${SITE.EMAIL}`}
+          data-track="reach_out_cta"
+          class="border-(--border) text-fg hover:border-accent inline-flex items-center rounded-full border px-4 py-2 text-[13px] font-semibold no-underline transition-colors duration-300"
+          style="transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1)"
+          >Reach out</a
+        >
+      </div>
+      <div class="mt-2">
+        <Marquee />
+      </div>
     </section>
 
     <!-- Section 2: Currently Working On -->
@@ -58,10 +87,13 @@ function formatShortDate(date: Date): string {
       <CurrentlyWorkingOn projects={currentProjects} ossTools={ossTools} />
     </section>
 
-    <!-- Section 3: Activity -->
+    <!-- Section 3: Contributions -->
+    <Contributions />
+
+    <!-- Section 4: Activity -->
     <ActivitySection />
 
-    <!-- Section 4: Posts Preview -->
+    <!-- Section 5: Posts Preview -->
     <section class="posts-preview animate flex flex-col gap-4">
       <div class="flex items-center justify-between gap-4">
         <h2 class="text-fg text-[19px] font-semibold">Posts</h2>
@@ -88,7 +120,7 @@ function formatShortDate(date: Date): string {
       </div>
     </section>
 
-    <!-- Section 5: Work Preview -->
+    <!-- Section 6: Work Preview -->
     {
       allWork.length > 0 && (
         <section class="work-preview animate flex flex-col gap-4">
