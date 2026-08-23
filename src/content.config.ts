@@ -39,6 +39,17 @@ const projects = defineCollection({
     repoURL: z.string().optional(),
     link: z.string().optional(),
     tagline: z.string(),
+    caseStudy: z
+      .object({
+        problem: z.string(),
+        build: z.string(),
+        stack: z.array(z.string()).default([]),
+        outcome: z.string(),
+        links: z
+          .array(z.object({ label: z.string(), url: z.string() }))
+          .default([]),
+      })
+      .optional(),
   }),
 });
 
