@@ -2,6 +2,7 @@
 import Layout from "@layouts/Layout.astro";
 import PageHeader from "@/components/PageHeader.astro";
 import GlassRow from "@components/GlassRow.astro";
+import NewsletterCallout from "@components/NewsletterCallout.astro";
 import { getCollection } from "astro:content";
 import { sortByDateTimeDesc } from "@lib/utils";
 
@@ -28,6 +29,8 @@ const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
         >.
       </p>
     </PageHeader>
+
+    <NewsletterCallout />
 
     {
       years.map((year) => (

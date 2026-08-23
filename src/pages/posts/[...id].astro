@@ -4,6 +4,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import { readingTime } from "@lib/utils";
+import NewsletterCallout from "@components/NewsletterCallout.astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("posts")).sort(
@@ -46,6 +47,10 @@ const blogPostingSchema = {
       <h1 class="animate text-3xl font-semibold">{post.data.title}</h1>
     </div>
     <article class="animate prose max-w-none"><Content /></article>
+
+    <div class="animate my-10">
+      <NewsletterCallout />
+    </div>
     <div class="animate mt-6">
       {
         post.data.tags?.length > 0 && (
