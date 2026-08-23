@@ -1,0 +1,68 @@
+[
+  {
+    "title": "Report catalog-gated reasoning effort drops instead of discarding silently",
+    "url": "https://github.com/vercel-labs/fx/pull/370",
+    "repo": "vercel-labs/fx",
+    "stars": 2155,
+    "additions": 185,
+    "deletions": 6,
+    "comments": 0,
+    "state": "open",
+    "updatedAt": "2026-08-23T10:06:45Z"
+  },
+  {
+    "title": "feat(ai-settings): auto-discover models for OpenAI-compatible providers",
+    "url": "https://github.com/browseros-ai/BrowserOS/pull/2415",
+    "repo": "browseros-ai/BrowserOS",
+    "stars": 13299,
+    "additions": 771,
+    "deletions": 290,
+    "comments": 3,
+    "state": "open",
+    "updatedAt": "2026-08-21T14:28:32Z"
+  },
+  {
+    "title": "POC: Schema IR — library-agnostic core with Valibot + Zod adapters",
+    "url": "https://github.com/open-circle/formisch/pull/197",
+    "repo": "open-circle/formisch",
+    "stars": 1144,
+    "additions": 7242,
+    "deletions": 13176,
+    "comments": 2,
+    "state": "open",
+    "updatedAt": "2026-08-11T14:39:07Z"
+  },
+  {
+    "title": "feat(core,methods): add react-native framework adapter (#117)",
+    "url": "https://github.com/open-circle/formisch/pull/137",
+    "repo": "open-circle/formisch",
+    "stars": 1144,
+    "additions": 11029,
+    "deletions": 494,
+    "comments": 9,
+    "state": "merged",
+    "updatedAt": "2026-07-29T17:21:09Z"
+  },
+  {
+    "title": "feat(#221): migrate to ts-proto and @bufbuild/protobuf",
+    "url": "https://github.com/getgauge/gauge-ts/pull/224",
+    "repo": "getgauge/gauge-ts",
+    "stars": 35,
+    "additions": 12804,
+    "deletions": 26761,
+    "comments": 2,
+    "state": "merged",
+    "updatedAt": "2026-07-25T19:01:59Z"
+  },
+  {
+    "title": "chore(#220): untrack generated src/gen and regenerate on build",
+    "url": "https://github.com/getgauge/gauge-ts/pull/223",
+    "repo": "getgauge/gauge-ts",
+    "stars": 35,
+    "additions": 28,
+    "deletions": 25630,
+    "comments": 6,
+    "state": "open",
+    "updatedAt": "2026-07-24T19:30:51Z"
+  }
+]
