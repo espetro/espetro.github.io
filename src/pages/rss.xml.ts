@@ -17,6 +17,9 @@ export async function GET(context: APIContext) {
       description: post.data.description,
       pubDate: post.data.date,
       link: `/posts/${post.id}/`,
+      content: post.body
+        ? `<![CDATA[${post.body.replaceAll("]]>", "]]&gt;")}]]>`
+        : undefined,
     })),
     customData: `<language>en-us</language>`,
   });
