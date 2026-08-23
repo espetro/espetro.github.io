@@ -1,7 +1,13 @@
 ---
 const username = "espetro";
-const svgText = await fetch(`https://ghchart.rshah.org/FF6B6B/${username}`)
-  .then(r => r.text());
+let svgText = "";
+try {
+  svgText = await fetch(`https://ghchart.rshah.org/FF6B6B/${username}`).then(
+    (r) => r.text(),
+  );
+} catch {
+  // network unavailable at build time; fall back to <img> below
+}
 
 const rectFillMatches = [...svgText.matchAll(/<rect[^>]*\bfill="(#[0-9a-fA-F]{6})"/g)];
 const rectFills = [...new Set(rectFillMatches.map((m: RegExpMatchArray) => m[1]))];
