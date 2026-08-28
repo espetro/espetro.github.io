@@ -1,5 +1,5 @@
 ---
-import contributions from "@data/contributions.json";
+import { all as allContribs, merged as mergedContribs } from "@data/contributions.json";
 
 interface Contribution {
   title: string;
@@ -23,17 +23,32 @@ const fmtDate = (iso: string) =>
     year: "numeric",
   });
 
-const sorted = [...(contributions as Contribution[])].sort(
+const sortedAll = [...(allContribs as Contribution[])].sort(
+  (a, b) => +new Date(b.updatedAt) - +new Date(a.updatedAt),
+);
+
+const sortedMerged = [...(mergedContribs as Contribution[])].sort(
   (a, b) => +new Date(b.updatedAt) - +new Date(a.updatedAt),
 );
 
 const owner = (repo: string) => repo.split("/")[0];
 const VISIBLE = 3;
-const pages = Math.max(1, sorted.length - VISIBLE + 1);
 ---
 
 <section id="contributions" class="my-10">
-  <h2 class="mb-4 text-[19px] font-semibold text-(--fg)">Contributions</h2>
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-[19px] font-semibold text-(--fg)">Contributions</h2>
+    <button
+      type="button"
+      class="contrib-filter-btn shrink-0 rounded-full px-3 py-1 text-[11px] font-medium border cursor-pointer"
+      aria-label="Toggle merged PRs filter"
+    >
+      Show merged ones
+    </button>
+  </div>
+  {sortedAll[0] && (
+    <p class="mb-3 text-[12px] text-(--muted)">Last updated {fmtDate(sortedAll[0].updatedAt)}</p>
+  )}
 
   <div
     class="contrib-carousel"
@@ -44,13 +59,17 @@ const pages = Math.max(1, sorted.length - VISIBLE + 1);
   >
     <div class="contrib-viewport overflow-hidden">
       <div
-        class="contrib-track flex flex-col will-change-transform [transition:transform_0.6s_cubic-bezier(0.32,0.72,0,1),opacity_0.3s_cubic-bezier(0.32,0.72,0,1),filter_0.3s_cubic-bezier(0.32,0.72,0,1)]"
+        class="contrib-track flex flex-col will-change-transform"
       >
         {
-          sorted.map((c, i) => (
+          sortedAll.map((c, i) => (
             <a
               href={c.url}
-              class="contrib-item group flex items-center gap-4 rounded-[10px] border border-transparent bg-transparent p-3 text-inherit no-underline hover:border-(--glass-border) hover:bg-(--glass-active-bg) hover:shadow-[var(--glass-shadow),var(--glass-inset)] hover:backdrop-blur-md [transition:background-color_0.3s_var(--easing),border-color_0.3s_var(--easing),box-shadow_0.3s_var(--easing),backdrop-filter_0.3s_var(--easing)]"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-list="all"
+              data-state={c.state}
+              class="contrib-item group flex items-center gap-4 rounded-[10px] border border-transparent bg-transparent p-3 text-inherit no-underline hover:border-(--glass-border) hover:bg-(--glass-active-bg) hover:shadow-[var(--glass-shadow),var(--glass-inset)] hover:backdrop-blur-md"
               aria-hidden={i >= VISIBLE ? "true" : undefined}
             >
               <img
@@ -93,7 +112,62 @@ const pages = Math.max(1, sorted.length - VISIBLE + 1);
                 </span>
               </span>
               <span
-                class="shrink-0 text-[15px] text-(--muted) [transition:color_0.2s_var(--easing),transform_0.2s_var(--easing)] group-hover:translate-x-0.5 group-hover:text-(--accent) max-sm:hidden"
+                class="shrink-0 text-[15px] text-(--muted) max-sm:hidden"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            </a>
+          ))
+        }
+        {
+          sortedMerged.map((c, i) => (
+            <a
+              href={c.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-list="merged"
+              data-state={c.state}
+              class="contrib-item group flex items-center gap-4 rounded-[10px] border border-transparent bg-transparent p-3 text-inherit no-underline hover:border-(--glass-border) hover:bg-(--glass-active-bg) hover:shadow-[var(--glass-shadow),var(--glass-inset)] hover:backdrop-blur-md"
+              aria-hidden="true"
+            >
+              <img
+                src={`https://github.com/${owner(c.repo)}.png?size=80`}
+                alt=""
+                width="40"
+                height="40"
+                loading="lazy"
+                class="size-10 shrink-0 rounded-full border border-(--border)"
+              />
+              <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span class="flex items-baseline gap-2">
+                  <span class="truncate text-[14px] font-semibold text-(--fg)">
+                    {c.repo}
+                  </span>
+                  <span class="shrink-0 text-[12px] text-(--accent)">
+                    ★ {fmtStars(c.stars)}
+                  </span>
+                  <span
+                    class="shrink-0 rounded-md border border-[color-mix(in_srgb,var(--accent)_20%,transparent)] bg-(--accent-soft) px-[0.4em] py-[0.1em] text-[11px] font-medium whitespace-nowrap text-(--accent)"
+                  >
+                    merged
+                  </span>
+                </span>
+                <span class="truncate text-[13px] text-(--muted)">
+                  {c.title}
+                </span>
+                <span class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12px] text-(--muted)">
+                  <span>
+                    <span class="text-(--fg-soft)">+{c.additions}</span>
+                    {" / "}
+                    <span class="text-(--fg-soft)">−{c.deletions}</span>
+                  </span>
+                  <span>💬 {c.comments}</span>
+                  <span>{fmtDate(c.updatedAt)}</span>
+                </span>
+              </span>
+              <span
+                class="shrink-0 text-[15px] text-(--muted) max-sm:hidden"
                 aria-hidden="true"
               >
                 →
@@ -104,66 +178,136 @@ const pages = Math.max(1, sorted.length - VISIBLE + 1);
       </div>
     </div>
 
-    {
-      pages > 1 && (
-        <div
-          class="contrib-dots mt-3 flex items-center justify-center gap-2"
-          role="tablist"
-          aria-label="Contribution pages"
-        >
-          {Array.from({ length: pages }).map((_, p) => (
-            <button
-              type="button"
-              class="contrib-dot h-1.5 w-1.5 cursor-pointer rounded-full border-none bg-(--border) p-0 [transition:background-color_0.3s_cubic-bezier(0.32,0.72,0,1),width_0.3s_cubic-bezier(0.32,0.72,0,1)]"
-              aria-label={`Show contributions ${p + 1} to ${Math.min(p + VISIBLE, sorted.length)}`}
-            />
-          ))}
-        </div>
-      )
-    }
+    <div
+      class="contrib-dots mt-3 flex items-center justify-center gap-2"
+      role="tablist"
+      aria-label="Contribution pages"
+    ></div>
   </div>
 </section>
 
 <script>
   const root = document.querySelector<HTMLElement>(".contrib-carousel");
+  const filterBtn = document.querySelector<HTMLButtonElement>(".contrib-filter-btn");
+  const dotsContainer = document.querySelector(".contrib-dots");
+
   if (root) {
     const track = root.querySelector<HTMLElement>(".contrib-track")!;
-    const items = [...root.querySelectorAll<HTMLElement>(".contrib-item")];
-    const dots = [...root.querySelectorAll<HTMLButtonElement>(".contrib-dot")];
-    const visible = Number(root.dataset.visible ?? 3);
+    const baseVisible = Number(root.dataset.visible ?? 3);
     const autoplay = Number(root.dataset.autoplay ?? 4000);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const maxIndex = Math.max(0, items.length - visible);
 
     let index = 0;
     let timer: ReturnType<typeof setInterval> | undefined;
+    let activeList: "all" | "merged" = "all";
+    let isAnimating = false;
+
+    const TRANSITION_DURATION = 500;
+
+    const getItems = (list: "all" | "merged") =>
+      [...root.querySelectorAll<HTMLElement>(`.contrib-item[data-list="${list}"]`)];
+
+    const getVisibleItems = () => getItems(activeList);
+
+    const maxIndex = () =>
+      Math.max(0, Math.ceil(getVisibleItems().length / baseVisible) - 1);
+
+    const updateDots = () => {
+      if (!dotsContainer) return;
+      const pages = Math.max(1, maxIndex() + 1);
+      const current = Math.min(index, maxIndex());
+      dotsContainer.innerHTML = "";
+      for (let i = 0; i < pages; i++) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `contrib-dot h-1.5 w-1.5 rounded-full border-none p-0 cursor-pointer`;
+        btn.setAttribute(
+          "aria-label",
+          `Show contributions ${i * baseVisible + 1} to ${Math.min((i + 1) * baseVisible, getVisibleItems().length)}`,
+        );
+        btn.setAttribute("role", "tab");
+        btn.setAttribute("aria-selected", String(i === current));
+        dotsContainer.appendChild(btn);
+      }
+      [...dotsContainer.querySelectorAll<HTMLButtonElement>(".contrib-dot")].forEach((d, i) => {
+        d.classList.toggle("bg-(--accent)", i === current);
+        d.classList.toggle("bg-(--border)", i !== current);
+        d.classList.toggle("w-4", i === current);
+        d.classList.toggle("w-1.5", i !== current);
+      });
+    };
+
+    const applyListVisibility = (list: "all" | "merged") => {
+      const allItems = [
+        ...getItems("all"),
+        ...getItems("merged"),
+      ];
+      allItems.forEach((it) => {
+        const isActive = it.dataset.list === list;
+        if (isActive) {
+          it.style.opacity = "";
+          it.style.transform = "";
+          it.style.filter = "";
+          it.style.pointerEvents = "";
+          it.style.position = "";
+        } else {
+          it.style.opacity = "0";
+          it.style.transform = "scale(0.97)";
+          it.style.filter = "blur(4px)";
+          it.style.pointerEvents = "none";
+          it.style.position = "absolute";
+        }
+      });
+    };
+
+    const updateFilterButton = () => {
+      if (!filterBtn) return;
+      if (activeList === "merged") {
+        filterBtn.textContent = "Show all";
+        filterBtn.style.background = "transparent";
+        filterBtn.style.borderColor = "var(--border)";
+        filterBtn.style.color = "var(--muted)";
+      } else {
+        filterBtn.textContent = "Show merged ones";
+        filterBtn.style.background = "var(--accent-soft)";
+        filterBtn.style.borderColor = "color-mix(in_srgb,var(--accent) 20%,transparent)";
+        filterBtn.style.color = "var(--accent)";
+      }
+    };
 
     const render = () => {
-      const offset = items[index]?.offsetTop ?? 0;
+      const visItems = getVisibleItems();
+      const totalPages = Math.max(1, Math.ceil(visItems.length / baseVisible));
+      const curIdx = Math.min(index, totalPages - 1);
+      const start = curIdx * baseVisible;
+      const pageItems = visItems.slice(start, start + baseVisible);
+      const offset = pageItems[0]?.offsetTop ?? 0;
       track.style.transform = `translateY(${-offset}px)`;
-      dots.forEach((d, i) => {
-        d.classList.toggle("bg-(--accent)", i === index);
-        d.classList.toggle("bg-(--border)", i !== index);
-        d.classList.toggle("w-4", i === index);
-        d.classList.toggle("w-1.5", i !== index);
-        d.setAttribute("aria-selected", String(i === index));
+
+      visItems.forEach((it, i) => {
+        const inView = i >= start && i < start + baseVisible;
+        it.setAttribute("aria-hidden", inView ? "false" : "true");
       });
-      items.forEach((it, i) =>
-        it.setAttribute(
-          "aria-hidden",
-          i < index || i >= index + visible ? "true" : "false",
-        ),
-      );
+
+      updateDots();
     };
 
     const go = (next: number) => {
-      index = ((next % (maxIndex + 1)) + maxIndex + 1) % (maxIndex + 1);
+      const mi = maxIndex();
+      index = ((next % (mi + 1)) + mi + 1) % (mi + 1);
       render();
     };
 
     const start = () => {
-      if (reduced.matches || timer || maxIndex === 0) return;
+      if (reduced.matches || timer || maxIndex() === 0) return;
       timer = setInterval(() => {
+        const mi = maxIndex();
+        const next = index + 1;
+        const nextIdx = ((next % (mi + 1)) + mi + 1) % (mi + 1);
+        const nextStart = nextIdx * baseVisible;
+        const nextPageItems = getVisibleItems().slice(nextStart, nextStart + baseVisible);
+        const nextOffset = nextPageItems[0]?.offsetTop ?? 0;
+        track.style.transition = "transform 0.6s cubic-bezier(0.32,0.72,0,1), opacity 0.3s cubic-bezier(0.32,0.72,0,1), filter 0.3s cubic-bezier(0.32,0.72,0,1)";
         track.style.opacity = "0.3";
         track.style.filter = "blur(3px)";
         setTimeout(() => {
@@ -173,29 +317,78 @@ const pages = Math.max(1, sorted.length - VISIBLE + 1);
         }, 300);
       }, autoplay);
     };
+
     const stop = () => {
       if (timer) clearInterval(timer);
       timer = undefined;
     };
 
-    dots.forEach((d, i) =>
-      d.addEventListener("click", () => {
-        stop();
-        go(i);
-      }),
-    );
+    const switchList = (next: "all" | "merged") => {
+      if (next === activeList || isAnimating) return;
+      isAnimating = true;
+      stop();
+      // Phase 1: fade + blur out
+      track.style.transition = `opacity ${TRANSITION_DURATION}ms cubic-bezier(0.32,0.72,0,1), transform ${TRANSITION_DURATION}ms cubic-bezier(0.32,0.72,0,1), filter ${TRANSITION_DURATION}ms cubic-bezier(0.32,0.72,0,1)`;
+      track.style.opacity = "0";
+      track.style.transform = "scale(0.97)";
+      track.style.filter = "blur(8px)";
+      setTimeout(() => {
+        activeList = next;
+        index = 0;
+        applyListVisibility(next);
+        updateFilterButton();
+        render();
+        // Phase 2: fade + blur in
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            track.style.opacity = "1";
+            track.style.transform = "scale(1)";
+            track.style.filter = "blur(0)";
+            setTimeout(() => {
+              isAnimating = false;
+              if (!reduced.matches) start();
+            }, TRANSITION_DURATION);
+          });
+        });
+      }, TRANSITION_DURATION);
+    };
+
+    filterBtn?.addEventListener("click", () => {
+      switchList(activeList === "all" ? "merged" : "all");
+    });
+
+    dotsContainer?.addEventListener("click", (e) => {
+      const dot = (e.target as HTMLElement).closest<HTMLButtonElement>(".contrib-dot");
+      if (!dot) return;
+      const dots = [...dotsContainer.querySelectorAll<HTMLButtonElement>(".contrib-dot")];
+      const idx = dots.indexOf(dot);
+      if (idx === -1) return;
+      stop();
+      index = idx;
+      render();
+      if (!reduced.matches) start();
+    });
+
     root.addEventListener("mouseenter", stop);
     root.addEventListener("mouseleave", start);
     root.addEventListener("focusin", stop);
     root.addEventListener("focusout", start);
 
+    const init = () => {
+      applyListVisibility("all");
+      updateFilterButton();
+      render();
+      if (!reduced.matches) start();
+    };
+
     if (reduced.matches) {
       track.style.transition = "none";
-      items.forEach((it) => it.removeAttribute("aria-hidden"));
-      root.querySelector(".contrib-dots")?.remove();
+      [...root.querySelectorAll<HTMLElement>(".contrib-item")].forEach((it) => {
+        it.style.transition = "none";
+        it.removeAttribute("aria-hidden");
+      });
     } else {
-      render();
-      start();
+      init();
     }
 
     reduced.addEventListener("change", (e) => {
@@ -205,11 +398,22 @@ const pages = Math.max(1, sorted.length - VISIBLE + 1);
         track.style.transform = "none";
         track.style.opacity = "1";
         track.style.filter = "none";
-        items.forEach((it) => it.removeAttribute("aria-hidden"));
+        [...root.querySelectorAll<HTMLElement>(".contrib-item")].forEach((it) => {
+          it.style.transition = "none";
+          it.style.opacity = "";
+          it.style.transform = "";
+          it.style.filter = "";
+          it.style.pointerEvents = "";
+          it.style.position = "";
+          it.removeAttribute("aria-hidden");
+        });
+        if (dotsContainer) dotsContainer.innerHTML = "";
       } else {
         track.style.transition = "";
-        render();
-        start();
+        [...root.querySelectorAll<HTMLElement>(".contrib-item")].forEach((it) => {
+          it.style.transition = "";
+        });
+        init();
       }
     });
   }
@@ -217,7 +421,6 @@ const pages = Math.max(1, sorted.length - VISIBLE + 1);
 
 <style>
   .contrib-viewport {
-    /* exactly 3 rows visible; row height measured from first item */
     max-height: calc(3 * var(--contrib-row-h, 96px));
   }
   @media (prefers-reduced-motion: reduce) {
@@ -228,11 +431,38 @@ const pages = Math.max(1, sorted.length - VISIBLE + 1);
       transition: none !important;
       transform: none !important;
     }
+    .contrib-item {
+      transition: none !important;
+    }
+  }
+  .contrib-dot {
+    transition: background-color 0.3s cubic-bezier(0.32,0.72,0,1),
+      width 0.3s cubic-bezier(0.32,0.72,0,1);
+  }
+  .contrib-filter-btn {
+    transition: background-color 0.35s cubic-bezier(0.32,0.72,0,1),
+      border-color 0.35s cubic-bezier(0.32,0.72,0,1),
+      color 0.35s cubic-bezier(0.32,0.72,0,1),
+      opacity 0.25s cubic-bezier(0.32,0.72,0,1),
+      transform 0.2s cubic-bezier(0.32,0.72,0,1);
+  }
+  .contrib-item {
+    transition: background-color 0.3s var(--easing),
+      border-color 0.3s var(--easing),
+      box-shadow 0.3s var(--easing),
+      backdrop-filter 0.3s var(--easing),
+      opacity 0.35s cubic-bezier(0.32,0.72,0,1),
+      transform 0.35s cubic-bezier(0.32,0.72,0,1),
+      filter 0.35s cubic-bezier(0.32,0.72,0,1);
+  }
+  .contrib-track {
+    transition: transform 0.6s cubic-bezier(0.32,0.72,0,1),
+      opacity 0.3s cubic-bezier(0.32,0.72,0,1),
+      filter 0.3s cubic-bezier(0.32,0.72,0,1);
   }
 </style>
 
 <script>
-  // measure real row height for the viewport clamp
   const vp = document.querySelector<HTMLElement>(".contrib-viewport");
   const first = document.querySelector<HTMLElement>(".contrib-item");
   if (vp && first) {
