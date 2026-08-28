@@ -86,9 +86,11 @@ async function main() {
     process.exit(1);
   }
 
+  const mergedItems = searchMerged?.items ?? [];
+
   const buildContributions = async (
     items: SearchResultItem[],
-  ): Promise<Contribution[]> => {
+  ): Promise<{ contributions: Contribution[]; rateLimited: boolean }> => {
     const contributions: Contribution[] = [];
     let rateLimited = false;
 
@@ -132,7 +134,7 @@ async function main() {
   const [{ contributions: allContribs, rateLimited: allLimited }, { contributions: mergedContribs, rateLimited: mergedLimited }] =
     await Promise.all([
       buildContributions(searchAll.items),
-      buildContributions(searchMerged.items ?? []),
+      buildContributions(mergedItems),
     ]);
 
   const outPath = path.resolve(import.meta.dirname, "../data/contributions.json");

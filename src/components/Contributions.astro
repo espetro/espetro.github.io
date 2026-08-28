@@ -121,7 +121,7 @@ const VISIBLE = 3;
           ))
         }
         {
-          sortedMerged.map((c, i) => (
+          sortedMerged.map((c) => (
             <a
               href={c.url}
               target="_blank"
@@ -306,7 +306,6 @@ const VISIBLE = 3;
         const nextIdx = ((next % (mi + 1)) + mi + 1) % (mi + 1);
         const nextStart = nextIdx * baseVisible;
         const nextPageItems = getVisibleItems().slice(nextStart, nextStart + baseVisible);
-        const nextOffset = nextPageItems[0]?.offsetTop ?? 0;
         track.style.transition = "transform 0.6s cubic-bezier(0.32,0.72,0,1), opacity 0.3s cubic-bezier(0.32,0.72,0,1), filter 0.3s cubic-bezier(0.32,0.72,0,1)";
         track.style.opacity = "0.3";
         track.style.filter = "blur(3px)";
