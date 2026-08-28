@@ -1,8 +1,11 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const SEARCH_URL =
-  "https://api.github.com/search/issues?q=author:espetro+type:pr+is:public+-user:espetro+-user:sigilco+-user:bolojs+-user:browser-containers&sort=updated&order=desc&per_page=6";
+const SEARCH_URL_ALL =
+  "https://api.github.com/search/issues?q=author:espetro+type:pr+is:public+-user:espetro+-user:sigilco+-user:bolojs+-user:browser-containers&sort=updated&order=desc&per_page=7";
+
+const SEARCH_URL_MERGED =
+  "https://api.github.com/search/issues?q=author:espetro+type:pr+is:public+is:merged+-user:espetro+-user:sigilco+-user:bolojs+-user:browser-containers&sort=updated&order=desc&per_page=7";
 
 interface SearchResultItem {
   title: string;
@@ -73,55 +76,76 @@ function repoFromUrl(repositoryUrl: string): string {
 }
 
 async function main() {
-  const search = await ghJson<{ items: SearchResultItem[] }>(SEARCH_URL);
-  if (!search?.items?.length) {
+  const [searchAll, searchMerged] = await Promise.all([
+    ghJson<{ items: SearchResultItem[] }>(SEARCH_URL_ALL),
+    ghJson<{ items: SearchResultItem[] }>(SEARCH_URL_MERGED),
+  ]);
+
+  if (!searchAll?.items?.length) {
     console.error("No PRs found in search results.");
     process.exit(1);
   }
 
-  const contributions: Contribution[] = [];
-  let rateLimited = false;
+  const buildContributions = async (
+    items: SearchResultItem[],
+  ): Promise<Contribution[]> => {
+    const contributions: Contribution[] = [];
+    let rateLimited = false;
 
-  for (const item of search.items) {
-    const repo = repoFromUrl(item.repository_url);
-    const [owner, repoName] = repo.split("/");
-    const state: "merged" | "open" =
-      item.pull_request?.merged_at != null ? "merged" : "open";
+    for (const item of items) {
+      const repo = repoFromUrl(item.repository_url);
+      const [owner, repoName] = repo.split("/");
+      const state: "merged" | "open" =
+        item.pull_request?.merged_at != null ? "merged" : "open";
 
-    const number = item.html_url.split("/").pop();
-    const [pull, repoDetail] = await Promise.all([
-      number
-        ? ghJson<PullDetail>(
-            `https://api.github.com/repos/${owner}/${repoName}/pulls/${number}`,
-            true,
-          )
-        : Promise.resolve(null),
-      ghJson<RepoDetail>(
-        `https://api.github.com/repos/${owner}/${repoName}`,
-        true,
-      ),
+      const number = item.html_url.split("/").pop();
+      const [pull, repoDetail] = await Promise.all([
+        number
+          ? ghJson<PullDetail>(
+              `https://api.github.com/repos/${owner}/${repoName}/pulls/${number}`,
+              true,
+            )
+          : Promise.resolve(null),
+        ghJson<RepoDetail>(
+          `https://api.github.com/repos/${owner}/${repoName}`,
+          true,
+        ),
+      ]);
+
+      if (pull === null || repoDetail === null) rateLimited = true;
+
+      contributions.push({
+        title: item.title,
+        url: item.html_url,
+        repo,
+        stars: repoDetail?.stargazers_count ?? 0,
+        additions: pull?.additions ?? 0,
+        deletions: pull?.deletions ?? 0,
+        comments: item.comments,
+        state,
+        updatedAt: item.updated_at,
+      });
+    }
+    return { contributions, rateLimited };
+  };
+
+  const [{ contributions: allContribs, rateLimited: allLimited }, { contributions: mergedContribs, rateLimited: mergedLimited }] =
+    await Promise.all([
+      buildContributions(searchAll.items),
+      buildContributions(searchMerged.items ?? []),
     ]);
-
-    if (pull === null || repoDetail === null) rateLimited = true;
-
-    contributions.push({
-      title: item.title,
-      url: item.html_url,
-      repo,
-      stars: repoDetail?.stargazers_count ?? 0,
-      additions: pull?.additions ?? 0,
-      deletions: pull?.deletions ?? 0,
-      comments: item.comments,
-      state,
-      updatedAt: item.updated_at,
-    });
-  }
 
   const outPath = path.resolve(import.meta.dirname, "../data/contributions.json");
   await mkdir(path.dirname(outPath), { recursive: true });
-  await writeFile(outPath, `${JSON.stringify(contributions, null, 2)}\n`, "utf-8");
-  console.log(`Wrote ${contributions.length} contributions to ${outPath}`);
-  if (rateLimited) {
+  await writeFile(
+    outPath,
+    `${JSON.stringify({ all: allContribs, merged: mergedContribs }, null, 2)}\n`,
+    "utf-8",
+  );
+  console.log(
+    `Wrote ${allContribs.length} all + ${mergedContribs.length} merged contributions to ${outPath}`,
+  );
+  if (allLimited || mergedLimited) {
     console.warn(
       "Warning: some detail fetches were skipped (rate limit). Additions/deletions/stars may be incomplete.",
     );
