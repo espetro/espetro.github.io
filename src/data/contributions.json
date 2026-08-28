@@ -1,68 +1,160 @@
-[
-  {
-    "title": "Report catalog-gated reasoning effort drops instead of discarding silently",
-    "url": "https://github.com/vercel-labs/fx/pull/370",
-    "repo": "vercel-labs/fx",
-    "stars": 2155,
-    "additions": 185,
-    "deletions": 6,
-    "comments": 0,
-    "state": "open",
-    "updatedAt": "2026-08-23T10:06:45Z"
-  },
-  {
-    "title": "feat(ai-settings): auto-discover models for OpenAI-compatible providers",
-    "url": "https://github.com/browseros-ai/BrowserOS/pull/2415",
-    "repo": "browseros-ai/BrowserOS",
-    "stars": 13299,
-    "additions": 771,
-    "deletions": 290,
-    "comments": 3,
-    "state": "open",
-    "updatedAt": "2026-08-21T14:28:32Z"
-  },
-  {
-    "title": "POC: Schema IR — library-agnostic core with Valibot + Zod adapters",
-    "url": "https://github.com/open-circle/formisch/pull/197",
-    "repo": "open-circle/formisch",
-    "stars": 1144,
-    "additions": 7242,
-    "deletions": 13176,
-    "comments": 2,
-    "state": "open",
-    "updatedAt": "2026-08-11T14:39:07Z"
-  },
-  {
-    "title": "feat(core,methods): add react-native framework adapter (#117)",
-    "url": "https://github.com/open-circle/formisch/pull/137",
-    "repo": "open-circle/formisch",
-    "stars": 1144,
-    "additions": 11029,
-    "deletions": 494,
-    "comments": 9,
-    "state": "merged",
-    "updatedAt": "2026-07-29T17:21:09Z"
-  },
-  {
-    "title": "feat(#221): migrate to ts-proto and @bufbuild/protobuf",
-    "url": "https://github.com/getgauge/gauge-ts/pull/224",
-    "repo": "getgauge/gauge-ts",
-    "stars": 35,
-    "additions": 12804,
-    "deletions": 26761,
-    "comments": 2,
-    "state": "merged",
-    "updatedAt": "2026-07-25T19:01:59Z"
-  },
-  {
-    "title": "chore(#220): untrack generated src/gen and regenerate on build",
-    "url": "https://github.com/getgauge/gauge-ts/pull/223",
-    "repo": "getgauge/gauge-ts",
-    "stars": 35,
-    "additions": 28,
-    "deletions": 25630,
-    "comments": 6,
-    "state": "open",
-    "updatedAt": "2026-07-24T19:30:51Z"
-  }
-]
+{
+  "all": [
+    {
+      "title": "fix(shared): guarantee directory handle closure via fs-opendir-scope",
+      "url": "https://github.com/stablyai/orca/pull/17035",
+      "repo": "stablyai/orca",
+      "stars": 55942,
+      "additions": 219,
+      "deletions": 43,
+      "comments": 1,
+      "state": "open",
+      "updatedAt": "2026-08-28T15:37:01Z"
+    },
+    {
+      "title": "chore(gates): register dir-handle-closure reliability gate",
+      "url": "https://github.com/stablyai/orca/pull/17034",
+      "repo": "stablyai/orca",
+      "stars": 55942,
+      "additions": 99,
+      "deletions": 1,
+      "comments": 1,
+      "state": "open",
+      "updatedAt": "2026-08-28T15:36:08Z"
+    },
+    {
+      "title": "feat(agent): allow MCP tool calls in plan mode",
+      "url": "https://github.com/tontinton/maki/pull/888",
+      "repo": "tontinton/maki",
+      "stars": 973,
+      "additions": 49,
+      "deletions": 9,
+      "comments": 0,
+      "state": "merged",
+      "updatedAt": "2026-08-27T19:19:36Z"
+    },
+    {
+      "title": "feat(ai-settings): auto-discover models for OpenAI-compatible providers",
+      "url": "https://github.com/browseros-ai/BrowserOS/pull/2415",
+      "repo": "browseros-ai/BrowserOS",
+      "stars": 13385,
+      "additions": 771,
+      "deletions": 290,
+      "comments": 4,
+      "state": "open",
+      "updatedAt": "2026-08-27T14:28:02Z"
+    },
+    {
+      "title": "Report catalog-gated reasoning effort drops instead of discarding silently",
+      "url": "https://github.com/vercel-labs/fx/pull/370",
+      "repo": "vercel-labs/fx",
+      "stars": 2561,
+      "additions": 185,
+      "deletions": 6,
+      "comments": 0,
+      "state": "open",
+      "updatedAt": "2026-08-23T14:47:14Z"
+    },
+    {
+      "title": "POC: Schema IR — library-agnostic core with Valibot + Zod adapters",
+      "url": "https://github.com/open-circle/formisch/pull/197",
+      "repo": "open-circle/formisch",
+      "stars": 1160,
+      "additions": 7242,
+      "deletions": 13176,
+      "comments": 2,
+      "state": "open",
+      "updatedAt": "2026-08-11T14:39:07Z"
+    },
+    {
+      "title": "feat(core,methods): add react-native framework adapter (#117)",
+      "url": "https://github.com/open-circle/formisch/pull/137",
+      "repo": "open-circle/formisch",
+      "stars": 1160,
+      "additions": 11029,
+      "deletions": 494,
+      "comments": 9,
+      "state": "merged",
+      "updatedAt": "2026-07-29T17:21:09Z"
+    }
+  ],
+  "merged": [
+    {
+      "title": "feat(agent): allow MCP tool calls in plan mode",
+      "url": "https://github.com/tontinton/maki/pull/888",
+      "repo": "tontinton/maki",
+      "stars": 973,
+      "additions": 49,
+      "deletions": 9,
+      "comments": 0,
+      "state": "merged",
+      "updatedAt": "2026-08-27T19:19:36Z"
+    },
+    {
+      "title": "feat(core,methods): add react-native framework adapter (#117)",
+      "url": "https://github.com/open-circle/formisch/pull/137",
+      "repo": "open-circle/formisch",
+      "stars": 1160,
+      "additions": 11029,
+      "deletions": 494,
+      "comments": 9,
+      "state": "merged",
+      "updatedAt": "2026-07-29T17:21:09Z"
+    },
+    {
+      "title": "feat(#221): migrate to ts-proto and @bufbuild/protobuf",
+      "url": "https://github.com/getgauge/gauge-ts/pull/224",
+      "repo": "getgauge/gauge-ts",
+      "stars": 35,
+      "additions": 12804,
+      "deletions": 26761,
+      "comments": 2,
+      "state": "merged",
+      "updatedAt": "2026-07-25T19:01:59Z"
+    },
+    {
+      "title": "fix(#219): repair genproto.sh and use HTTPS submodule URL",
+      "url": "https://github.com/getgauge/gauge-ts/pull/222",
+      "repo": "getgauge/gauge-ts",
+      "stars": 35,
+      "additions": 23,
+      "deletions": 10,
+      "comments": 1,
+      "state": "merged",
+      "updatedAt": "2026-07-21T18:13:30Z"
+    },
+    {
+      "title": "refactor: migrate from experimentalDecorators to TC39 Stage 3 decorators (#207)",
+      "url": "https://github.com/getgauge/gauge-ts/pull/208",
+      "repo": "getgauge/gauge-ts",
+      "stars": 35,
+      "additions": 173,
+      "deletions": 112,
+      "comments": 7,
+      "state": "merged",
+      "updatedAt": "2026-06-12T09:43:09Z"
+    },
+    {
+      "title": "feat: Windows IPC support via Named Pipes",
+      "url": "https://github.com/mpiton/tauri-pilot/pull/64",
+      "repo": "mpiton/tauri-pilot",
+      "stars": 77,
+      "additions": 1466,
+      "deletions": 201,
+      "comments": 11,
+      "state": "merged",
+      "updatedAt": "2026-04-24T12:07:48Z"
+    },
+    {
+      "title": "feat: make skill available via skills.sh",
+      "url": "https://github.com/mpiton/tauri-pilot/pull/36",
+      "repo": "mpiton/tauri-pilot",
+      "stars": 77,
+      "additions": 6,
+      "deletions": 0,
+      "comments": 3,
+      "state": "merged",
+      "updatedAt": "2026-04-10T08:31:47Z"
+    }
+  ]
+}
