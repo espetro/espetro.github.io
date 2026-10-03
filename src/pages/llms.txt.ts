@@ -1,16 +1,31 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { SITE } from "@/consts";
-import { currentProjects } from "@/data/landing-data";
+import { SITE } from "@consts";
+import { createLogItems } from "@lib/log";
+import { publishedWorks, sortWorks } from "@lib/works";
 
-export const GET: APIRoute = async (context) => {
-  const site = context.site!;
+export const GET: APIRoute = async ({ site }) => {
+  const [allWorks, allPosts, notes] = await Promise.all([
+    getCollection("works"),
+    getCollection("posts"),
+    getCollection("notes"),
+  ]);
+  const works = publishedWorks(allWorks);
+  const posts = allPosts.filter((post) => !post.data.draft);
+  const logItems = createLogItems(posts, notes, works);
+  const projectLines = sortWorks(works).map(
+    (work) =>
+      `- [${work.data.name}](${work.data.primary.url}) — ${work.data.summary} (${work.data.status}; ${work.data.scale})`,
+  );
+  const logLines = logItems.map((entry) => {
+    const href =
+      entry.kind === "Post"
+        ? new URL(`/log/${entry.id}/`, site!).href
+        : new URL(`/#log-note-${entry.id}`, site!).href;
+    return `- ${entry.date.toISOString().slice(0, 10)} · ${entry.kind}: [${entry.title}](${href})`;
+  });
 
-  const posts = (await getCollection("posts"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-
-  const lines: string[] = [
+  const lines = [
     `# ${SITE.TITLE}`,
     "",
     `> ${SITE.DESCRIPTION}`,
@@ -19,15 +34,11 @@ export const GET: APIRoute = async (context) => {
     `- Email: ${SITE.EMAIL}`,
     `- Newsletter: ${SITE.NEWSLETTER_URL}`,
     "",
-    "## Projects",
-    ...currentProjects.map(
-      (project) => `- ${project.name}: ${project.description} — ${project.url}`,
-    ),
+    "## Work",
+    ...projectLines,
     "",
-    "## Blog",
-    ...posts.map(
-      (post) => `- ${post.data.title}: ${new URL(`/posts/${post.id}/`, site).href}`,
-    ),
+    "## Log",
+    ...logLines,
     "",
   ];
 

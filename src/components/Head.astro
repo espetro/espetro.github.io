@@ -3,12 +3,6 @@ import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 import Main from "../scripts/Main.astro";
 
-import "@fontsource/plus-jakarta-sans/300.css";
-import "@fontsource/plus-jakarta-sans/400.css";
-import "@fontsource/plus-jakarta-sans/500.css";
-import "@fontsource/plus-jakarta-sans/600.css";
-import "@fontsource/plus-jakarta-sans/700.css";
-
 interface Props {
   title: string;
   description: string;
@@ -22,7 +16,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
   title,
   description,
-  image = "/astro-micro-1200.webp",
+  image = "/profile.jpg",
   ogType = "website",
   jsonLd,
 } = Astro.props;
@@ -40,15 +34,7 @@ const personSchema = {
 };
 ---
 
-<!-- Phosphor Icons -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"
-/>
-
 <!-- Resource Hints -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="preconnect" href="https://giscus.app" />
 <link rel="dns-prefetch" href="https://giscus.app" />
 
@@ -72,10 +58,10 @@ const personSchema = {
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Primary Meta Tags -->
-<title>{title} | espetro</title>
-<meta name="title" content={`${title} | espetro`} />
+<title>{title} | Quino Terrasa</title>
+<meta name="title" content={`${title} | Quino Terrasa`} />
 <meta name="description" content={description} />
-<meta name="theme-color" content="#f4664c" />
+<meta name="theme-color" content="#faf9f6" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={ogType} />
@@ -110,14 +96,6 @@ const personSchema = {
 <ClientRouter />
 
 <script>
-  if ("serviceWorker" in navigator && import.meta.env.PROD) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/sw.js");
-    });
-  }
-</script>
-
-<script>
   import posthog from "posthog-js";
 
   const key = import.meta.env.PUBLIC_POSTHOG_KEY;
@@ -125,12 +103,14 @@ const personSchema = {
     posthog.init(key, {
       api_host:
         import.meta.env.PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com",
-      person_profiles: "identified_only",
+      cookieless_mode: "always",
+      person_profiles: "never",
     });
 
     document.addEventListener("click", (e) => {
       const el = (e.target as HTMLElement).closest<HTMLElement>("[data-track]");
-      if (el) posthog.capture(el.dataset.track!, { href: el.getAttribute("href") });
+      if (el)
+        posthog.capture(el.dataset.track!, { href: el.getAttribute("href") });
     });
   }
 </script>

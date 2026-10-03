@@ -1,0 +1,431 @@
+---
+import { Image } from "astro:assets";
+import {
+  getCollection,
+  getEntry,
+  render,
+  type CollectionEntry,
+} from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import LogList from "@components/LogList.astro";
+import { createLogItems } from "@lib/log";
+import { formatSurfaceLabel, publishedWorks, sortWorks } from "@lib/works";
+
+interface Props {
+  work: CollectionEntry<"works">;
+  repo: CollectionEntry<"repos"> | undefined;
+  logEntries: ReturnType<typeof createLogItems>;
+  nextWork: CollectionEntry<"works"> | undefined;
+}
+
+export async function getStaticPaths() {
+  const [allWorks, posts, notes] = await Promise.all([
+    getCollection("works"),
+    getCollection("posts"),
+    getCollection("notes"),
+  ]);
+  const works = publishedWorks(allWorks);
+  const orderedWorks = sortWorks(works);
+
+  return Promise.all(
+    orderedWorks.map(async (work, index) => {
+      const repo = work.data.repo ? await getEntry(work.data.repo) : undefined;
+      const logEntries = createLogItems(
+        posts.filter(
+          (post) => !post.data.draft && post.data.project?.id === work.id,
+        ),
+        notes.filter((note) => note.data.project?.id === work.id),
+        works,
+      );
+
+      return {
+        params: { id: work.id },
+        props: {
+          work,
+          repo,
+          logEntries,
+          nextWork: orderedWorks[index + 1],
+        },
+      };
+    }),
+  );
+}
+
+const { work, repo, logEntries, nextWork } = Astro.props as Props;
+const { Content } = await render(work);
+const formatSince = (date: Date) =>
+  date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+const surfaceLabel = formatSurfaceLabel(work.data.labels.surface);
+const runtimeLabel = work.data.labels.runtime;
+const runsOn = [surfaceLabel, runtimeLabel].filter(Boolean).join(" · ");
+const starCount = repo
+  ? new Intl.NumberFormat("en").format(repo.data.stars)
+  : undefined;
+const seoDescription = work.data.summary;
+const statusLabel =
+  work.data.status.charAt(0).toUpperCase() + work.data.status.slice(1);
+const scaleLabel =
+  work.data.scale.charAt(0).toUpperCase() + work.data.scale.slice(1);
+---
+
+<Layout
+  title={work.data.name}
+  description={seoDescription}
+  image={work.data.cover?.src}
+>
+  <article class="project">
+    <a class="back" href="/#work">← All work</a>
+    <h1>
+      {work.data.name}
+      {
+        work.data.highlight && (
+          <span class="star" aria-label="Highlighted">
+            ★
+          </span>
+        )
+      }
+    </h1>
+    <div class="meta">
+      <span class:list={["status", work.data.status]}>
+        {statusLabel}
+      </span>
+      <span>{scaleLabel}</span>
+      {work.data.since && <span>Since {formatSince(work.data.since)}</span>}
+    </div>
+    <p class="lede">{work.data.summary}</p>
+    <p class="anno">
+      The project summary, status, scale and primary action come from
+      content/works/{work.id}/index.md.
+    </p>
+    <div class="actions">
+      <a
+        class="primary"
+        href={work.data.primary.url}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {work.data.primary.label}
+        <small>{new URL(work.data.primary.url).hostname}</small>
+      </a>
+      {
+        repo && work.data.primary.label !== "Source" && (
+          <a href={repo.data.url} target="_blank" rel="noreferrer">
+            Source
+          </a>
+        )
+      }
+    </div>
+    {
+      work.data.cover && (
+        <figure class="cover">
+          <Image
+            src={work.data.cover}
+            alt={`${work.data.name} preview`}
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      )
+    }
+
+    <h2>What it is</h2>
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+
+    {
+      (runsOn || work.data.stack.length > 0 || repo) && (
+        <>
+          <h2>Facts</h2>
+          <dl class="facts">
+            {runsOn && (
+              <>
+                <dt>Runs on</dt>
+                <dd>{runsOn}</dd>
+              </>
+            )}
+            {work.data.stack.length > 0 && (
+              <>
+                <dt>Stack</dt>
+                <dd>{work.data.stack.join(" · ")}</dd>
+              </>
+            )}
+            {repo && (
+              <>
+                <dt>Source</dt>
+                <dd>
+                  <a href={repo.data.url} target="_blank" rel="noreferrer">
+                    {repo.data.id}
+                  </a>
+                  {repo.data.license && ` · ${repo.data.license}`}
+                  {starCount && ` · ★ ${starCount}`}
+                </dd>
+              </>
+            )}
+            {repo?.data.latestRelease && (
+              <>
+                <dt>Latest release</dt>
+                <dd>
+                  <a
+                    href={repo.data.latestRelease.url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {repo.data.latestRelease.tag}
+                  </a>
+                </dd>
+              </>
+            )}
+          </dl>
+          <p class="anno">
+            Source, license, stars and latest release are read from the cached
+            repos collection in src/data/repos.json. Works without a public repo
+            omit those facts.
+          </p>
+        </>
+      )
+    }
+
+    {
+      logEntries.length > 0 && (
+        <>
+          <h2>In the log</h2>
+          <p class="anno">
+            This list comes from posts and notes whose project reference points
+            to
+            {` ${work.id}`}.
+          </p>
+          <LogList entries={logEntries} showProject={false} />
+        </>
+      )
+    }
+
+    <nav class="next" aria-label="More work">
+      <a href="/#work">← All work</a>
+      {
+        nextWork && (
+          <a href={`/projects/${nextWork.id}/`}>Next: {nextWork.data.name} →</a>
+        )
+      }
+    </nav>
+  </article>
+</Layout>
+
+<style>
+  .project {
+    max-width: 640px;
+    padding-top: 96px;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .back:hover {
+    color: var(--fg);
+  }
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 10px;
+    font: 700 40px/1.05 var(--display);
+    letter-spacing: -0.035em;
+  }
+
+  .star {
+    color: var(--accent);
+    font-size: 20px;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .status::before {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentcolor;
+    content: "";
+  }
+
+  .status.building {
+    color: var(--accent);
+  }
+
+  .status.live {
+    color: var(--live);
+  }
+
+  .status.maintained {
+    color: var(--muted-strong);
+  }
+
+  .status.archived {
+    color: var(--muted);
+  }
+
+  .status.archived::before {
+    border: 1px solid currentcolor;
+    background: transparent;
+  }
+
+  .lede {
+    margin: 16px 0 0;
+    color: var(--fg-soft);
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .actions a {
+    display: inline-flex;
+    height: 42px;
+    align-items: center;
+    gap: 8px;
+    padding: 0 18px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    transition:
+      transform 0.25s var(--spring),
+      border-color 0.2s;
+  }
+
+  .actions a:active {
+    transform: scale(0.97);
+  }
+
+  .actions a.primary {
+    border-color: var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  .actions a:not(.primary):hover {
+    border-color: var(--fg);
+  }
+
+  .actions small {
+    font-weight: 500;
+    opacity: 0.6;
+  }
+
+  .cover {
+    overflow: hidden;
+    margin: 28px 0 0;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg-elevated);
+  }
+
+  .cover :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  h2 {
+    margin: 32px 0 10px;
+    font: 650 18px/1.2 var(--display);
+    letter-spacing: -0.015em;
+  }
+
+  .facts {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 9px 24px;
+    margin: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .facts dt {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .facts dd {
+    margin: 0;
+    color: var(--fg);
+  }
+
+  .facts dd a {
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .facts dd a:hover {
+    color: var(--accent);
+  }
+
+  .project :global(.log) {
+    border-top: 1px solid var(--border);
+  }
+
+  .project :global(.entry) {
+    grid-template-columns: 72px 1fr;
+  }
+
+  .next {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 40px 0 0;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--border);
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .next a:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 480px) {
+    .facts {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+
+    .facts dd {
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .actions a {
+      transition: none;
+    }
+  }
+</style>

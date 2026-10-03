@@ -1,55 +1,180 @@
 ---
+import type { CollectionEntry } from "astro:content";
+
 interface Props {
-  date: string;
-  title: string;
-  href?: string;
-  class?: string;
+  work: CollectionEntry<"works">;
+  labels: string[];
 }
 
-const { date, title, href, class: className } = Astro.props;
+const { work, labels } = Astro.props;
+const statusLabel =
+  work.data.status.charAt(0).toUpperCase() + work.data.status.slice(1);
 ---
 
-{
-  href ? (
-    <a
-      href={href}
-      class:list={[
-        "flex items-center justify-between gap-4 rounded-[10px] border border-[var(--border)] bg-transparent p-4 text-inherit no-underline transition-all duration-300 hover:border-[var(--glass-border)] hover:bg-[var(--glass-active-bg)] hover:shadow-[var(--glass-shadow),_var(--glass-inset)] hover:backdrop-blur-[12px]",
-        className,
-      ]}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <span class="overflow-hidden font-semibold text-ellipsis whitespace-nowrap text-[var(--fg)]">
-        {title}
-      </span>
-      <span class="flex flex-shrink-0 items-center gap-2">
-        <span class="text-[13px] whitespace-nowrap text-[var(--muted)]">
-          {date}
+<li class:list={["row", { starred: Boolean(work.data.highlight) }]}>
+  <a class="name" href={work.data.primary.url}>
+    {
+      work.data.highlight && (
+        <span class="star" aria-label="Highlighted">
+          ★
         </span>
-        <span class="text-[13px] text-[var(--muted)]" aria-hidden="true">
-          →
-        </span>
-      </span>
-    </a>
-  ) : (
-    <div
-      class:list={[
-        "flex items-center justify-between gap-4 rounded-[10px] border border-[var(--border)] bg-transparent p-4 text-inherit no-underline transition-all duration-300 hover:border-[var(--glass-border)] hover:bg-[var(--glass-active-bg)] hover:shadow-[var(--glass-shadow),_var(--glass-inset)] hover:backdrop-blur-[12px]",
-        className,
-      ]}
-    >
-      <span class="overflow-hidden font-semibold text-ellipsis whitespace-nowrap text-[var(--fg)]">
-        {title}
-      </span>
-      <span class="flex flex-shrink-0 items-center gap-2">
-        <span class="text-[13px] whitespace-nowrap text-[var(--muted)]">
-          {date}
-        </span>
-        <span class="text-[13px] text-[var(--muted)]" aria-hidden="true">
-          →
-        </span>
-      </span>
-    </div>
-  )
-}
+      )
+    }
+    {work.data.name}
+    <i aria-hidden="true">↗</i>
+  </a>
+  <span class:list={["status", work.data.status]}>{statusLabel}</span>
+  <span class="summary">{work.data.summary}</span>
+  {
+    work.data.highlight && (
+      <span class="proof">{work.data.highlight.proof}</span>
+    )
+  }
+  <span class="meta">
+    <span>{labels.join(" · ")}</span>
+    <a href={`/projects/${work.id}/`}>details</a>
+  </span>
+</li>
+
+<style>
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .name {
+    display: inline-flex;
+    overflow-wrap: anywhere;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--display);
+    font-size: 15.5px;
+    font-weight: 600;
+  }
+
+  .name:hover {
+    color: var(--accent);
+  }
+
+  .row.starred .name {
+    font-weight: 700;
+  }
+
+  .name i {
+    color: var(--muted);
+    font-size: 12px;
+    font-style: normal;
+  }
+
+  .star {
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .status::before {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentcolor;
+    content: "";
+  }
+
+  .status.building {
+    color: var(--accent);
+  }
+
+  .status.live {
+    color: var(--live);
+  }
+
+  .status.maintained {
+    color: var(--muted-strong);
+  }
+
+  .status.archived {
+    color: var(--muted);
+  }
+
+  .status.archived::before {
+    border: 1px solid currentcolor;
+    background: transparent;
+  }
+
+  .summary {
+    grid-column: 1 / -1;
+    color: var(--fg-soft);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .proof {
+    grid-column: 1 / -1;
+    margin: 4px 0 2px;
+    padding-left: 10px;
+    border-left: 2px solid var(--accent);
+    color: var(--muted-strong);
+    font-size: 13px;
+  }
+
+  .meta {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .meta a {
+    color: var(--muted-strong);
+    font-weight: 600;
+  }
+
+  .meta a:hover {
+    color: var(--fg);
+  }
+
+  @media (min-width: 760px) {
+    .row {
+      grid-template-columns: 8.5rem minmax(0, 1fr) auto;
+      align-items: baseline;
+    }
+
+    .name {
+      order: 1;
+    }
+
+    .summary {
+      grid-column: auto;
+      order: 2;
+    }
+
+    .status {
+      order: 3;
+    }
+
+    .proof {
+      grid-column: 2 / -1;
+      order: 4;
+    }
+
+    .meta {
+      grid-column: 2 / -1;
+      order: 5;
+    }
+  }
+</style>

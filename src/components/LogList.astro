@@ -1,0 +1,116 @@
+---
+import type { LogItem } from "@lib/log";
+
+interface Props {
+  entries: LogItem[];
+  showProject?: boolean;
+}
+
+const { entries, showProject = true } = Astro.props;
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { month: "short", day: "2-digit" });
+---
+
+<ul class="log">
+  {
+    entries.map((entry) => (
+      <li class="entry" id={`log-${entry.kind.toLowerCase()}-${entry.id}`}>
+        <time datetime={entry.date.toISOString()}>
+          {formatDate(entry.date)}
+        </time>
+        <div class="content">
+          <div class="kind">
+            {entry.kind} {entry.featured && <span class="featured">★</span>}
+          </div>
+          {entry.href ? (
+            <a class="title-link" href={entry.href}>
+              <h3>{entry.title}</h3>
+            </a>
+          ) : (
+            <h3>{entry.title}</h3>
+          )}
+          {entry.description && <p>{entry.description}</p>}
+          {showProject && entry.projectName && entry.projectId && (
+            <div class="project">
+              on{" "}
+              <a href={`/projects/${entry.projectId}/`}>{entry.projectName}</a>
+            </div>
+          )}
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .log {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 4px 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  time {
+    padding-top: 3px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .kind {
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .title-link:hover h3 {
+    color: var(--accent);
+  }
+
+  .content > p {
+    margin: 2px 0 0;
+    color: var(--fg-soft);
+    font-size: 14px;
+  }
+
+  .project {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .project a {
+    color: var(--muted-strong);
+    font-weight: 600;
+  }
+
+  .project a:hover {
+    color: var(--fg);
+  }
+
+  .featured {
+    color: var(--accent);
+  }
+
+  @media (min-width: 760px) {
+    .entry {
+      grid-template-columns: 72px 1fr;
+    }
+  }
+</style>

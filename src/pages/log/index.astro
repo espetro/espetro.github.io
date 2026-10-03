@@ -1,0 +1,97 @@
+---
+import Layout from "@layouts/Layout.astro";
+import LogList from "@components/LogList.astro";
+import NewsletterCallout from "@components/NewsletterCallout.astro";
+import { createLogItems } from "@lib/log";
+import { publishedWorks } from "@lib/works";
+import { getCollection } from "astro:content";
+
+const [allWorks, posts, notes] = await Promise.all([
+  getCollection("works"),
+  getCollection("posts"),
+  getCollection("notes"),
+]);
+const works = publishedWorks(allWorks);
+const entries = createLogItems(
+  posts.filter((post) => !post.data.draft),
+  notes,
+  works,
+);
+const byYear = new Map<string, typeof entries>();
+
+for (const entry of entries) {
+  const year = String(entry.date.getFullYear());
+  const group = byYear.get(year) ?? [];
+  group.push(entry);
+  byYear.set(year, group);
+}
+
+const years = [...byYear.keys()].sort((a, b) => Number(b) - Number(a));
+---
+
+<Layout
+  title="Log"
+  description="Notes and essays on products, AI, agents, and the work of shipping."
+>
+  <div class="log-page">
+    <a class="back" href="/">← Home</a>
+    <h1>Log</h1>
+    <p class="intro">
+      Notes and essays on products, AI, agents, and the work of shipping.
+    </p>
+    <p class="anno">
+      Posts are published at immutable /log/[id] paths; short notes are authored
+      in content/notes and shown inline.
+    </p>
+    <NewsletterCallout />
+    {
+      years.map((year) => (
+        <section class="year">
+          <h2>{year}</h2>
+          <LogList entries={byYear.get(year) ?? []} />
+        </section>
+      ))
+    }
+  </div>
+</Layout>
+
+<style>
+  .log-page {
+    max-width: 680px;
+    padding-top: 96px;
+  }
+
+  .back {
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .back:hover {
+    color: var(--fg);
+  }
+
+  h1 {
+    margin: 20px 0 8px;
+    font: 700 42px/1.05 var(--display);
+    letter-spacing: -0.035em;
+  }
+
+  .intro {
+    margin: 0;
+    color: var(--fg-soft);
+    font-size: 16px;
+  }
+
+  .year {
+    margin-top: 32px;
+  }
+
+  .year h2 {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font: 700 11px/1.4 var(--text);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+</style>
