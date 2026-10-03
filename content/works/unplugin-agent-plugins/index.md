@@ -4,8 +4,8 @@ summary: Wire AI agents into any JS bundler.
 status: maintained
 scale: tool
 since: 2026-06-08
-primary:
-  { label: Source, url: https://github.com/espetro/unplugin-agent-plugins }
+primary: { label: Source, url: https://github.com/sigilco/agentplugins }
+repo: sigilco/agentplugins
 labels: { surface: library, source: open }
 stack: [TypeScript, unplugin]
 ---

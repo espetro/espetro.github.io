@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+import repos from "../data/repos.json";
 
 export const workScaleOrder = [
   "product",
@@ -31,39 +32,17 @@ export const formatSurfaceLabel = (
 export const publishedWorks = (works: CollectionEntry<"works">[]) =>
   works.filter((work) => !work.data.draft);
 
-export const workRowOrder: Record<(typeof workScaleOrder)[number], string[]> = {
-  product: [
-    "brioso",
-    "calca",
-    "clar",
-    "voce",
-    "dits",
-    "stash",
-    "klk",
-    "chezy",
-    "me-ai",
-    "danzabilidad",
-  ],
-  tool: [
-    "intl-ai",
-    "cauce",
-    "mcp-sim",
-    "just-ai",
-    "unplugin-agent-plugins",
-    "nira",
-    "play-ai",
-    "refined",
-    "privacy-indicators",
-  ],
-  model: ["htlm", "kev", "wowplay"],
-  experiment: [
-    "relay",
-    "hackbarna-2025",
-    "minimal-ai-paas",
-    "ai-summary-telegram",
-    "noema-ios",
-    "pycourse",
-  ],
+const workStatusOrder = ["building", "live", "maintained", "archived"] as const;
+const repoCreatedAt = new Map(
+  repos.repos.map(({ id, createdAt }) => [id, Date.parse(createdAt)] as const),
+);
+
+const workDate = (work: CollectionEntry<"works">) => {
+  const date =
+    work.data.since?.valueOf() ??
+    (work.data.repo ? repoCreatedAt.get(work.data.repo.id) : undefined);
+
+  return date !== undefined && Number.isFinite(date) ? date : undefined;
 };
 
 export const sortWorks = (works: CollectionEntry<"works">[]) =>
@@ -73,16 +52,26 @@ export const sortWorks = (works: CollectionEntry<"works">[]) =>
       workScaleOrder.indexOf(b.data.scale);
     if (scaleOrder !== 0) return scaleOrder;
 
-    const highlightOrder =
-      (a.data.highlight?.order ?? Number.MAX_SAFE_INTEGER) -
-      (b.data.highlight?.order ?? Number.MAX_SAFE_INTEGER);
-    if (highlightOrder !== 0) return highlightOrder;
+    const aHighlightOrder = a.data.highlight?.order;
+    const bHighlightOrder = b.data.highlight?.order;
+    if (aHighlightOrder !== bHighlightOrder) {
+      if (aHighlightOrder === undefined) return 1;
+      if (bHighlightOrder === undefined) return -1;
+      return aHighlightOrder - bHighlightOrder;
+    }
 
-    const order = workRowOrder[a.data.scale];
-    const aIndex = order.indexOf(a.id);
-    const bIndex = order.indexOf(b.id);
-    return (
-      (aIndex === -1 ? Number.MAX_SAFE_INTEGER : aIndex) -
-      (bIndex === -1 ? Number.MAX_SAFE_INTEGER : bIndex)
-    );
+    const statusOrder =
+      workStatusOrder.indexOf(a.data.status) -
+      workStatusOrder.indexOf(b.data.status);
+    if (statusOrder !== 0) return statusOrder;
+
+    const aDate = workDate(a);
+    const bDate = workDate(b);
+    if (aDate !== bDate) {
+      if (aDate === undefined) return 1;
+      if (bDate === undefined) return -1;
+      return bDate - aDate;
+    }
+
+    return a.data.name.localeCompare(b.data.name);
   });

@@ -50,8 +50,8 @@ const compactStars = (stars: number) =>
   </div>
   <p class="anno">
     Reads src/data/contributions.json, groups by repository, sorts by latest
-    activity, and shows three repos per page. Autoplay pauses on hover or focus;
-    reduced motion shows every page.
+    activity, and shows three repos per page with up to three PRs per repo.
+    Autoplay pauses on hover or focus; reduced motion shows every page.
   </p>
   {
     pages.length > 0 ? (
@@ -88,7 +88,7 @@ const compactStars = (stars: number) =>
                       ★ {compactStars(prs[0].repoStars)}
                     </span>
                     <div class="prs">
-                      {prs.map((pr) => (
+                      {prs.slice(0, 3).map((pr) => (
                         <a href={pr.url} target="_blank" rel="noreferrer">
                           <span>{pr.title}</span>
                           <span
@@ -101,6 +101,16 @@ const compactStars = (stars: number) =>
                           </span>
                         </a>
                       ))}
+                      {prs.length > 3 && (
+                        <a
+                          class="more"
+                          href={`https://github.com/${repo}/pulls?q=is%3Apr+author%3Aespetro`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          +{prs.length - 3} more
+                        </a>
+                      )}
                     </div>
                   </li>
                 );
@@ -309,6 +319,7 @@ const compactStars = (stars: number) =>
     display: grid;
     grid-template-columns: 36px minmax(0, 1fr) auto;
     align-items: start;
+    align-content: start;
     gap: 2px 12px;
     padding: 12px 0;
     border-bottom: 1px solid var(--border);
@@ -347,6 +358,11 @@ const compactStars = (stars: number) =>
     gap: 2px;
     color: var(--fg-soft);
     font-size: 13px;
+  }
+
+  .prs .more {
+    color: var(--muted);
+    font-size: 12px;
   }
 
   .prs a {
