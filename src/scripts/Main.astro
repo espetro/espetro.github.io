@@ -1,3 +1,214 @@
----
-// Main script initialization
----
+<script>
+  let hintTimer: number | undefined;
+
+  const prefersReducedMotion = () =>
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const sendGiscusTheme = (theme: "light" | "dark") => {
+    document
+      .querySelector<HTMLIFrameElement>("iframe.giscus-frame")
+      ?.contentWindow?.postMessage(
+        { giscus: { setConfig: { theme } } },
+        "https://giscus.app",
+      );
+  };
+
+  const applyTheme = () => {
+    let storedTheme: string | null = null;
+
+    try {
+      storedTheme = localStorage.getItem("theme");
+    } catch {
+      storedTheme = null;
+    }
+
+    const isDark = storedTheme
+      ? storedTheme === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.classList.toggle("dark", isDark);
+    sendGiscusTheme(isDark ? "dark" : "light");
+  };
+
+  const setEggOpen = (isOpen: boolean) => {
+    const panel = document.getElementById("egg");
+    if (!panel) return;
+
+    panel.classList.toggle("open", isOpen);
+    panel.inert = !isOpen;
+    panel.setAttribute("aria-hidden", String(!isOpen));
+    document
+      .querySelectorAll<HTMLElement>("[data-egg]")
+      .forEach((trigger) =>
+        trigger.setAttribute("aria-expanded", String(isOpen)),
+      );
+
+    if (isOpen) {
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+      });
+    }
+  };
+
+  const initEgg = () => {
+    const panel = document.getElementById("egg");
+    if (!panel) return;
+
+    const isOpen = panel.classList.contains("open");
+    panel.inert = !isOpen;
+    panel.setAttribute("aria-hidden", String(!isOpen));
+    document
+      .querySelectorAll<HTMLElement>("[data-egg]")
+      .forEach((trigger) =>
+        trigger.setAttribute("aria-expanded", String(isOpen)),
+      );
+
+    const notes = document.querySelector<HTMLInputElement>("#egg-notes");
+    const grid = document.querySelector<HTMLInputElement>("#egg-grid");
+
+    try {
+      if (notes) notes.checked = localStorage.getItem("egg-notes") === "1";
+      if (grid) grid.checked = localStorage.getItem("egg-grid") === "1";
+    } catch {
+      if (notes) notes.checked = false;
+      if (grid) grid.checked = false;
+    }
+
+    document.body.classList.toggle("show-anno", notes?.checked ?? false);
+    document.body.classList.toggle("show-grid", grid?.checked ?? false);
+
+    if (hintTimer !== undefined) window.clearTimeout(hintTimer);
+    const stop = document.querySelector<HTMLButtonElement>(".stop");
+    if (!stop || prefersReducedMotion()) return;
+
+    let hintSeen = false;
+    try {
+      hintSeen = localStorage.getItem("egg-hint") === "1";
+    } catch {
+      hintSeen = false;
+    }
+
+    if (!hintSeen) {
+      hintTimer = window.setTimeout(() => {
+        if (!document.body.contains(stop)) return;
+        stop.classList.add("hint");
+        try {
+          localStorage.setItem("egg-hint", "1");
+        } catch {
+          hintTimer = undefined;
+        }
+        window.setTimeout(() => stop.classList.remove("hint"), 1200);
+      }, 5000);
+    }
+  };
+
+  const toggleTheme = (button: HTMLButtonElement) => {
+    const root = document.documentElement;
+    const bounds = button.getBoundingClientRect();
+    const x = bounds.left + bounds.width / 2;
+    const y = bounds.top + bounds.height / 2;
+    const radius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y),
+    );
+
+    const flip = () => {
+      const isDark = root.classList.toggle("dark");
+      try {
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      } catch {
+        sendGiscusTheme(isDark ? "dark" : "light");
+        return;
+      }
+      sendGiscusTheme(isDark ? "dark" : "light");
+    };
+
+    if (!document.startViewTransition || prefersReducedMotion()) {
+      flip();
+      return;
+    }
+
+    root.classList.add("theme-transitioning");
+    try {
+      const transition = document.startViewTransition(flip);
+      transition.ready
+        .then(() => {
+          root.animate(
+            {
+              clipPath: [
+                `circle(0px at ${x}px ${y}px)`,
+                `circle(${radius}px at ${x}px ${y}px)`,
+              ],
+            },
+            {
+              duration: 550,
+              easing: "cubic-bezier(.32,.72,0,1)",
+              pseudoElement: "::view-transition-new(root)",
+            },
+          );
+        })
+        .catch(() => undefined);
+      const clearTransitionClass = () =>
+        root.classList.remove("theme-transitioning");
+      transition.finished.then(clearTransitionClass, clearTransitionClass);
+    } catch {
+      root.classList.remove("theme-transitioning");
+      flip();
+    }
+  };
+
+  const initialize = () => {
+    applyTheme();
+    initEgg();
+    if (window.location.hash === "#egg") setEggOpen(true);
+  };
+
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+
+    if (event.target.closest("[data-egg]")) {
+      const panel = document.getElementById("egg");
+      if (panel) setEggOpen(!panel.classList.contains("open"));
+      return;
+    }
+
+    if (event.target.closest(".egg-close")) {
+      setEggOpen(false);
+      return;
+    }
+
+    const themeButton = event.target.closest<HTMLButtonElement>(
+      "[data-theme-toggle]",
+    );
+    if (themeButton) toggleTheme(themeButton);
+  });
+
+  document.addEventListener("change", (event) => {
+    if (!(event.target instanceof HTMLInputElement)) return;
+
+    const className =
+      event.target.id === "egg-notes"
+        ? "show-anno"
+        : event.target.id === "egg-grid"
+          ? "show-grid"
+          : undefined;
+    if (!className) return;
+
+    try {
+      localStorage.setItem(event.target.id, event.target.checked ? "1" : "0");
+    } catch {
+      document.body.classList.toggle(className, event.target.checked);
+      return;
+    }
+    document.body.classList.toggle(className, event.target.checked);
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setEggOpen(false);
+  });
+  document.addEventListener("astro:before-swap", () => {
+    if (hintTimer !== undefined) window.clearTimeout(hintTimer);
+  });
+  document.addEventListener("astro:page-load", initialize);
+  initialize();
+</script>

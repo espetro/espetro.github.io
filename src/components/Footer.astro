@@ -1,44 +1,140 @@
 ---
 import { SITE, SOCIALS } from "@consts";
 
-const github = SOCIALS.find((s) => s.NAME === "GitHub")?.HREF ?? "#";
-const twitter = SOCIALS.find((s) => s.NAME === "Twitter")?.HREF ?? "#";
-const linkedin = SOCIALS.find((s) => s.NAME === "LinkedIn")?.HREF ?? "#";
+import reposCache from "../data/repos.json";
 
-const currentYear = new Date().getFullYear();
-
-interface Link {
-  title: string;
-  href: string;
+interface Props {
+  showNewsletter?: boolean;
 }
 
-const LINKS: Link[] = [
-  { title: "Email", href: `mailto:${SITE.EMAIL}` },
-  { title: "LinkedIn", href: linkedin },
-  { title: "X.com", href: twitter },
-  { title: "GitHub", href: github },
-  { title: "RSS", href: `/rss.xml` },
+const { showNewsletter = false } = Astro.props;
+const currentYear = new Date().getFullYear();
+const cachedDate = new Date(reposCache.generatedAt).toLocaleDateString("en-CA");
+const links = [
+  { title: "Email", href: `mailto:${SITE.EMAIL}`, external: false },
+  ...SOCIALS.map(({ NAME, HREF }) => ({
+    title: NAME === "Twitter" ? "X" : NAME,
+    href: HREF,
+    external: true,
+  })),
+  { title: "RSS", href: "/rss.xml", external: false },
+  { title: "llms.txt", href: "/llms.txt", external: false },
 ];
 ---
 
-<footer class="border-t border-(--border) py-6">
-  <div class="flex flex-col items-center gap-2">
-    <nav
-      class="flex flex-wrap justify-center gap-4"
-      aria-label="Footer navigation"
-    >
+<footer>
+  <div class="wrap">
+    {
+      showNewsletter && (
+        <div class="news">
+          <p>
+            <strong>Newsletter.</strong> Occasional notes on shipping AI
+            products: what worked, what broke.
+          </p>
+          <a class="subscribe" href={SITE.NEWSLETTER_URL}>
+            Subscribe
+          </a>
+        </div>
+      )
+    }
+    <nav class="links" aria-label="Footer links">
       {
-        LINKS.map(({ title, href }) => (
+        links.map(({ title, href, external }) => (
           <a
             href={href}
-            target="_blank"
-            class="text-[11px] text-[var(--muted)] no-underline [transition:color_0.3s_var(--easing)] hover:text-[var(--accent)]"
+            target={external ? "_blank" : undefined}
+            rel={external ? "noreferrer" : undefined}
           >
             {title}
           </a>
         ))
       }
     </nav>
-    <span class="text-[11px] text-[var(--muted)]">&copy; {currentYear}</span>
+    <p class="fresh">Repo data cached {cachedDate}</p>
+    <p class="copyright">&copy; {currentYear} Quino Terrasa</p>
   </div>
 </footer>
+
+<style>
+  footer {
+    margin-top: 40px;
+    border-top: 1px solid var(--border);
+    padding: 28px 0 60px;
+  }
+
+  .wrap {
+    width: min(100%, 1040px);
+    margin-inline: auto;
+    padding: 0 20px;
+  }
+
+  .news {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 18px;
+    border-radius: 16px;
+    background: var(--bg-elevated);
+  }
+
+  .news p {
+    max-width: 420px;
+    margin: 0;
+    color: var(--fg-soft);
+    font-size: 14px;
+  }
+
+  .news strong {
+    color: var(--fg);
+  }
+
+  .subscribe {
+    display: inline-flex;
+    height: 38px;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 600;
+    transition: transform 0.25s var(--spring);
+  }
+
+  .subscribe:active {
+    transform: scale(0.97);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 22px;
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .links a:hover {
+    color: var(--fg);
+  }
+
+  .fresh,
+  .copyright {
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .copyright {
+    margin-top: 4px;
+  }
+
+  @media (min-width: 760px) {
+    .wrap {
+      padding-inline: 32px;
+    }
+  }
+</style>

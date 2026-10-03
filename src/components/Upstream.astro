@@ -1,0 +1,470 @@
+---
+import contributions from "../data/contributions.json";
+
+interface Contribution {
+  title: string;
+  url: string;
+  repo: string;
+  repoStars: number;
+  state: "open" | "merged";
+  updatedAt: string;
+}
+
+const byRepo = new Map<string, Contribution[]>();
+
+for (const contribution of contributions.prs as Contribution[]) {
+  const group = byRepo.get(contribution.repo) ?? [];
+  group.push(contribution);
+  byRepo.set(contribution.repo, group);
+}
+
+const repos = [...byRepo.entries()]
+  .map(([repo, prs]) => ({
+    repo,
+    prs: prs.sort(
+      (a, b) =>
+        new Date(b.updatedAt).valueOf() - new Date(a.updatedAt).valueOf(),
+    ),
+  }))
+  .sort(
+    (a, b) =>
+      new Date(b.prs[0].updatedAt).valueOf() -
+      new Date(a.prs[0].updatedAt).valueOf(),
+  );
+
+const pages = Array.from({ length: Math.ceil(repos.length / 3) }, (_, index) =>
+  repos.slice(index * 3, index * 3 + 3),
+);
+
+const compactStars = (stars: number) =>
+  new Intl.NumberFormat("en", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(stars);
+---
+
+<section id="upstream" class="section">
+  <div class="section-head">
+    <h2>Upstream <small>open-source PRs, by repo</small></h2>
+    <a href="https://github.com/pulls?q=author%3Aespetro">All on GitHub ↗</a>
+  </div>
+  <p class="anno">
+    Reads src/data/contributions.json, groups by repository, sorts by latest
+    activity, and shows three repos per page with up to three PRs per repo.
+    Autoplay pauses on hover or focus; reduced motion shows every page.
+  </p>
+  {
+    pages.length > 0 ? (
+      <div
+        class="upstream"
+        data-upstream
+        tabindex="0"
+        aria-label="Open-source contributions"
+      >
+        <div class="stack">
+          {pages.map((page, pageIndex) => (
+            <ul class:list={["page", { active: pageIndex === 0 }]}>
+              {page.map(({ repo, prs }) => {
+                const owner = repo.split("/")[0];
+
+                return (
+                  <li class="repo">
+                    <img
+                      src={`https://github.com/${owner}.png?size=72`}
+                      alt=""
+                      width="36"
+                      height="36"
+                      loading="lazy"
+                    />
+                    <a
+                      class="repo-link"
+                      href={`https://github.com/${repo}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {repo}
+                    </a>
+                    <span class="stars">
+                      ★ {compactStars(prs[0].repoStars)}
+                    </span>
+                    <div class="prs">
+                      {prs.slice(0, 3).map((pr) => (
+                        <a href={pr.url} target="_blank" rel="noreferrer">
+                          <span>{pr.title}</span>
+                          <span
+                            class:list={[
+                              "status",
+                              { merged: pr.state === "merged" },
+                            ]}
+                          >
+                            {pr.state}
+                          </span>
+                        </a>
+                      ))}
+                      {prs.length > 3 && (
+                        <a
+                          class="more"
+                          href={`https://github.com/${repo}/pulls?q=is%3Apr+author%3Aespetro`}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          +{prs.length - 3} more
+                        </a>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          ))}
+        </div>
+        {pages.length > 1 && (
+          <div class="dots" role="group" aria-label="Contribution pages">
+            {pages.map((_, index) => (
+              <button
+                type="button"
+                aria-label={`Page ${index + 1}`}
+                aria-pressed={index === 0 ? "true" : "false"}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    ) : (
+      <p class="empty">No cached open-source contributions.</p>
+    )
+  }
+</section>
+
+<script>
+  const rootSelector = "[data-upstream]";
+  let cleanup = () => {};
+
+  const initializeUpstream = () => {
+    cleanup();
+    const root = document.querySelector<HTMLElement>(rootSelector);
+    if (!root) return;
+
+    const pages = [...root.querySelectorAll<HTMLElement>(".page")];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>(".dots button")];
+    if (pages.length < 2 || dots.length !== pages.length) return;
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    let activeIndex = 0;
+    let timer: number | undefined;
+    let hovered = false;
+    let focused = false;
+
+    const stop = () => {
+      if (timer !== undefined) window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    const go = (nextIndex: number) => {
+      pages[activeIndex].classList.remove("active");
+      dots[activeIndex].setAttribute("aria-pressed", "false");
+      activeIndex = (nextIndex + pages.length) % pages.length;
+      pages[activeIndex].classList.add("active", "enter");
+      dots[activeIndex].setAttribute("aria-pressed", "true");
+    };
+
+    const start = () => {
+      stop();
+      if (
+        !hovered &&
+        !focused &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        timer = window.setInterval(() => go(activeIndex + 1), 4000);
+      }
+    };
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener(
+        "click",
+        () => {
+          go(index);
+          start();
+        },
+        { signal },
+      );
+    });
+    root.addEventListener(
+      "mouseenter",
+      () => {
+        hovered = true;
+        stop();
+      },
+      { signal },
+    );
+    root.addEventListener(
+      "mouseleave",
+      () => {
+        hovered = false;
+        start();
+      },
+      { signal },
+    );
+    root.addEventListener(
+      "focusin",
+      () => {
+        focused = true;
+        stop();
+      },
+      { signal },
+    );
+    root.addEventListener(
+      "focusout",
+      (event) => {
+        if (root.contains(event.relatedTarget as Node | null)) return;
+        focused = false;
+        start();
+      },
+      { signal },
+    );
+    start();
+
+    cleanup = () => {
+      stop();
+      controller.abort();
+    };
+  };
+
+  document.addEventListener("astro:before-swap", () => cleanup());
+  document.addEventListener("astro:page-load", initializeUpstream);
+  initializeUpstream();
+</script>
+
+<style>
+  .section {
+    padding: 34px 0 8px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--fg);
+    font: 650 22px/1.1 var(--display);
+    letter-spacing: -0.02em;
+  }
+
+  h2 small {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font: 500 12px var(--text);
+    font-style: normal;
+  }
+
+  .section-head > a {
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .section-head > a:hover {
+    color: var(--fg);
+  }
+
+  .upstream {
+    position: relative;
+  }
+
+  .stack {
+    display: grid;
+  }
+
+  .page {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    list-style: none;
+  }
+
+  .page.active {
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .page.active.enter {
+    animation: page-enter 0.55s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  @keyframes page-enter {
+    from {
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(6px);
+    }
+
+    to {
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+  }
+
+  .repo {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    align-items: start;
+    align-content: start;
+    gap: 2px 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .repo img {
+    grid-row: span 2;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--bg-elevated);
+  }
+
+  .repo-link {
+    overflow-wrap: anywhere;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .repo-link:hover {
+    color: var(--accent);
+  }
+
+  .stars {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .prs {
+    display: flex;
+    grid-column: 2 / -1;
+    flex-direction: column;
+    gap: 2px;
+    color: var(--fg-soft);
+    font-size: 13px;
+  }
+
+  .prs .more {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .prs a {
+    display: flex;
+    min-width: 0;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .prs a:hover > span:first-child {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+
+  .prs a > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .status {
+    flex: none;
+    padding: 1px 6px;
+    border: 1px solid var(--border-strong);
+    border-radius: 5px;
+    color: var(--muted-strong);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .status.merged {
+    border-color: transparent;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .dots button {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: var(--border-strong);
+    cursor: pointer;
+    transition:
+      width 0.3s var(--easing),
+      background 0.3s;
+  }
+
+  .dots button[aria-pressed="true"] {
+    width: 18px;
+    background: var(--accent);
+  }
+
+  .empty {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media (min-width: 760px) {
+    h2 small {
+      display: inline;
+      margin: 0 0 0 10px;
+    }
+
+    .stack > .page {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-content: start;
+      gap: 0 32px;
+    }
+
+    .page .repo {
+      border-top: 1px solid var(--border);
+      border-bottom: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack {
+      display: block;
+    }
+
+    .stack > .page {
+      visibility: visible;
+      pointer-events: auto;
+      animation: none !important;
+    }
+
+    .dots {
+      display: none;
+    }
+  }
+</style>

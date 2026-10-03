@@ -1,153 +1,235 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Marquee from "@components/Marquee.astro";
-import GlassRow from "@components/GlassRow.astro";
-import WorkRow from "@components/WorkRow.astro";
-import ActivitySection from "@components/ActivitySection.astro";
-import Contributions from "@components/Contributions.astro";
-import CurrentlyWorkingOn from "@components/CurrentlyWorkingOn.astro";
+import Upstream from "@components/Upstream.astro";
+import WorkSection from "@components/WorkSection.astro";
+import LogList from "@components/LogList.astro";
 import { HOME, SITE } from "@consts";
 import { getCollection } from "astro:content";
-import { sortByDateTimeDesc } from "@lib/utils";
-import { currentProjects, ossTools } from "@data/landing-data";
+import { createLogItems } from "@lib/log";
+import { publishedWorks } from "@lib/works";
 
-const allPosts = (await getCollection("posts"))
-  .filter((p) => !p.data.draft)
-  .sort(sortByDateTimeDesc);
-
-const posts = allPosts.slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
-
-const allWork = (await getCollection("work")).sort(sortByDateTimeDesc);
-const work = allWork.slice(0, 2);
-
-/**
- * @deprecated Move to a separate component
- */
-function formatDate(date: Date): string {
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-}
-
-/**
- * @deprecated Move to a separate component
- */
-function formatShortDate(date: Date): string {
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-  });
-}
+const [allWorks, allPosts, notes] = await Promise.all([
+  getCollection("works"),
+  getCollection("posts"),
+  getCollection("notes"),
+]);
+const works = publishedWorks(allWorks);
+const posts = allPosts.filter((post) => !post.data.draft);
+const logEntries = createLogItems(posts, notes, works).slice(0, 4);
 ---
 
 <Layout title="Home" description={HOME.DESCRIPTION}>
-  <div class="flex flex-col gap-6">
-    <!-- Section 1: Bio Intro -->
-    <section class="bio animate flex flex-col gap-4">
-      <h1 class="text-fg text-[30px] font-bold leading-tight">Hey, I'm Quino</h1>
-      <p class="text-fg text-[15px] leading-[1.7]">
-        Product & Forward-Deployed Engineer — I build and ship agentic AI
-        products end-to-end. Combining AI engineering and full-stack product
-        craft to ship mobile and web experiences that feel great and work
-        brilliantly.
-      </p>
-      <div class="flex flex-wrap items-center gap-3">
-        <a
-          href="/posts"
-          class="text-fg hover:text-accent inline-flex items-center rounded-full px-2 py-2 text-[13px] font-semibold no-underline transition-colors duration-300"
-          style="transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1)"
-          >Read the blog</a
-        >
-        <a
-          href={SITE.NEWSLETTER_URL}
-          data-track="newsletter_cta"
-          class="bg-accent text-bg inline-flex items-center rounded-full px-4 py-2 text-[13px] font-semibold no-underline transition-transform duration-300"
-          style="transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1)"
-          >Read the newsletter</a
-        >
-      </div>
-      <div>
-        <a
-          href={`mailto:${SITE.EMAIL}`}
-          data-track="reach_out_cta"
-          class="border-(--border) text-fg hover:border-accent inline-flex items-center rounded-full border px-4 py-2 text-[13px] font-semibold no-underline transition-colors duration-300"
-          style="transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1)"
-          >Reach out</a
-        >
-      </div>
-      <div class="mt-2">
-        <Marquee />
-      </div>
-    </section>
+  <section class="hero" id="about">
+    <h1>
+      Quino <i>Terrasa</i><button
+        class="stop"
+        type="button"
+        data-egg
+        aria-label="Open the back room"
+        aria-controls="egg"
+        aria-expanded="false">.</button
+      >
+    </h1>
+    <p class="role">Product &amp; Forward-Deployed Engineer</p>
+    <p class="thesis">
+      I take AI ideas from a real user problem to a shipped product:
+      <em>agents</em>, <em>on-device models</em> and
+      <em>tools developers install</em>. Some ship in a weekend, some run for
+      months. All of it is on this page.
+    </p>
+    <div class="avail">
+      <a
+        class="button"
+        href={`mailto:${SITE.EMAIL}`}
+        data-track="reach_out_cta"
+      >
+        Reach out
+      </a>
+      <a
+        class="text-link"
+        href={SITE.NEWSLETTER_URL}
+        data-track="newsletter_cta"
+      >
+        or read the newsletter
+      </a>
+    </div>
+  </section>
 
-    <!-- Section 2: Currently Working On -->
-    <section class="projects-preview animate">
-      <CurrentlyWorkingOn projects={currentProjects} ossTools={ossTools} />
-    </section>
+  <Upstream />
+  <WorkSection works={works} />
 
-    <!-- Section 3: Contributions -->
-    <Contributions />
-
-    <!-- Section 4: Activity -->
-    <ActivitySection />
-
-    <!-- Section 5: Posts Preview -->
-    <section class="posts-preview animate flex flex-col gap-4">
-      <div class="flex items-center justify-between gap-4">
-        <h2 class="text-fg text-[19px] font-semibold">Posts</h2>
-        <a
-          href="/posts"
-          class="text-muted hover:text-accent text-[13px] no-underline transition-colors duration-300"
-          >View all posts →</a
-        >
-      </div>
-      <div class="flex flex-col gap-2">
-        {
-          posts.length > 0 ? (
-            posts.map((post) => (
-              <GlassRow
-                date={formatDate(post.data.date)}
-                title={post.data.title}
-                href={`/posts/${post.id}`}
-              />
-            ))
-          ) : (
-            <p class="text-muted text-[13px] italic">No posts yet.</p>
-          )
-        }
-      </div>
-    </section>
-
-    <!-- Section 6: Work Preview -->
-    {
-      allWork.length > 0 && (
-        <section class="work-preview animate flex flex-col gap-4">
-          <div class="flex items-center justify-between gap-4">
-            <h2 class="text-fg text-[19px] font-semibold">Work</h2>
-            <a
-              href="/work"
-              class="text-muted hover:text-accent text-[13px] no-underline transition-colors duration-300"
-            >
-              View all work →
-            </a>
-          </div>
-          <div class="flex flex-col gap-2">
-            {work.length > 0 ? (
-              work.map((item) => (
-                <WorkRow
-                  date={formatShortDate(item.data.date)}
-                  title={item.data.title}
-                  href={item.data.url}
-                />
-              ))
-            ) : (
-              <p class="text-muted text-[13px] italic">No work entries yet.</p>
-            )}
-          </div>
-        </section>
-      )
-    }
-  </div>
+  <section id="log" class="log-section">
+    <div class="section-head">
+      <h2>Log</h2>
+      <a href="/log/">All entries →</a>
+    </div>
+    <p class="anno">
+      Entries combine owner-written notes from content/notes and posts from
+      content/blog. Notes stay inline; posts link to /log/[id]. Featured posts
+      carry a star.
+    </p>
+    <LogList entries={logEntries} />
+  </section>
 </Layout>
+
+<style>
+  .hero {
+    max-width: 640px;
+    padding: 96px 0 28px;
+  }
+
+  .hero h1 {
+    margin: 0;
+    font: 700 42px/1.02 var(--display);
+    letter-spacing: -0.035em;
+  }
+
+  .hero h1 i {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .role {
+    margin: 6px 0 18px;
+    color: var(--muted-strong);
+    font-weight: 500;
+  }
+
+  .thesis {
+    margin: 0;
+    color: var(--fg-soft);
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  .thesis em {
+    color: var(--fg);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .avail {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    margin-top: 22px;
+  }
+
+  .button {
+    display: inline-flex;
+    height: 38px;
+    align-items: center;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--fg);
+    color: var(--bg);
+    font-size: 13px;
+    font-weight: 600;
+    transition: transform 0.25s var(--spring);
+  }
+
+  .button:active {
+    transform: scale(0.97);
+  }
+
+  .text-link {
+    border-bottom: 1px solid var(--border-strong);
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .text-link:hover {
+    color: var(--fg);
+  }
+
+  .stop {
+    display: inline-block;
+    padding: 0 0 0 1px;
+    border: 0;
+    background: none;
+    color: var(--accent);
+    cursor: pointer;
+    font: inherit;
+    transition: transform 0.4s var(--spring);
+  }
+
+  .stop:hover,
+  .stop[aria-expanded="true"] {
+    transform: translateY(-3px) scale(1.25);
+  }
+
+  .stop.hint {
+    animation: hint 1.1s 1 both;
+  }
+
+  @keyframes hint {
+    0%,
+    100% {
+      transform: none;
+    }
+
+    30% {
+      transform: translateY(-6px);
+    }
+
+    55% {
+      transform: none;
+    }
+
+    70% {
+      transform: translateY(-2px);
+    }
+  }
+
+  .log-section {
+    padding: 34px 0 8px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--fg);
+    font: 650 22px/1.1 var(--display);
+    letter-spacing: -0.02em;
+  }
+
+  .section-head > a {
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .section-head > a:hover {
+    color: var(--fg);
+  }
+
+  @media (min-width: 760px) {
+    .hero {
+      padding: 128px 0 36px;
+    }
+
+    .hero h1 {
+      font-size: 60px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stop {
+      transition: none;
+    }
+
+    .stop.hint {
+      animation: none;
+    }
+  }
+</style>

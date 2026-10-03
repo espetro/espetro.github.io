@@ -1,13 +1,7 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import Container from "@components/Container.astro";
 import Speaking from "@components/Speaking.astro";
 import { SITE } from "@consts";
-
-const HOME = {
-  TITLE: "About",
-  DESCRIPTION: "About — experience, interests, and what drives me",
-};
 
 interface Experience {
   company: string;
@@ -45,32 +39,23 @@ const experience: Record<string, Experience[]> = {
 };
 ---
 
-<Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
-  <Container>
-    <section class="mb-10 flex justify-center">
-      <div class="h-70 w-70">
-        <div
-          class="photo-wrapper group relative h-full w-full overflow-hidden rounded-lg"
-        >
-          <img
-            src="/profile.jpg"
-            alt="Profile photo"
-            class="absolute inset-0 h-full w-full object-cover [transition:opacity_0.4s_var(--easing)] group-hover:opacity-0"
-          />
-          <img
-            src="/avatar.jpg"
-            alt="Avatar"
-            class="absolute inset-0 h-full w-full object-cover opacity-0 [transition:opacity_0.4s_var(--easing)] group-hover:opacity-100"
-          />
-        </div>
+<Layout
+  title="About"
+  description="About — experience, interests, and what drives me"
+>
+  <div class="about">
+    <a class="back" href="/">← Home</a>
+    <section class="photos" aria-label="Portrait">
+      <div class="photo-wrapper">
+        <img src="/profile.jpg" alt="Quino Terrasa" />
+        <img class="avatar" src="/avatar.jpg" alt="Illustrated avatar" />
       </div>
     </section>
 
-    <section class="bio-section animate mb-10">
-      <h2 class="text-fg mb-4 font-semibold text-(--font-size-h2)">
-        Beyond Work
-      </h2>
-      <p class="text-fg-soft leading-relaxed text-(--font-size-body)">
+    <section class="bio-section">
+      <h1>About</h1>
+      <h2>Beyond Work</h2>
+      <p>
         I'm always learning a new language — right now Arabic, after Portuguese,
         Italian, and Catalan. I love trying unfamiliar food, especially anything
         spicy, and then figuring out how to cook it at home. Most of my side
@@ -78,42 +63,157 @@ const experience: Record<string, Experience[]> = {
       </p>
     </section>
 
-    <section class="animate mt-16">
-      <h2 class="mb-6 font-semibold text-(--font-size-h2)">Experience</h2>
-
+    <section class="experience-section">
+      <h2>Experience</h2>
       {
         Object.entries(experience).map(([label, items]) => (
-          <div class="mb-8">
-            <h3 class="mb-2 font-semibold tracking-wider text-(--font-size-meta) uppercase">
-              {label}
-            </h3>
-            <div class="overflow-hidden rounded-[14px] border border-(--border) bg-(--bg)">
-              {items.map((item, i) => (
-                <>
-                  <div class="p-6">
-                    <span class="mb-1 block font-mono text-[11px] tracking-wider text-(--muted) uppercase">
-                      {item.period}
-                    </span>
-                    <h4 class="mb-1 font-semibold text-(--fg)">
-                      {item.company}
-                    </h4>
-                    <p class="mb-2 font-medium text-(--fg-soft)">{item.role}</p>
-                    <p class="leading-relaxed text-(--fg-soft)">
-                      {item.description}
-                    </p>
-                  </div>
-                  {i < items.length - 1 && (
-                    <hr class="m-0 border-0 border-t border-(--border)" />
-                  )}
-                </>
+          <div class="experience-group">
+            <h3>{label}</h3>
+            <div class="experience">
+              {items.map((item) => (
+                <article>
+                  <time>{item.period}</time>
+                  <h4>{item.company}</h4>
+                  <p class="role">{item.role}</p>
+                  <p>{item.description}</p>
+                </article>
               ))}
             </div>
           </div>
         ))
       }
     </section>
-    {
-      SITE.SHOW_SPEAKING && <Speaking />
-    }
-  </Container>
+    {SITE.SHOW_SPEAKING && <Speaking />}
+  </div>
 </Layout>
+
+<style>
+  .about {
+    max-width: 720px;
+    padding-top: 96px;
+  }
+
+  .back {
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .back:hover {
+    color: var(--fg);
+  }
+
+  .photos {
+    display: flex;
+    justify-content: center;
+    margin: 26px 0 42px;
+  }
+
+  .photo-wrapper {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg-elevated);
+  }
+
+  .photo-wrapper img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s var(--easing);
+  }
+
+  .photo-wrapper .avatar {
+    opacity: 0;
+  }
+
+  .photo-wrapper:hover .avatar {
+    opacity: 1;
+  }
+
+  .photo-wrapper:hover img:first-child {
+    opacity: 0;
+  }
+
+  h1,
+  .experience-section > h2 {
+    margin: 0 0 16px;
+    font: 700 30px/1.1 var(--display);
+    letter-spacing: -0.03em;
+  }
+
+  .bio-section h2 {
+    margin: 0 0 8px;
+    font: 650 20px/1.2 var(--display);
+  }
+
+  .bio-section p,
+  .experience article > p {
+    margin: 0;
+    color: var(--fg-soft);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .experience-section {
+    margin-top: 56px;
+  }
+
+  .experience-group {
+    margin-top: 28px;
+  }
+
+  .experience-group > h3 {
+    margin: 0 0 8px;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .experience {
+    border-top: 1px solid var(--border);
+  }
+
+  .experience article {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .experience time {
+    color: var(--muted);
+    font: 500 11px var(--text);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .experience h4 {
+    margin: 5px 0 1px;
+    font: 650 17px var(--display);
+  }
+
+  .experience article > p.role {
+    margin-bottom: 8px;
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  @media (min-width: 760px) {
+    .photo-wrapper {
+      width: 280px;
+      height: 280px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .photo-wrapper img {
+      transition: none;
+    }
+  }
+</style>

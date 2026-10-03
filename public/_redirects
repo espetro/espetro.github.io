@@ -1,0 +1,4 @@
+/posts /log 301
+/posts/* /log/:splat 301
+/projects /#work 301
+/work /about 301

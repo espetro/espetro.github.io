@@ -1,9 +1,14 @@
 import type { Metadata, Site, Socials } from "@types";
 
+export const GITHUB = {
+  USER: "espetro",
+  ORGS: ["sigilco"],
+};
+
 export const SITE: Site = {
   TITLE: "Quino Terrasa",
   DESCRIPTION:
-    "Product & Forward-Deployed Engineer — I build and ship agentic AI products end-to-end.",
+    "Product & Forward-Deployed Engineer. I take AI ideas from a real user problem to a shipped product.",
   EMAIL: "quinoterrasa.alibi366@passfwd.com",
   // TODO: swap to the real Substack URL once the newsletter launches
   NEWSLETTER_URL: "https://illo.fyi/newsletter",
@@ -15,7 +20,7 @@ export const SITE: Site = {
 export const HOME: Metadata = {
   TITLE: "Home",
   DESCRIPTION:
-    "Quino Terrasa - Product & Forward-Deployed Engineer — I build and ship agentic AI products end-to-end.",
+    "I take AI ideas from a real user problem to a shipped product: agents, on-device models, and tools developers install.",
 };
 
 export const BLOG: Metadata = {

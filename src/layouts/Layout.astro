@@ -1,7 +1,7 @@
 ---
 import Head from "@components/Head.astro";
-import Sidebar from "@components/Sidebar.astro";
 import Footer from "@components/Footer.astro";
+import PillNav from "@components/PillNav.astro";
 
 interface Props {
   title: string;
@@ -12,10 +12,28 @@ interface Props {
 }
 
 const { title, description, image, ogType, jsonLd } = Astro.props;
+const showNewsletter = Astro.url.pathname === "/";
 ---
 
 <html lang="en">
   <head>
+    <script is:inline>
+      try {
+        const storedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        document.documentElement.classList.toggle(
+          "dark",
+          storedTheme ? storedTheme === "dark" : prefersDark,
+        );
+      } catch {
+        document.documentElement.classList.toggle(
+          "dark",
+          window.matchMedia("(prefers-color-scheme: dark)").matches,
+        );
+      }
+    </script>
     <Head
       title={title}
       description={description}
@@ -23,124 +41,153 @@ const { title, description, image, ogType, jsonLd } = Astro.props;
       ogType={ogType}
       jsonLd={jsonLd}
     />
-    <script is:inline>
-      function applyTheme() {
-        const stored = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)",
-        ).matches;
-        const isDark = stored ? stored === "dark" : prefersDark;
-        document.documentElement.classList.toggle("dark", isDark);
-      }
-      applyTheme();
-      document.addEventListener("astro:after-swap", applyTheme);
-    </script>
   </head>
   <body>
-    <div class="app-window">
-      <div class="layout">
-        <!-- Sidebar (left column) -->
-        <aside class="sidebar">
-          <Sidebar />
-        </aside>
-
-        <!-- Main content (right column) -->
-        <main class="main">
-          <slot />
-        </main>
+    <div class="egg" id="egg" inert aria-hidden="true">
+      <div>
+        <div class="egg-in" role="region" aria-label="Back room">
+          <strong>You found the back room.</strong>
+          <label><input type="checkbox" id="egg-notes" /> Design notes</label>
+          <label><input type="checkbox" id="egg-grid" /> Layout grid</label>
+          <button class="egg-close" type="button">Close</button>
+        </div>
       </div>
-
-      <Footer />
     </div>
-
-    <script is:inline>
-      function animateOnScroll() {
-        const elements = document.querySelectorAll(".animate");
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("show");
-                observer.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.1 },
-        );
-        elements.forEach((el) => observer.observe(el));
-      }
-
-      animateOnScroll();
-      document.addEventListener("astro:after-swap", animateOnScroll);
-    </script>
-
-    <script is:inline>
-      window.__toggleTheme = function () {
-        const isDark = document.documentElement.classList.toggle("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-      };
-    </script>
+    <button
+      class="curl"
+      type="button"
+      data-egg
+      aria-label="Peel back the page"
+      aria-controls="egg"
+      aria-expanded="false"></button>
+    <PillNav />
+    <main class="wrap">
+      <slot />
+    </main>
+    <Footer showNewsletter={showNewsletter} />
   </body>
 </html>
 
 <style>
-  :root {
-    --sidebar-w: 56px;
-    --max-main: 530px;
-    --breakpoint: 660px;
-  }
-
-  .app-window {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
-
-  .layout {
-    display: grid;
-    grid-template-columns: var(--sidebar-w) 1fr;
-    gap: 8rem;
-    flex: 1;
-
-    /* Constrain main content */
-    max-width: calc(var(--sidebar-w) + 8rem + var(--max-main));
-    width: 100%;
+  .wrap {
+    width: min(100%, 1040px);
     margin-inline: auto;
-
-    @media (max-width: 660px) {
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: 0px auto;
-      gap: 0;
-    }
+    padding: 0 20px;
   }
 
-  .main {
-    flex: 1;
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-
-    /* Constrain inner content width */
-    max-width: var(--max-main);
-    padding-inline: 1rem;
-
-    @media (max-width: 660px) {
-      max-width: 100%;
-      min-width: 0;
-      padding-top: 5rem;
-      padding-bottom: 2rem;
-    }
+  .egg {
+    display: grid;
+    grid-template-rows: 0fr;
+    background: var(--bg-elevated);
+    transition: grid-template-rows 0.6s cubic-bezier(0.32, 0.72, 0, 1);
   }
 
-  .sidebar {
-    position: sticky;
+  .egg.open {
+    grid-template-rows: 1fr;
+    box-shadow: inset 0 -1px 0 var(--border);
+  }
+
+  .egg > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .egg-in {
+    display: flex;
+    max-width: 1040px;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 26px;
+    margin: 0 auto;
+    padding: 22px 20px 20px;
+    color: var(--muted-strong);
+    font-size: 13px;
+  }
+
+  .egg-in strong {
+    flex-basis: 100%;
+    color: var(--fg);
+    font: 650 16px/1.2 var(--display);
+    letter-spacing: -0.01em;
+  }
+
+  .egg-in label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg-soft);
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .egg-in input {
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    accent-color: var(--accent);
+  }
+
+  .egg-close {
+    margin-left: auto;
+    padding: 5px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: none;
+    color: var(--muted-strong);
+    cursor: pointer;
+    font: 600 12px var(--text);
+  }
+
+  .egg-close:hover {
+    border-color: var(--fg);
+    color: var(--fg);
+  }
+
+  .curl {
+    position: fixed;
+    z-index: var(--z-curl);
     top: 0;
-    align-self: start;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 0;
+    background:
+      linear-gradient(45deg, #e6e0d6 0%, #fbfaf7 47%, transparent 50%),
+      linear-gradient(225deg, var(--accent) 0 50%, transparent 50%);
+    cursor: pointer;
+    filter: drop-shadow(-1px 2px 2px rgb(0 0 0 / 14%));
+    transform-origin: top right;
+    transition: transform 0.45s var(--spring);
+  }
 
-    @media (max-width: 660px) {
-      position: static;
-      height: 0;
-      min-height: 0;
-      overflow: visible;
+  .curl:hover,
+  .curl:focus-visible,
+  .curl[aria-expanded="true"] {
+    transform: scale(1.75);
+  }
+
+  :global(.dark) .curl {
+    background:
+      linear-gradient(45deg, #2a2622 0%, #3a3530 47%, transparent 50%),
+      linear-gradient(225deg, var(--accent) 0 50%, transparent 50%);
+  }
+
+  .curl:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (min-width: 760px) {
+    .wrap {
+      padding-inline: 32px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .egg,
+    .curl {
+      transition: none;
     }
   }
 </style>

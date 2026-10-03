@@ -1,0 +1,143 @@
+---
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Giscus from "@components/Giscus.astro";
+import NewsletterCallout from "@components/NewsletterCallout.astro";
+import { readingTime } from "@lib/utils";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("posts"))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props as Props;
+const { Content } = await render(post);
+const blogPostingSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  url: new URL(`/log/${post.id}/`, Astro.site).href,
+  author: {
+    "@type": "Person",
+    name: "Quino Terrasa",
+    url: "https://illo.fyi",
+  },
+};
+const readingTimeLabel = post.body ? readingTime(post.body) : undefined;
+---
+
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  ogType="article"
+  jsonLd={blogPostingSchema}
+>
+  <article class="post">
+    <a class="back" href="/log/">← All log</a>
+    <div class="meta">
+      <time datetime={post.data.date.toISOString()}>
+        {
+          post.data.date.toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+        }
+      </time>
+      {readingTimeLabel && <span>{readingTimeLabel}</span>}
+    </div>
+    <h1>{post.data.title}</h1>
+    <p class="description">{post.data.description}</p>
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+    {
+      post.data.tags.length > 0 && (
+        <ul class="tags" aria-label="Tags">
+          {post.data.tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+    <NewsletterCallout />
+    <Giscus term={post.id} />
+  </article>
+</Layout>
+
+<style>
+  .post {
+    max-width: 700px;
+    padding-top: 96px;
+  }
+
+  .back {
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .back:hover {
+    color: var(--fg);
+  }
+
+  .meta {
+    display: flex;
+    gap: 12px;
+    margin-top: 26px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 680px;
+    margin: 8px 0 10px;
+    font: 700 38px/1.12 var(--display);
+    letter-spacing: -0.035em;
+  }
+
+  .description {
+    margin: 0 0 26px;
+    color: var(--fg-soft);
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tags li {
+    padding: 3px 9px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted-strong);
+    font-size: 11px;
+  }
+
+  @media (min-width: 760px) {
+    h1 {
+      font-size: 46px;
+    }
+  }
+</style>
