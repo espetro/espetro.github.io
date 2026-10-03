@@ -1,0 +1,6 @@
+content/blog/**
+docs/v2-design.md
+dist/**
+node_modules/**
+.astro/**
+pnpm-lock.yaml
