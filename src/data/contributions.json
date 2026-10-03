@@ -1,35 +1,99 @@
 {
-  "all": [
+  "generatedAt": "2026-10-03T20:57:17.558Z",
+  "prs": [
     {
-      "title": "fix(shared): guarantee directory handle closure via fs-opendir-scope",
-      "url": "https://github.com/stablyai/orca/pull/17035",
-      "repo": "stablyai/orca",
-      "stars": 55942,
-      "additions": 219,
-      "deletions": 43,
-      "comments": 1,
+      "title": "fix(ui): keep scrollbar glyphs out of overlay copy",
+      "url": "https://github.com/tontinton/maki/pull/918",
+      "repo": "tontinton/maki",
+      "repoStars": 1161,
       "state": "open",
-      "updatedAt": "2026-08-28T15:37:01Z"
+      "updatedAt": "2026-10-03T20:11:01Z"
     },
     {
-      "title": "chore(gates): register dir-handle-closure reliability gate",
-      "url": "https://github.com/stablyai/orca/pull/17034",
-      "repo": "stablyai/orca",
-      "stars": 55942,
-      "additions": 99,
-      "deletions": 1,
-      "comments": 1,
+      "title": "fix(spawn): keep posix_spawn fast path to silence libmalloc MSL warning",
+      "url": "https://github.com/tontinton/maki/pull/926",
+      "repo": "tontinton/maki",
+      "repoStars": 1161,
       "state": "open",
-      "updatedAt": "2026-08-28T15:36:08Z"
+      "updatedAt": "2026-10-03T20:11:01Z"
+    },
+    {
+      "title": "Add mise installation method for mmdr",
+      "url": "https://github.com/1jehuang/mermaid-rs-renderer/pull/149",
+      "repo": "1jehuang/mermaid-rs-renderer",
+      "repoStars": 1752,
+      "state": "open",
+      "updatedAt": "2026-09-14T15:16:44Z"
+    },
+    {
+      "title": "build(macos): parallelize native helpers with complete cancellation",
+      "url": "https://github.com/stablyai/orca/pull/19651",
+      "repo": "stablyai/orca",
+      "repoStars": 84373,
+      "state": "merged",
+      "updatedAt": "2026-09-13T04:18:41Z"
+    },
+    {
+      "title": "feat(web): multi-host runtime environments (list storage, explicit activation)",
+      "url": "https://github.com/stablyai/orca/pull/18847",
+      "repo": "stablyai/orca",
+      "repoStars": 84373,
+      "state": "open",
+      "updatedAt": "2026-09-09T10:37:20Z"
+    },
+    {
+      "title": "perf(startup): enable V8 compile cache for the main process and children",
+      "url": "https://github.com/stablyai/orca/pull/19650",
+      "repo": "stablyai/orca",
+      "repoStars": 84373,
+      "state": "open",
+      "updatedAt": "2026-09-09T10:25:51Z"
+    },
+    {
+      "title": "fix(serve): make terminal tab rename survive browser reload",
+      "url": "https://github.com/stablyai/orca/pull/19583",
+      "repo": "stablyai/orca",
+      "repoStars": 84373,
+      "state": "open",
+      "updatedAt": "2026-09-09T05:49:41Z"
+    },
+    {
+      "title": "ci(test): retry flaky tests once and surface them in the job summary",
+      "url": "https://github.com/stablyai/orca/pull/19649",
+      "repo": "stablyai/orca",
+      "repoStars": 84373,
+      "state": "open",
+      "updatedAt": "2026-09-08T23:28:00Z"
+    },
+    {
+      "title": "Wire approval-review-benchmark tests into the test step",
+      "url": "https://github.com/vercel-labs/fx/pull/550",
+      "repo": "vercel-labs/fx",
+      "repoStars": 3268,
+      "state": "open",
+      "updatedAt": "2026-09-02T21:05:39Z"
+    },
+    {
+      "title": "feat(provider): OpenAI-compatible provider",
+      "url": "https://github.com/vercel-labs/fx/pull/553",
+      "repo": "vercel-labs/fx",
+      "repoStars": 3268,
+      "state": "open",
+      "updatedAt": "2026-08-31T22:40:30Z"
+    },
+    {
+      "title": "feat(provider): Anthropic Messages provider",
+      "url": "https://github.com/vercel-labs/fx/pull/536",
+      "repo": "vercel-labs/fx",
+      "repoStars": 3268,
+      "state": "open",
+      "updatedAt": "2026-08-31T11:17:50Z"
     },
     {
       "title": "feat(agent): allow MCP tool calls in plan mode",
       "url": "https://github.com/tontinton/maki/pull/888",
       "repo": "tontinton/maki",
-      "stars": 973,
-      "additions": 49,
-      "deletions": 9,
-      "comments": 0,
+      "repoStars": 1161,
       "state": "merged",
       "updatedAt": "2026-08-27T19:19:36Z"
     },
@@ -37,10 +101,7 @@
       "title": "feat(ai-settings): auto-discover models for OpenAI-compatible providers",
       "url": "https://github.com/browseros-ai/BrowserOS/pull/2415",
       "repo": "browseros-ai/BrowserOS",
-      "stars": 13385,
-      "additions": 771,
-      "deletions": 290,
-      "comments": 4,
+      "repoStars": 13805,
       "state": "open",
       "updatedAt": "2026-08-27T14:28:02Z"
     },
@@ -48,10 +109,7 @@
       "title": "Report catalog-gated reasoning effort drops instead of discarding silently",
       "url": "https://github.com/vercel-labs/fx/pull/370",
       "repo": "vercel-labs/fx",
-      "stars": 2561,
-      "additions": 185,
-      "deletions": 6,
-      "comments": 0,
+      "repoStars": 3268,
       "state": "open",
       "updatedAt": "2026-08-23T14:47:14Z"
     },
@@ -59,10 +117,7 @@
       "title": "POC: Schema IR — library-agnostic core with Valibot + Zod adapters",
       "url": "https://github.com/open-circle/formisch/pull/197",
       "repo": "open-circle/formisch",
-      "stars": 1160,
-      "additions": 7242,
-      "deletions": 13176,
-      "comments": 2,
+      "repoStars": 1197,
       "state": "open",
       "updatedAt": "2026-08-11T14:39:07Z"
     },
@@ -70,34 +125,7 @@
       "title": "feat(core,methods): add react-native framework adapter (#117)",
       "url": "https://github.com/open-circle/formisch/pull/137",
       "repo": "open-circle/formisch",
-      "stars": 1160,
-      "additions": 11029,
-      "deletions": 494,
-      "comments": 9,
-      "state": "merged",
-      "updatedAt": "2026-07-29T17:21:09Z"
-    }
-  ],
-  "merged": [
-    {
-      "title": "feat(agent): allow MCP tool calls in plan mode",
-      "url": "https://github.com/tontinton/maki/pull/888",
-      "repo": "tontinton/maki",
-      "stars": 973,
-      "additions": 49,
-      "deletions": 9,
-      "comments": 0,
-      "state": "merged",
-      "updatedAt": "2026-08-27T19:19:36Z"
-    },
-    {
-      "title": "feat(core,methods): add react-native framework adapter (#117)",
-      "url": "https://github.com/open-circle/formisch/pull/137",
-      "repo": "open-circle/formisch",
-      "stars": 1160,
-      "additions": 11029,
-      "deletions": 494,
-      "comments": 9,
+      "repoStars": 1197,
       "state": "merged",
       "updatedAt": "2026-07-29T17:21:09Z"
     },
@@ -105,10 +133,7 @@
       "title": "feat(#221): migrate to ts-proto and @bufbuild/protobuf",
       "url": "https://github.com/getgauge/gauge-ts/pull/224",
       "repo": "getgauge/gauge-ts",
-      "stars": 35,
-      "additions": 12804,
-      "deletions": 26761,
-      "comments": 2,
+      "repoStars": 35,
       "state": "merged",
       "updatedAt": "2026-07-25T19:01:59Z"
     },
@@ -116,10 +141,7 @@
       "title": "fix(#219): repair genproto.sh and use HTTPS submodule URL",
       "url": "https://github.com/getgauge/gauge-ts/pull/222",
       "repo": "getgauge/gauge-ts",
-      "stars": 35,
-      "additions": 23,
-      "deletions": 10,
-      "comments": 1,
+      "repoStars": 35,
       "state": "merged",
       "updatedAt": "2026-07-21T18:13:30Z"
     },
@@ -127,10 +149,7 @@
       "title": "refactor: migrate from experimentalDecorators to TC39 Stage 3 decorators (#207)",
       "url": "https://github.com/getgauge/gauge-ts/pull/208",
       "repo": "getgauge/gauge-ts",
-      "stars": 35,
-      "additions": 173,
-      "deletions": 112,
-      "comments": 7,
+      "repoStars": 35,
       "state": "merged",
       "updatedAt": "2026-06-12T09:43:09Z"
     },
@@ -138,10 +157,7 @@
       "title": "feat: Windows IPC support via Named Pipes",
       "url": "https://github.com/mpiton/tauri-pilot/pull/64",
       "repo": "mpiton/tauri-pilot",
-      "stars": 77,
-      "additions": 1466,
-      "deletions": 201,
-      "comments": 11,
+      "repoStars": 84,
       "state": "merged",
       "updatedAt": "2026-04-24T12:07:48Z"
     },
@@ -149,12 +165,81 @@
       "title": "feat: make skill available via skills.sh",
       "url": "https://github.com/mpiton/tauri-pilot/pull/36",
       "repo": "mpiton/tauri-pilot",
-      "stars": 77,
-      "additions": 6,
-      "deletions": 0,
-      "comments": 3,
+      "repoStars": 84,
       "state": "merged",
       "updatedAt": "2026-04-10T08:31:47Z"
+    },
+    {
+      "title": "Submission: Relay (Saturn team)",
+      "url": "https://github.com/Hackathon-Preply/hackathon-2026-03-20/pull/16",
+      "repo": "Hackathon-Preply/hackathon-2026-03-20",
+      "repoStars": 13,
+      "state": "merged",
+      "updatedAt": "2026-03-21T18:35:58Z"
+    },
+    {
+      "title": "Corrected bad sdl2 rosdep references at 'package.xml'.",
+      "url": "https://github.com/Michionlion/bebop_teleop/pull/4",
+      "repo": "Michionlion/bebop_teleop",
+      "repoStars": 12,
+      "state": "open",
+      "updatedAt": "2021-03-13T16:10:36Z"
+    },
+    {
+      "title": "Añadidos ejercicios 3, 4, 5, 6",
+      "url": "https://github.com/15Galan/asignatura-305-trabajo/pull/4",
+      "repo": "15Galan/asignatura-305-trabajo",
+      "repoStars": 2,
+      "state": "merged",
+      "updatedAt": "2020-05-29T01:10:26Z"
+    },
+    {
+      "title": "Añadir ejercicios 4, 5, 6",
+      "url": "https://github.com/15Galan/asignatura-305-trabajo/pull/3",
+      "repo": "15Galan/asignatura-305-trabajo",
+      "repoStars": 2,
+      "state": "merged",
+      "updatedAt": "2020-05-07T11:23:06Z"
+    },
+    {
+      "title": "Added Slides section",
+      "url": "https://github.com/GDGMalaga/GDGWeb/pull/17",
+      "repo": "GDGMalaga/GDGWeb",
+      "repoStars": 3,
+      "state": "merged",
+      "updatedAt": "2018-10-22T11:20:10Z"
+    },
+    {
+      "title": "Solved 'Reverse Word' problem in Haskell",
+      "url": "https://github.com/hackerearthclub/CODE2RACE/pull/388",
+      "repo": "hackerearthclub/CODE2RACE",
+      "repoStars": 99,
+      "state": "merged",
+      "updatedAt": "2018-10-21T20:26:32Z"
+    },
+    {
+      "title": "Even fibonacci numbers in Haskell",
+      "url": "https://github.com/hackerearthclub/CODE2RACE/pull/387",
+      "repo": "hackerearthclub/CODE2RACE",
+      "repoStars": 99,
+      "state": "merged",
+      "updatedAt": "2018-10-21T20:26:28Z"
+    },
+    {
+      "title": "Solved \"Hello, World\" in Haskell",
+      "url": "https://github.com/hackerearthclub/CODE2RACE/pull/368",
+      "repo": "hackerearthclub/CODE2RACE",
+      "repoStars": 99,
+      "state": "merged",
+      "updatedAt": "2018-10-21T19:20:50Z"
+    },
+    {
+      "title": "OctalDecimal solution in JS ES6",
+      "url": "https://github.com/hackerearthclub/CODE2RACE/pull/365",
+      "repo": "hackerearthclub/CODE2RACE",
+      "repoStars": 99,
+      "state": "merged",
+      "updatedAt": "2018-10-21T19:19:11Z"
     }
   ]
 }
