@@ -57,7 +57,7 @@ Fixed label vocabularies (zod enums, validated at build):
 
 Groups on the landing, in order: Products (`product`), Tools & libraries (`tool`), Models & ports (`model`), Experiments & hackathons (`experiment`).
 Order within a group: highlighted (by `highlight.order`), then status (building, live, maintained, archived), then `since` desc.
-Each group shows highlighted rows + up to 4 more; the rest collapse into `<details>` "N more …".
+Each group keeps a single ★ row (the first by `highlight.order`; extra highlighted works render unstarred) and shows a random 2–3 rows total (`VISIBLE_ROWS` in `WorkSection.astro`); the rest collapse into `<details>` "N more …". The pick is re-rolled at runtime on every load, with a build-time pick as the no-JS fallback.
 
 ### `repos` (cache, `src/data/repos.json`)
 
@@ -71,7 +71,7 @@ Private repos (e.g. Brioso) are never fetched; they are manual works without `re
 
 ### `contributions` (cache, `src/data/contributions.json`)
 
-`pnpm refresh:contributions`: public PRs by `espetro` outside own user/orgs (latest 30), merged or open (closed-unmerged dropped), plus repo stars.
+`pnpm refresh:contributions`: public PRs by `espetro` outside own user/orgs, updated in the last year (latest 30), merged or open (closed-unmerged dropped), plus repo stars. The landing applies the same one-year window to the cache at render time.
 
 ```json
 { "generatedAt": "ISO", "prs": [{ "title": "", "url": "", "repo": "owner/name", "repoStars": 0, "state": "merged", "updatedAt": "" }] }
@@ -86,8 +86,8 @@ Posts gain optional `project: reference("works")` and `featured: boolean`. Notes
 ## Landing sections
 
 1. Hero: name with a coral full stop (easter-egg trigger), role, thesis, "Reach out" (mailto) + "or read the newsletter" text link. No availability line, no counts.
-2. Upstream: PRs grouped by repo (avatar, repo, stars, up to 3 PRs with open/merged pills), 3 repos per page, autoplay 4 s, pauses on hover/focus, dots. All pages share one grid cell so the area is fixed (no layout bump). Reduced motion: all pages listed, no autoplay. "All on GitHub ↗".
-3. Work: grouped rows. Row: ★ (if highlighted), name → `primary.url` ↗, status dot, summary, proof (highlighted only), labels line (surface · runtime · source), "details" → `/projects/<id>`.
+2. Upstream: PRs grouped by repo (avatar, repo, stars, up to 3 PRs with open/merged pills), 3 repos per page stacked vertically on every breakpoint, autoplay 4 s, pauses on hover/focus, dots. All pages share one grid cell so the area is fixed (no layout bump). Reduced motion: all pages listed, no autoplay. "All on GitHub ↗".
+3. Work: grouped rows. Row: ★ (one per group), name → `primary.url` ↗, status dot, summary, proof (★ row only), labels line (surface · runtime · source), "details" → `/projects/<id>`.
 4. Log: featured posts, then latest, 4 total; "All entries →" `/log`.
 5. Footer: newsletter box, links (GitHub, LinkedIn, X, RSS, llms.txt), "Repo data cached YYYY-MM-DD". No "built with" line.
 
@@ -102,6 +102,7 @@ Back link "All work" → `/#work`; name + ★; status · scale · "Since Month Y
 
 ## Visual system
 
+- Layout: one centered column (`--column`, 680px) at every breakpoint — the mobile layout is the only layout; text stays left-aligned. No desktop multi-column sections.
 - Type: headings Host Grotesk (self-hosted via Fontsource); body/UI system stack `"Helvetica Neue", Helvetica, Inter, system-ui, -apple-system, "Segoe UI", Arial, sans-serif`. Plus Jakarta Sans and Ndot are removed.
 - Tokens: existing light/dark palette and coral accent; adds `--live`, `--live-soft`, `--glass-bg`, `--glass-border`, `--display`, `--text`.
 - Status colors: building = accent, live = `--live`, maintained = `--muted-strong`, archived = `--muted`.

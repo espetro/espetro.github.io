@@ -56,7 +56,9 @@
   --z-curl: 6;
   --z-grid: 50;
 
-  /* Layout */
+  /* Layout: single centered column at every breakpoint (mobile-first) */
+  --column: 680px;
+
   /* Shiki: Light */
   --astro-code-foreground: #09090b;
   --astro-code-background: #fafafa;
@@ -197,9 +199,10 @@ body.show-grid::after {
     ),
     linear-gradient(
       to right,
-      transparent calc(50% - 520px),
-      rgb(122 90 248 / 6%) calc(50% - 520px) calc(50% + 520px),
-      transparent calc(50% + 520px)
+      transparent calc(50% - var(--column) / 2),
+      rgb(122 90 248 / 6%) calc(50% - var(--column) / 2)
+        calc(50% + var(--column) / 2),
+      transparent calc(50% + var(--column) / 2)
     );
   content: "";
   pointer-events: none;
