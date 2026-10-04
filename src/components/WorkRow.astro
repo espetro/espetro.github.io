@@ -4,17 +4,19 @@ import type { CollectionEntry } from "astro:content";
 interface Props {
   work: CollectionEntry<"works">;
   labels: string[];
+  starred: boolean;
 }
 
-const { work, labels } = Astro.props;
+const { work, labels, starred } = Astro.props;
+const featured = starred && Boolean(work.data.highlight);
 const statusLabel =
   work.data.status.charAt(0).toUpperCase() + work.data.status.slice(1);
 ---
 
-<li class:list={["row", { starred: Boolean(work.data.highlight) }]}>
+<li class:list={["row", { starred: featured }]}>
   <a class="name" href={work.data.primary.url}>
     {
-      work.data.highlight && (
+      featured && (
         <span class="star" aria-label="Highlighted">
           ★
         </span>
@@ -25,11 +27,7 @@ const statusLabel =
   </a>
   <span class:list={["status", work.data.status]}>{statusLabel}</span>
   <span class="summary">{work.data.summary}</span>
-  {
-    work.data.highlight && (
-      <span class="proof">{work.data.highlight.proof}</span>
-    )
-  }
+  {featured && <span class="proof">{work.data.highlight?.proof}</span>}
   <span class="meta">
     <span>{labels.join(" · ")}</span>
     <a href={`/projects/${work.id}/`}>details</a>
@@ -146,35 +144,5 @@ const statusLabel =
 
   .meta a:hover {
     color: var(--fg);
-  }
-
-  @media (min-width: 760px) {
-    .row {
-      grid-template-columns: 8.5rem minmax(0, 1fr) auto;
-      align-items: baseline;
-    }
-
-    .name {
-      order: 1;
-    }
-
-    .summary {
-      grid-column: auto;
-      order: 2;
-    }
-
-    .status {
-      order: 3;
-    }
-
-    .proof {
-      grid-column: 2 / -1;
-      order: 4;
-    }
-
-    .meta {
-      grid-column: 2 / -1;
-      order: 5;
-    }
   }
 </style>

@@ -9,33 +9,34 @@ interface Props {
 
 const { works } = Astro.props;
 
+// How many rows each group shows up front; a random count in [min, max] is
+// picked per group — again at runtime on every load, with the build-time
+// pick below as the no-JS fallback. The group's ★ row always stays visible.
+const VISIBLE_ROWS = { min: 2, max: 3 } as const;
+
 const scales = [
   {
     id: "product",
     title: "Products",
     sub: "months of work",
-    visible: 4,
     moreLabel: "products",
   },
   {
     id: "tool",
     title: "Tools & libraries",
     sub: "things you install",
-    visible: 4,
     moreLabel: "tools",
   },
   {
     id: "model",
     title: "Models & ports",
     sub: "weights, forks, low-level",
-    visible: 3,
     moreLabel: "models",
   },
   {
     id: "experiment",
     title: "Experiments & hackathons",
     sub: "days to weeks",
-    visible: 2,
     moreLabel: "experiments",
   },
 ] as const;
@@ -50,6 +51,34 @@ const labelsFor = (work: CollectionEntry<"works">) =>
     work.data.labels.runtime,
     work.data.labels.source,
   ].filter((label): label is string => Boolean(label));
+
+type Work = CollectionEntry<"works">;
+
+const randomInt = (min: number, max: number) =>
+  min + Math.floor(Math.random() * (max - min + 1));
+
+const shuffle = <T,>(items: T[]) => {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+};
+
+// The build-time pick: the group's featured row (one ★ per group) plus a
+// random fill from the rest, `min`–`max` rows total.
+const pickVisible = (rows: Work[], featured: Work | undefined) => {
+  const count = Math.min(
+    rows.length,
+    randomInt(VISIBLE_ROWS.min, VISIBLE_ROWS.max),
+  );
+  const fill = shuffle(rows.filter((row) => row !== featured)).slice(
+    0,
+    Math.max(0, count - (featured ? 1 : 0)),
+  );
+  return new Set<Work>(featured ? [featured, ...fill] : fill);
+};
 ---
 
 <section id="work" class="work-section">
@@ -59,43 +88,107 @@ const labelsFor = (work: CollectionEntry<"works">) =>
   <p class="anno">
     Work rows are authored in content/works/*/index.md. The grouped scale,
     status, labels, stack and highlight proof are owner-authored; repo facts are
-    resolved from src/data/repos.json on each work page.
+    resolved from src/data/repos.json on each work page. Each group keeps one ★
+    row and shows a random {VISIBLE_ROWS.min}–{VISIBLE_ROWS.max} rows (re-rolled on
+    every load); the rest collapse into "N more …".
   </p>
   <div class="groups">
     {
       scales.map((scale) => {
         const rows = displayRows(scale.id);
-        const visible = rows.slice(0, scale.visible);
-        const more = rows.slice(scale.visible);
+        // One ★ per group: the first highlighted row by highlight.order.
+        const featured = rows.find((work) => work.data.highlight);
+        const shown = pickVisible(rows, featured);
+        const visible = rows.filter((work) => shown.has(work));
+        const more = rows.filter((work) => !shown.has(work));
 
         return (
-          <div class="group">
+          <div
+            class="group"
+            data-work-group
+            data-min={VISIBLE_ROWS.min}
+            data-max={VISIBLE_ROWS.max}
+          >
             <h3>
               {scale.title} <small>{scale.sub}</small>
             </h3>
-            <ul class="rows">
+            <ul class="rows" data-visible>
               {visible.map((work) => (
-                <WorkRow work={work} labels={labelsFor(work)} />
+                <WorkRow
+                  work={work}
+                  starred={work === featured}
+                  labels={labelsFor(work)}
+                />
               ))}
             </ul>
-            {more.length > 0 && (
-              <details>
-                <summary>
-                  {more.length} more {scale.moreLabel}
-                </summary>
-                <ul class="rows">
-                  {more.map((work) => (
-                    <WorkRow work={work} labels={labelsFor(work)} />
-                  ))}
-                </ul>
-              </details>
-            )}
+            <details hidden={more.length === 0}>
+              <summary>
+                <span data-more-count>{more.length}</span> more{" "}
+                {scale.moreLabel}
+              </summary>
+              <ul class="rows" data-more>
+                {more.map((work) => (
+                  <WorkRow
+                    work={work}
+                    starred={false}
+                    labels={labelsFor(work)}
+                  />
+                ))}
+              </ul>
+            </details>
           </div>
         );
       })
     }
   </div>
 </section>
+
+<script>
+  const initializeWorkGroups = () => {
+    document
+      .querySelectorAll<HTMLElement>("[data-work-group]")
+      .forEach((group) => {
+        const min = Number(group.dataset.min ?? 2);
+        const max = Number(group.dataset.max ?? 3);
+        const visible = group.querySelector<HTMLElement>("[data-visible]");
+        const more = group.querySelector<HTMLElement>("[data-more]");
+        const details = group.querySelector<HTMLDetailsElement>("details");
+        const countEl = group.querySelector<HTMLElement>("[data-more-count]");
+        if (!visible || !more || !details || !countEl) return;
+
+        const rows = [
+          ...visible.querySelectorAll<HTMLElement>(":scope > li"),
+          ...more.querySelectorAll<HTMLElement>(":scope > li"),
+        ];
+        if (rows.length === 0) return;
+
+        const starred = rows.filter((row) => row.classList.contains("starred"));
+        const rest = rows.filter((row) => !row.classList.contains("starred"));
+        for (let i = rest.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [rest[i], rest[j]] = [rest[j], rest[i]];
+        }
+
+        const count = Math.min(
+          rows.length,
+          min + Math.floor(Math.random() * (max - min + 1)),
+        );
+        const chosen = new Set([
+          ...starred.slice(0, count),
+          ...rest.slice(0, Math.max(0, count - starred.length)),
+        ]);
+
+        for (const row of rows) {
+          (chosen.has(row) ? visible : more).appendChild(row);
+        }
+        countEl.textContent = String(more.children.length);
+        details.hidden = more.children.length === 0;
+      });
+  };
+
+  document.addEventListener("astro:page-load", initializeWorkGroups);
+  initializeWorkGroups();
+</script>
 
 <style>
   .work-section {
@@ -182,10 +275,6 @@ const labelsFor = (work: CollectionEntry<"works">) =>
     h2 small {
       display: inline;
       margin: 0 0 0 10px;
-    }
-
-    .groups {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>

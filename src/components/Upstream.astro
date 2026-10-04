@@ -50,8 +50,9 @@ const compactStars = (stars: number) =>
   </div>
   <p class="anno">
     Reads src/data/contributions.json, groups by repository, sorts by latest
-    activity, and shows three repos per page with up to three PRs per repo.
-    Autoplay pauses on hover or focus; reduced motion shows every page.
+    activity, and shows three repos per page (vertical list on every breakpoint)
+    with up to three PRs per repo. Autoplay pauses on hover or focus; reduced
+    motion shows every page.
   </p>
   {
     pages.length > 0 ? (
@@ -437,18 +438,6 @@ const compactStars = (stars: number) =>
     h2 small {
       display: inline;
       margin: 0 0 0 10px;
-    }
-
-    .stack > .page {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      align-content: start;
-      gap: 0 32px;
-    }
-
-    .page .repo {
-      border-top: 1px solid var(--border);
-      border-bottom: 0;
     }
   }
 

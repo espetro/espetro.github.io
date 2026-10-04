@@ -70,7 +70,7 @@ const showNewsletter = Astro.url.pathname === "/";
 
 <style>
   .wrap {
-    width: min(100%, 1040px);
+    width: min(100%, var(--column));
     margin-inline: auto;
     padding: 0 20px;
   }
@@ -94,7 +94,7 @@ const showNewsletter = Astro.url.pathname === "/";
 
   .egg-in {
     display: flex;
-    max-width: 1040px;
+    max-width: var(--column);
     align-items: center;
     flex-wrap: wrap;
     gap: 12px 26px;
