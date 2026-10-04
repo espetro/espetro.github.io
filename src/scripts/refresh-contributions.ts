@@ -58,11 +58,15 @@ async function ghJson<T>(url: string): Promise<T> {
 }
 
 function searchUrl(state: "open" | "merged"): string {
+  const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
   const query = [
     `author:${GITHUB.USER}`,
     "type:pr",
     "is:public",
     `is:${state}`,
+    `updated:>=${lastYear}`,
     ...[...GITHUB.ORGS, ...EXCLUDED_OWNERS, GITHUB.USER].map(
       (owner) => `-user:${owner}`,
     ),

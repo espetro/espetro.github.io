@@ -10,9 +10,14 @@ interface Contribution {
   updatedAt: string;
 }
 
+// Guard for stale caches between refreshes: only PRs touched in the last
+// year are shown (the refresh script applies the same window).
+const cutoff = Date.now() - 365 * 24 * 60 * 60 * 1000;
+
 const byRepo = new Map<string, Contribution[]>();
 
 for (const contribution of contributions.prs as Contribution[]) {
+  if (Date.parse(contribution.updatedAt) < cutoff) continue;
   const group = byRepo.get(contribution.repo) ?? [];
   group.push(contribution);
   byRepo.set(contribution.repo, group);
@@ -49,10 +54,10 @@ const compactStars = (stars: number) =>
     <a href="https://github.com/pulls?q=author%3Aespetro">All on GitHub ↗</a>
   </div>
   <p class="anno">
-    Reads src/data/contributions.json, groups by repository, sorts by latest
-    activity, and shows three repos per page (vertical list on every breakpoint)
-    with up to three PRs per repo. Autoplay pauses on hover or focus; reduced
-    motion shows every page.
+    Reads src/data/contributions.json, keeps PRs updated in the last year,
+    groups by repository, sorts by latest activity, and shows three repos per
+    page (vertical list on every breakpoint) with up to three PRs per repo.
+    Autoplay pauses on hover or focus; reduced motion shows every page.
   </p>
   {
     pages.length > 0 ? (

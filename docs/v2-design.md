@@ -71,7 +71,7 @@ Private repos (e.g. Brioso) are never fetched; they are manual works without `re
 
 ### `contributions` (cache, `src/data/contributions.json`)
 
-`pnpm refresh:contributions`: public PRs by `espetro` outside own user/orgs (latest 30), merged or open (closed-unmerged dropped), plus repo stars.
+`pnpm refresh:contributions`: public PRs by `espetro` outside own user/orgs, updated in the last year (latest 30), merged or open (closed-unmerged dropped), plus repo stars. The landing applies the same one-year window to the cache at render time.
 
 ```json
 { "generatedAt": "ISO", "prs": [{ "title": "", "url": "", "repo": "owner/name", "repoStars": 0, "state": "merged", "updatedAt": "" }] }
