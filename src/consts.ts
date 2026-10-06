@@ -10,8 +10,8 @@ export const SITE: Site = {
   DESCRIPTION:
     "Product & Forward-Deployed Engineer. I take AI ideas from a real user problem to a shipped product.",
   EMAIL: "quinoterrasa.alibi366@passfwd.com",
-  // TODO: swap to the real Substack URL once the newsletter launches
-  NEWSLETTER_URL: "https://illo.fyi/newsletter",
+  NEWSLETTER_URL:
+    import.meta.env?.PUBLIC_NEWSLETTER_URL ?? "https://josocjoq.substack.com/",
   SHOW_SPEAKING: false,
   NUM_POSTS_ON_HOMEPAGE: 2,
   NUM_PROJECTS_ON_HOMEPAGE: 3,

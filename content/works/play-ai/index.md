@@ -1,7 +1,7 @@
 ---
 name: play-ai
 summary: Chat about YouTube videos with your own AI keys.
-status: maintained
+status: archived
 scale: tool
 primary: { label: Source, url: https://github.com/espetro/play-ai }
 repo: espetro/play-ai

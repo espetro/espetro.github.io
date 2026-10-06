@@ -1,7 +1,7 @@
 ---
 name: unplugin-agent-plugins
 summary: Wire AI agents into any JS bundler.
-status: maintained
+status: archived
 scale: tool
 since: 2026-06-08
 primary: { label: Source, url: https://github.com/sigilco/agentplugins }

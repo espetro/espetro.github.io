@@ -57,7 +57,7 @@ Fixed label vocabularies (zod enums, validated at build):
 
 Groups on the landing, in order: Products (`product`), Tools & libraries (`tool`), Models & ports (`model`), Experiments & hackathons (`experiment`).
 Order within a group: highlighted (by `highlight.order`), then status (building, live, maintained, archived), then `since` desc.
-Each group keeps a single ★ row (the first by `highlight.order`; extra highlighted works render unstarred) and shows a random 2–3 rows total (`VISIBLE_ROWS` in `WorkSection.astro`); the rest collapse into `<details>` "N more …". The pick is re-rolled at runtime on every load, with a build-time pick as the no-JS fallback.
+Each group keeps a single ★ row (the first by `highlight.order`; extra highlighted works render unstarred) and shows a random 2–3 rows total (`VISIBLE_ROWS` in `WorkSection.astro`); the rest collapse into `<details>` "N more …". The pick is re-rolled at runtime on every load, with a build-time pick as the no-JS fallback. Non-archived works form the random pool; `archived` works only fill leftover slots, so they always sit at the end.
 
 ### `repos` (cache, `src/data/repos.json`)
 

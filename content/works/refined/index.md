@@ -1,7 +1,7 @@
 ---
 name: refined
 summary: Near-zero-overhead refinement types for Python.
-status: maintained
+status: archived
 scale: tool
 primary: { label: Source, url: https://github.com/espetro/refined }
 repo: espetro/refined

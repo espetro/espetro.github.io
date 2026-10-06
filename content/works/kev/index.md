@@ -1,7 +1,7 @@
 ---
 name: Kev
 summary: Small decision models (0.8B–9B) served from a llama.cpp fork.
-status: building
+status: live
 scale: model
 primary: { label: Source, url: https://github.com/espetro/llama.cpp }
 repo: espetro/llama.cpp
