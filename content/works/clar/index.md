@@ -1,7 +1,7 @@
 ---
 name: Clar
 summary: A fully local AI agent for your email inbox. No cloud, no sync.
-status: building
+status: live
 scale: product
 since: 2026-05-26
 primary: { label: Try, url: https://clar.illo.fyi/ }

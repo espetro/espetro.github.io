@@ -67,16 +67,20 @@ const shuffle = <T,>(items: T[]) => {
 };
 
 // The build-time pick: the group's featured row (one ★ per group) plus a
-// random fill from the rest, `min`–`max` rows total.
+// random fill from the rest, `min`–`max` rows total. Active statuses are in
+// the random mix; archived works only fill leftover slots (and always sort
+// last, both here and under "N more …").
 const pickVisible = (rows: Work[], featured: Work | undefined) => {
   const count = Math.min(
     rows.length,
     randomInt(VISIBLE_ROWS.min, VISIBLE_ROWS.max),
   );
-  const fill = shuffle(rows.filter((row) => row !== featured)).slice(
-    0,
-    Math.max(0, count - (featured ? 1 : 0)),
-  );
+  const rest = rows.filter((row) => row !== featured);
+  const pool = [
+    ...shuffle(rest.filter((row) => row.data.status !== "archived")),
+    ...shuffle(rest.filter((row) => row.data.status === "archived")),
+  ];
+  const fill = pool.slice(0, Math.max(0, count - (featured ? 1 : 0)));
   return new Set<Work>(featured ? [featured, ...fill] : fill);
 };
 ---
@@ -164,10 +168,23 @@ const pickVisible = (rows: Work[], featured: Work | undefined) => {
 
         const starred = rows.filter((row) => row.classList.contains("starred"));
         const rest = rows.filter((row) => !row.classList.contains("starred"));
-        for (let i = rest.length - 1; i > 0; i -= 1) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [rest[i], rest[j]] = [rest[j], rest[i]];
-        }
+        const shuffleRows = (items: HTMLElement[]) => {
+          for (let i = items.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [items[i], items[j]] = [items[j], items[i]];
+          }
+          return items;
+        };
+        // Active statuses join the random mix; archived rows only fill
+        // leftover slots so they stay at the end.
+        const pool = [
+          ...shuffleRows(
+            rest.filter((row) => row.dataset.status !== "archived"),
+          ),
+          ...shuffleRows(
+            rest.filter((row) => row.dataset.status === "archived"),
+          ),
+        ];
 
         const count = Math.min(
           rows.length,
@@ -175,7 +192,7 @@ const pickVisible = (rows: Work[], featured: Work | undefined) => {
         );
         const chosen = new Set([
           ...starred.slice(0, count),
-          ...rest.slice(0, Math.max(0, count - starred.length)),
+          ...pool.slice(0, Math.max(0, count - starred.length)),
         ]);
 
         for (const row of rows) {

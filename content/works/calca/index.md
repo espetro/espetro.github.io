@@ -1,7 +1,7 @@
 ---
 name: Calca
 summary: Describe a design in plain English, get polished HTML/CSS variations on an infinite canvas.
-status: building
+status: live
 scale: product
 since: 2026-03-20
 primary: { label: Download, url: https://calca.illo.fyi }

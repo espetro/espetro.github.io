@@ -13,7 +13,7 @@ const statusLabel =
   work.data.status.charAt(0).toUpperCase() + work.data.status.slice(1);
 ---
 
-<li class:list={["row", { starred: featured }]}>
+<li class:list={["row", { starred: featured }]} data-status={work.data.status}>
   <a class="name" href={work.data.primary.url}>
     {
       featured && (

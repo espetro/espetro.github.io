@@ -1,7 +1,7 @@
 ---
 name: Voce
 summary: macOS menubar app that filters calls so only your voice comes through.
-status: building
+status: archived
 scale: product
 since: 2026-06-07
 primary: { label: Source, url: https://github.com/espetro/voce }
