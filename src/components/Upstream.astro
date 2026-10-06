@@ -1,4 +1,5 @@
 ---
+import { GITHUB } from "../consts";
 import contributions from "../data/contributions.json";
 
 interface Contribution {
@@ -41,6 +42,23 @@ const pages = Array.from({ length: Math.ceil(repos.length / 3) }, (_, index) =>
   repos.slice(index * 3, index * 3 + 3),
 );
 
+// "All on GitHub": PRs/issues involving me in repos I don't own
+// (involves = authored, commented, assigned, or mentioned).
+const allContributionsUrl = `https://github.com/search?q=${encodeURIComponent(
+  [
+    `involves:${GITHUB.USER}`,
+    "archived:false",
+    "sort:updated-desc",
+    ...[
+      GITHUB.USER,
+      ...GITHUB.ORGS,
+      "briosoco",
+      "bolojs",
+      "browser-containers",
+    ].map((owner) => `-user:${owner}`),
+  ].join(" "),
+)}&type=issues`;
+
 const compactStars = (stars: number) =>
   new Intl.NumberFormat("en", {
     notation: "compact",
@@ -51,7 +69,7 @@ const compactStars = (stars: number) =>
 <section id="upstream" class="section">
   <div class="section-head">
     <h2>Upstream <small>open-source PRs, by repo</small></h2>
-    <a href="https://github.com/pulls?q=author%3Aespetro">All on GitHub ↗</a>
+    <a href={allContributionsUrl}>All on GitHub ↗</a>
   </div>
   <p class="anno">
     Reads src/data/contributions.json, keeps PRs updated in the last year,
