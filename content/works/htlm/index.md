@@ -6,6 +6,8 @@ scale: model
 primary: { label: Source, url: https://github.com/espetro/HTLM }
 repo: espetro/HTLM
 labels: { surface: model, runtime: in-browser, source: open }
+cover: ./cover.webp
+clip: /media/htlm.mp4
 ---
 
 Fine-tuned 350M browser-agent model. 91.2% action accuracy on Mind2Web, runs in-browser.

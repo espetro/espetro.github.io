@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import WorkRow from "@components/WorkRow.astro";
+import WorkStrip from "@components/WorkStrip.astro";
 import { formatSurfaceLabel, sortWorks } from "@lib/works";
 
 interface Props {
@@ -96,6 +97,7 @@ const pickVisible = (rows: Work[], featured: Work | undefined) => {
     row and shows a random {VISIBLE_ROWS.min}–{VISIBLE_ROWS.max} rows (re-rolled on
     every load); the rest collapse into "N more …".
   </p>
+  <WorkStrip works={works} />
   <div class="groups">
     {
       scales.map((scale) => {

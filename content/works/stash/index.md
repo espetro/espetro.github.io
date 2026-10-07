@@ -8,6 +8,7 @@ primary: { label: Try, url: https://stash.illo.fyi/ }
 repo: espetro/stash
 labels: { surface: extension, runtime: local-first, source: open }
 stack: [TypeScript, Astro]
+cover: ./cover.webp
 ---
 
 Stash turns your open browser tabs into a single shareable link or saves them for later — privately, locally, and AI-ready. Built for researchers, engineers, and founders who think in browser tabs.

@@ -7,6 +7,7 @@ primary: { label: Source, url: https://github.com/espetro/llama.cpp }
 repo: espetro/llama.cpp
 labels: { surface: model, source: open }
 stack: [GGUF]
+cover: ./cover.webp
 ---
 
 Small decision models (0.8B–9B) served from a llama.cpp fork.

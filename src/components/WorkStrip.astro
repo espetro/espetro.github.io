@@ -1,0 +1,220 @@
+---
+import { existsSync } from "node:fs";
+import { Image, getImage } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { sortWorks } from "@lib/works";
+
+interface Props {
+  works: CollectionEntry<"works">[];
+}
+
+const { works } = Astro.props;
+
+// Cards appear only for works that ship media (a `cover` still and/or a
+// `clip` loop); everything else stays text-only in the rows below.
+const mediaWorks = sortWorks(
+  works.filter((work) => work.data.cover ?? work.data.clip),
+);
+
+const cards = await Promise.all(
+  mediaWorks.map(async (work) => {
+    const poster = work.data.cover
+      ? await getImage({ src: work.data.cover, width: 720, format: "webp" })
+      : undefined;
+    const clip = work.data.clip;
+    const webm =
+      clip && existsSync(`public${clip.replace(/\.mp4$/, ".webm")}`)
+        ? clip.replace(/\.mp4$/, ".webm")
+        : undefined;
+    return { work, poster, clip, webm };
+  }),
+);
+---
+
+{
+  cards.length > 0 && (
+    <div class="strip" role="list" aria-label="Work previews">
+      {cards.map(({ work, poster, clip, webm }) => (
+        <a
+          class="card"
+          href={work.data.primary.url}
+          target="_blank"
+          rel="noreferrer"
+          role="listitem"
+          aria-label={`${work.data.name} — ${work.data.summary}`}
+        >
+          {clip ? (
+            <video
+              class="media"
+              muted
+              loop
+              playsinline
+              preload="none"
+              poster={poster?.src}
+              aria-hidden="true"
+            >
+              <source data-src={webm} type="video/webm" />
+              <source data-src={clip} type="video/mp4" />
+            </video>
+          ) : (
+            work.data.cover && (
+              <Image
+                class="media"
+                src={work.data.cover}
+                alt=""
+                width={720}
+                widths={[360, 720]}
+                sizes="(max-width: 760px) 78vw, 360px"
+                loading="lazy"
+                decoding="async"
+              />
+            )
+          )}
+          <span class="cap">
+            {work.data.highlight && (
+              <span class="s" aria-hidden="true">
+                ★
+              </span>
+            )}
+            {work.data.name}
+          </span>
+        </a>
+      ))}
+    </div>
+  )
+}
+
+<script>
+  // Lazy-mount clip sources just before the card scrolls into view, then
+  // play/pause on visibility. Keeps both network and decode off the critical
+  // path — posters paint instantly, skeleton never collapses (aspect-ratio
+  // is fixed on the card).
+  const setupStripVideos = () => {
+    document
+      .querySelectorAll<HTMLVideoElement>(".strip video.media")
+      .forEach((video) => {
+        if (video.dataset.stripBound) return;
+        video.dataset.stripBound = "1";
+
+        const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const mount = () => {
+          video
+            .querySelectorAll<HTMLSourceElement>("source[data-src]")
+            .forEach((source) => {
+              source.src = source.dataset.src!;
+              source.removeAttribute("data-src");
+            });
+          video.load();
+        };
+
+        if (reduced) return; // poster only, no autoplay
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) {
+                video.pause();
+                continue;
+              }
+              mount();
+              video.play().catch(() => {});
+            }
+          },
+          { rootMargin: "240px" },
+        );
+        io.observe(video);
+      });
+  };
+
+  document.addEventListener("astro:page-load", setupStripVideos);
+  setupStripVideos();
+</script>
+
+<style>
+  .strip {
+    display: flex;
+    gap: 12px;
+    margin: 0 -20px;
+    padding: 6px 20px 14px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    /* Edge fade signals overflow without a scrollbar. */
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 20px,
+      #000 calc(100% - 20px),
+      transparent
+    );
+  }
+
+  .strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    position: relative;
+    flex: 0 0 min(78%, 340px);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg-elevated); /* skeleton while media loads */
+    aspect-ratio: 16 / 9;
+    scroll-snap-align: start;
+    transition:
+      transform 0.35s var(--spring),
+      border-color 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+
+  .card:active {
+    transform: scale(0.98);
+  }
+
+  .media {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  .cap {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border: 1px solid var(--glass-border);
+    border-radius: 999px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px) saturate(160%);
+    color: var(--fg);
+    font: 600 11.5px var(--display);
+  }
+
+  .cap .s {
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  @media (min-width: 760px) {
+    .card {
+      flex-basis: 300px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card {
+      transition: none;
+    }
+  }
+</style>
