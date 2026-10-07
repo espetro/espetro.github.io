@@ -14,6 +14,7 @@ interface Contribution {
 // Guard for stale caches between refreshes: only PRs touched in the last
 // year are shown (the refresh script applies the same window).
 const cutoff = Date.now() - 365 * 24 * 60 * 60 * 1000;
+const AUTOPLAY_MS = 4000;
 
 const byRepo = new Map<string, Contribution[]>();
 
@@ -82,6 +83,7 @@ const compactStars = (stars: number) =>
       <div
         class="upstream"
         data-upstream
+        data-autoplay={AUTOPLAY_MS}
         tabindex="0"
         aria-label="Open-source contributions"
       >
@@ -143,7 +145,12 @@ const compactStars = (stars: number) =>
           ))}
         </div>
         {pages.length > 1 && (
-          <div class="dots" role="group" aria-label="Contribution pages">
+          <div
+            class="dots"
+            role="group"
+            aria-label="Contribution pages"
+            style={`--autoplay-ms: ${AUTOPLAY_MS}ms`}
+          >
             {pages.map((_, index) => (
               <button
                 type="button"
@@ -180,9 +187,12 @@ const compactStars = (stars: number) =>
     let hovered = false;
     let focused = false;
 
+    const intervalMs = Number(root.dataset.autoplay) || 4000;
+
     const stop = () => {
       if (timer !== undefined) window.clearInterval(timer);
       timer = undefined;
+      root.classList.add("paused");
     };
 
     const go = (nextIndex: number) => {
@@ -191,6 +201,16 @@ const compactStars = (stars: number) =>
       activeIndex = (nextIndex + pages.length) % pages.length;
       pages[activeIndex].classList.add("active", "enter");
       dots[activeIndex].setAttribute("aria-pressed", "true");
+      fill();
+    };
+
+    // Restarts the active dot's countdown fill (removing + re-adding the
+    // class resets its CSS animation, matching the fresh autoplay timer).
+    const fill = () => {
+      const active = dots[activeIndex];
+      dots.forEach((dot) => dot.classList.remove("fill"));
+      void active.offsetWidth;
+      active.classList.add("fill");
     };
 
     const start = () => {
@@ -200,7 +220,9 @@ const compactStars = (stars: number) =>
         !focused &&
         !window.matchMedia("(prefers-reduced-motion: reduce)").matches
       ) {
-        timer = window.setInterval(() => go(activeIndex + 1), 4000);
+        root.classList.remove("paused");
+        fill();
+        timer = window.setInterval(() => go(activeIndex + 1), intervalMs);
       }
     };
 
@@ -435,6 +457,8 @@ const compactStars = (stars: number) =>
   }
 
   .dots button {
+    position: relative;
+    overflow: hidden;
     width: 6px;
     height: 6px;
     padding: 0;
@@ -447,9 +471,33 @@ const compactStars = (stars: number) =>
       background 0.3s;
   }
 
+  .dots button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .dots button.fill::before {
+    animation: dot-fill var(--autoplay-ms, 4000ms) linear forwards;
+  }
+
+  .upstream.paused .dots button.fill::before {
+    animation-play-state: paused;
+  }
+
+  @keyframes dot-fill {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
   .dots button[aria-pressed="true"] {
     width: 18px;
-    background: var(--accent);
+    background: var(--accent-soft);
   }
 
   .empty {
