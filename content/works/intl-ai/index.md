@@ -12,6 +12,7 @@ highlight:
   order: 3
   proof: On npm, Homebrew and mise, with drop-in shims for Vite, Webpack, Next.js and Expo.
 cover: ./cover.webp
+clip: /media/intl-ai.mp4
 ---
 
 Intl AI is an AI-powered internationalization plugin that works with all bundlers. It automates the translation process for your applications, making it easy to go global without the manual overhead of managing translation files.

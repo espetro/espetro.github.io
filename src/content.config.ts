@@ -59,6 +59,7 @@ const works = defineCollection({
         .object({ order: z.number().int().positive(), proof: z.string() })
         .optional(),
       cover: image().optional(),
+      clip: z.string().optional(),
       links: z.array(z.object({ label: z.string(), url: z.url() })).default([]),
       draft: z.boolean().default(false),
     }),
