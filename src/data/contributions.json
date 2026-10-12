@@ -1,181 +1,305 @@
 {
-  "generatedAt": "2026-10-04T16:39:19.262Z",
+  "generatedAt": "2026-10-12T18:25:03.121Z",
   "prs": [
+    {
+      "title": "perf(test): let ORCA_VITEST_WORKERS pin the fork pool size",
+      "url": "https://github.com/stablyai/orca/pull/28040",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/28040",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-12T18:24:35Z"
+    },
+    {
+      "title": "perf(telemetry): lazy-load posthog-node behind consent gates",
+      "url": "https://github.com/stablyai/orca/pull/28041",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/28041",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-12T18:21:41Z"
+    },
+    {
+      "title": "perf(typecheck): enable incremental build-info caching across tsconfigs",
+      "url": "https://github.com/stablyai/orca/pull/28039",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/28039",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-12T18:21:37Z"
+    },
+    {
+      "title": "fix(orcad): show help before server startup",
+      "url": "https://github.com/stablyai/orca/pull/26855",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26855",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "merged",
+      "credit": "co-authored",
+      "updatedAt": "2026-10-11T17:09:47Z"
+    },
     {
       "title": "fix(ui): keep scrollbar glyphs out of overlay copy",
       "url": "https://github.com/tontinton/maki/pull/918",
+      "apiUrl": "https://api.github.com/repos/tontinton/maki/issues/918",
       "repo": "tontinton/maki",
-      "repoStars": 1163,
+      "repoStars": 1225,
       "state": "open",
-      "updatedAt": "2026-10-03T20:11:01Z"
+      "credit": "authored",
+      "updatedAt": "2026-10-10T15:19:06Z"
     },
     {
       "title": "fix(spawn): keep posix_spawn fast path to silence libmalloc MSL warning",
       "url": "https://github.com/tontinton/maki/pull/926",
+      "apiUrl": "https://api.github.com/repos/tontinton/maki/issues/926",
       "repo": "tontinton/maki",
-      "repoStars": 1163,
+      "repoStars": 1225,
       "state": "open",
-      "updatedAt": "2026-10-03T20:11:01Z"
+      "credit": "authored",
+      "updatedAt": "2026-10-10T15:19:06Z"
+    },
+    {
+      "title": "fix(web): mount offline instead of no-save degraded mode when the paired host is unreachable at startup",
+      "url": "https://github.com/stablyai/orca/pull/26623",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26623",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-08T17:59:38Z"
+    },
+    {
+      "title": "fix(web): answer the mobile API from host RPCs instead of stubs",
+      "url": "https://github.com/stablyai/orca/pull/26622",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26622",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-08T16:55:36Z"
+    },
+    {
+      "title": "feat: headless pairing (mobile pairing over WebSocket RPC, server link/add CLI)",
+      "url": "https://github.com/stablyai/orca/pull/26245",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26245",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-07T15:29:17Z"
+    },
+    {
+      "title": "fix(web): rebuild the runtime client once its status owner was disposed",
+      "url": "https://github.com/stablyai/orca/pull/26243",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26243",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-07T15:24:51Z"
+    },
+    {
+      "title": "fix(watcher): survive async EPIPE on a dying IPC channel",
+      "url": "https://github.com/stablyai/orca/pull/26242",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26242",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-07T15:21:26Z"
+    },
+    {
+      "title": "fix(serve): make terminal tab rename survive browser reload",
+      "url": "https://github.com/stablyai/orca/pull/19583",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/19583",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-07T11:09:36Z"
+    },
+    {
+      "title": "ci(test): retry flaky tests once and surface them in the job summary",
+      "url": "https://github.com/stablyai/orca/pull/19649",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/19649",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-07T10:55:28Z"
+    },
+    {
+      "title": "feat(web): multi-host runtime environments (list storage, explicit activation)",
+      "url": "https://github.com/stablyai/orca/pull/18847",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/18847",
+      "repo": "stablyai/orca",
+      "repoStars": 90524,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-07T10:51:17Z"
+    },
+    {
+      "title": "Wire approval-review-benchmark tests into the test step",
+      "url": "https://github.com/vercel-labs/fx/pull/550",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/fx/issues/550",
+      "repo": "vercel-labs/fx",
+      "repoStars": 3374,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-07T09:04:38Z"
+    },
+    {
+      "title": "Add anthropic-messages protocol for configured providers",
+      "url": "https://github.com/vercel-labs/fx/pull/1176",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/fx/issues/1176",
+      "repo": "vercel-labs/fx",
+      "repoStars": 3374,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-06T21:56:21Z"
+    },
+    {
+      "title": "Report catalog-gated reasoning effort drops instead of discarding silently",
+      "url": "https://github.com/vercel-labs/fx/pull/370",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/fx/issues/370",
+      "repo": "vercel-labs/fx",
+      "repoStars": 3374,
+      "state": "open",
+      "credit": "authored",
+      "updatedAt": "2026-10-06T20:14:32Z"
+    },
+    {
+      "title": "llama, server: add /v1/systemone API (models: laya, julia-1, lev, openjev, kev)",
+      "url": "https://github.com/ggml-org/llama.cpp/pull/29818",
+      "apiUrl": "https://api.github.com/repos/ggml-org/llama.cpp/issues/29818",
+      "repo": "ggml-org/llama.cpp",
+      "repoStars": 130934,
+      "state": "merged",
+      "credit": "mentioned",
+      "updatedAt": "2026-10-03T10:50:57Z"
+    },
+    {
+      "title": "feat(config): make the auto-summarize thresholds configurable",
+      "url": "https://github.com/charmbracelet/crush/pull/3666",
+      "apiUrl": "https://api.github.com/repos/charmbracelet/crush/issues/3666",
+      "repo": "charmbracelet/crush",
+      "repoStars": 28602,
+      "state": "open",
+      "credit": "mentioned",
+      "updatedAt": "2026-10-01T10:21:10Z"
     },
     {
       "title": "Add mise installation method for mmdr",
       "url": "https://github.com/1jehuang/mermaid-rs-renderer/pull/149",
+      "apiUrl": "https://api.github.com/repos/1jehuang/mermaid-rs-renderer/issues/149",
       "repo": "1jehuang/mermaid-rs-renderer",
-      "repoStars": 1754,
+      "repoStars": 1762,
       "state": "open",
+      "credit": "authored",
       "updatedAt": "2026-09-14T15:16:44Z"
     },
     {
       "title": "build(macos): parallelize native helpers with complete cancellation",
       "url": "https://github.com/stablyai/orca/pull/19651",
+      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/19651",
       "repo": "stablyai/orca",
-      "repoStars": 84804,
+      "repoStars": 90524,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-09-13T04:18:41Z"
-    },
-    {
-      "title": "feat(web): multi-host runtime environments (list storage, explicit activation)",
-      "url": "https://github.com/stablyai/orca/pull/18847",
-      "repo": "stablyai/orca",
-      "repoStars": 84804,
-      "state": "open",
-      "updatedAt": "2026-09-09T10:37:20Z"
-    },
-    {
-      "title": "perf(startup): enable V8 compile cache for the main process and children",
-      "url": "https://github.com/stablyai/orca/pull/19650",
-      "repo": "stablyai/orca",
-      "repoStars": 84804,
-      "state": "open",
-      "updatedAt": "2026-09-09T10:25:51Z"
-    },
-    {
-      "title": "fix(serve): make terminal tab rename survive browser reload",
-      "url": "https://github.com/stablyai/orca/pull/19583",
-      "repo": "stablyai/orca",
-      "repoStars": 84804,
-      "state": "open",
-      "updatedAt": "2026-09-09T05:49:41Z"
-    },
-    {
-      "title": "ci(test): retry flaky tests once and surface them in the job summary",
-      "url": "https://github.com/stablyai/orca/pull/19649",
-      "repo": "stablyai/orca",
-      "repoStars": 84804,
-      "state": "open",
-      "updatedAt": "2026-09-08T23:28:00Z"
-    },
-    {
-      "title": "Wire approval-review-benchmark tests into the test step",
-      "url": "https://github.com/vercel-labs/fx/pull/550",
-      "repo": "vercel-labs/fx",
-      "repoStars": 3274,
-      "state": "open",
-      "updatedAt": "2026-09-02T21:05:39Z"
-    },
-    {
-      "title": "feat(provider): OpenAI-compatible provider",
-      "url": "https://github.com/vercel-labs/fx/pull/553",
-      "repo": "vercel-labs/fx",
-      "repoStars": 3274,
-      "state": "open",
-      "updatedAt": "2026-08-31T22:40:30Z"
-    },
-    {
-      "title": "feat(provider): Anthropic Messages provider",
-      "url": "https://github.com/vercel-labs/fx/pull/536",
-      "repo": "vercel-labs/fx",
-      "repoStars": 3274,
-      "state": "open",
-      "updatedAt": "2026-08-31T11:17:50Z"
     },
     {
       "title": "feat(agent): allow MCP tool calls in plan mode",
       "url": "https://github.com/tontinton/maki/pull/888",
+      "apiUrl": "https://api.github.com/repos/tontinton/maki/issues/888",
       "repo": "tontinton/maki",
-      "repoStars": 1163,
+      "repoStars": 1225,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-08-27T19:19:36Z"
     },
     {
       "title": "feat(ai-settings): auto-discover models for OpenAI-compatible providers",
       "url": "https://github.com/browseros-ai/BrowserOS/pull/2415",
+      "apiUrl": "https://api.github.com/repos/browseros-ai/BrowserOS/issues/2415",
       "repo": "browseros-ai/BrowserOS",
-      "repoStars": 13816,
+      "repoStars": 13878,
       "state": "open",
+      "credit": "authored",
       "updatedAt": "2026-08-27T14:28:02Z"
-    },
-    {
-      "title": "Report catalog-gated reasoning effort drops instead of discarding silently",
-      "url": "https://github.com/vercel-labs/fx/pull/370",
-      "repo": "vercel-labs/fx",
-      "repoStars": 3274,
-      "state": "open",
-      "updatedAt": "2026-08-23T14:47:14Z"
     },
     {
       "title": "POC: Schema IR — library-agnostic core with Valibot + Zod adapters",
       "url": "https://github.com/open-circle/formisch/pull/197",
+      "apiUrl": "https://api.github.com/repos/open-circle/formisch/issues/197",
       "repo": "open-circle/formisch",
-      "repoStars": 1197,
+      "repoStars": 1202,
       "state": "open",
+      "credit": "authored",
       "updatedAt": "2026-08-11T14:39:07Z"
     },
     {
       "title": "feat(core,methods): add react-native framework adapter (#117)",
       "url": "https://github.com/open-circle/formisch/pull/137",
+      "apiUrl": "https://api.github.com/repos/open-circle/formisch/issues/137",
       "repo": "open-circle/formisch",
-      "repoStars": 1197,
+      "repoStars": 1202,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-07-29T17:21:09Z"
     },
     {
       "title": "feat(#221): migrate to ts-proto and @bufbuild/protobuf",
       "url": "https://github.com/getgauge/gauge-ts/pull/224",
+      "apiUrl": "https://api.github.com/repos/getgauge/gauge-ts/issues/224",
       "repo": "getgauge/gauge-ts",
       "repoStars": 35,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-07-25T19:01:59Z"
     },
     {
       "title": "fix(#219): repair genproto.sh and use HTTPS submodule URL",
       "url": "https://github.com/getgauge/gauge-ts/pull/222",
+      "apiUrl": "https://api.github.com/repos/getgauge/gauge-ts/issues/222",
       "repo": "getgauge/gauge-ts",
       "repoStars": 35,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-07-21T18:13:30Z"
     },
     {
       "title": "refactor: migrate from experimentalDecorators to TC39 Stage 3 decorators (#207)",
       "url": "https://github.com/getgauge/gauge-ts/pull/208",
+      "apiUrl": "https://api.github.com/repos/getgauge/gauge-ts/issues/208",
       "repo": "getgauge/gauge-ts",
       "repoStars": 35,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-06-12T09:43:09Z"
     },
     {
       "title": "feat: Windows IPC support via Named Pipes",
       "url": "https://github.com/mpiton/tauri-pilot/pull/64",
+      "apiUrl": "https://api.github.com/repos/mpiton/tauri-pilot/issues/64",
       "repo": "mpiton/tauri-pilot",
-      "repoStars": 83,
+      "repoStars": 85,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-04-24T12:07:48Z"
     },
     {
       "title": "feat: make skill available via skills.sh",
       "url": "https://github.com/mpiton/tauri-pilot/pull/36",
+      "apiUrl": "https://api.github.com/repos/mpiton/tauri-pilot/issues/36",
       "repo": "mpiton/tauri-pilot",
-      "repoStars": 83,
+      "repoStars": 85,
       "state": "merged",
+      "credit": "authored",
       "updatedAt": "2026-04-10T08:31:47Z"
-    },
-    {
-      "title": "Submission: Relay (Saturn team)",
-      "url": "https://github.com/Hackathon-Preply/hackathon-2026-03-20/pull/16",
-      "repo": "Hackathon-Preply/hackathon-2026-03-20",
-      "repoStars": 13,
-      "state": "merged",
-      "updatedAt": "2026-03-21T18:35:58Z"
     }
   ]
 }
