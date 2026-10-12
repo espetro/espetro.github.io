@@ -4,10 +4,13 @@ import { GITHUB } from "../consts";
 
 const API_URL = "https://api.github.com";
 const EXCLUDED_OWNERS = ["bolojs", "browser-containers"];
+const MAX_MENTIONED_TOTAL = 7;
+const MAX_MENTIONED_PER_REPO = 2;
 
 interface SearchResultItem {
   title: string;
   html_url: string;
+  url: string;
   updated_at: string;
   repository_url: string;
 }
@@ -19,9 +22,11 @@ interface RepoDetail {
 interface PullRequest {
   title: string;
   url: string;
+  apiUrl: string;
   repo: string;
   repoStars: number;
   state: "merged" | "open";
+  credit: "authored" | "co-authored" | "mentioned";
   updatedAt: string;
 }
 
@@ -57,12 +62,19 @@ async function ghJson<T>(url: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-function searchUrl(state: "open" | "merged"): string {
+// Authored and co-authored counts as shipped work: the authored query catches
+// PRs opened by the user; the mentions query catches PRs opened by others that
+// credit the user's work via a Co-authored-by trailer (verified per commit
+// below). Anything mentioned but not co-authored is display-only.
+function searchUrl(
+  kind: "authored" | "mentioned",
+  state: "open" | "merged",
+): string {
   const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)
     .toISOString()
     .slice(0, 10);
   const query = [
-    `author:${GITHUB.USER}`,
+    kind === "authored" ? `author:${GITHUB.USER}` : `mentions:${GITHUB.USER}`,
     "type:pr",
     "is:public",
     `is:${state}`,
@@ -88,26 +100,71 @@ function repoFromUrl(repositoryUrl: string): string {
   return `${owner}/${repo}`;
 }
 
+interface CommitMessage {
+  commit: { message: string };
+}
+
+// A mentions hit is co-authored when one of the PR's commits carries a
+// Co-authored-by trailer naming the user: by login, noreply email, or the
+// email GitHub exposes for the account ( josocjoq+dev@pm.me ). Search returns
+// issue-style API URLs; swap /issues/ for /pulls/ to hit the commits endpoint.
+async function isCoAuthored(apiUrl: string): Promise<boolean> {
+  const commits = await ghJson<CommitMessage[]>(
+    apiUrl.replace("/issues/", "/pulls/") + "/commits",
+  );
+  const needles = [
+    `co-authored-by: ${GITHUB.USER}@users.noreply.github.com`,
+    `co-authored-by: ${GITHUB.USER} <`,
+    "<josocjoq+dev@pm.me>",
+  ];  return commits.some(({ commit }) => {
+    const message = commit.message.toLowerCase();
+    return needles.some((needle) => message.includes(needle));
+  });
+}
+
 async function main() {
-  const [openResult, mergedResult] = await Promise.all([
-    ghJson<{ items: SearchResultItem[] }>(searchUrl("open")),
-    ghJson<{ items: SearchResultItem[] }>(searchUrl("merged")),
-  ]);
+  const [openAuthored, mergedAuthored, openMentioned, mergedMentioned] =
+    await Promise.all([
+      ghJson<{ items: SearchResultItem[] }>(searchUrl("authored", "open")),
+      ghJson<{ items: SearchResultItem[] }>(searchUrl("authored", "merged")),
+      ghJson<{ items: SearchResultItem[] }>(searchUrl("mentioned", "open")),
+      ghJson<{ items: SearchResultItem[] }>(searchUrl("mentioned", "merged")),
+    ]);
 
   const unique = new Map<string, PullRequest>();
-  for (const [items, state] of [
-    [openResult.items, "open"],
-    [mergedResult.items, "merged"],
+
+  for (const [items, state, kind] of [
+    [openAuthored.items, "open", "authored"],
+    [mergedAuthored.items, "merged", "authored"],
+    [openMentioned.items, "open", "mentioned"],
+    [mergedMentioned.items, "merged", "mentioned"],
   ] as const) {
     for (const item of items) {
+      if (unique.has(item.html_url)) {
+        // Keep the strongest credit when a PR appears in both queries.
+        if (kind === "authored") unique.get(item.html_url)!.credit = "authored";
+        continue;
+      }
       unique.set(item.html_url, {
         title: item.title,
         url: item.html_url,
+        apiUrl: item.url,
         repo: repoFromUrl(item.repository_url),
         repoStars: 0,
         state,
+        credit: kind,
         updatedAt: item.updated_at,
       });
+    }
+  }
+
+  // Verify co-authorship for mentioned-only PRs; those stay "mentioned".
+  const mentionedOnly = [...unique.values()].filter(
+    (pr) => pr.credit === "mentioned",
+  );
+  for (const pr of mentionedOnly) {
+    if (await isCoAuthored(pr.apiUrl)) {
+      pr.credit = "co-authored";
     }
   }
 

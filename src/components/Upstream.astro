@@ -8,6 +8,7 @@ interface Contribution {
   repo: string;
   repoStars: number;
   state: "open" | "merged";
+  credit: "authored" | "co-authored" | "mentioned";
   updatedAt: string;
 }
 
@@ -18,18 +19,42 @@ const AUTOPLAY_MS = 4000;
 
 const byRepo = new Map<string, Contribution[]>();
 
+// Authored and co-authored PRs are shipped work; mentioned PRs (my work
+// carried in someone else's PR, or threads I was pulled into) are capped so
+// they add color without drowning out my own contributions.
+const MENTIONED_MAX_TOTAL = 7;
+const MENTIONED_MAX_PER_REPO = 2;
+
+const mentionedLeft = { total: MENTIONED_MAX_TOTAL };
+
 for (const contribution of contributions.prs as Contribution[]) {
   if (Date.parse(contribution.updatedAt) < cutoff) continue;
+  if (contribution.credit === "mentioned") {
+    if (mentionedLeft.total <= 0) continue;
+    const repoCount =
+      byRepo
+        .get(contribution.repo)
+        ?.filter((pr) => pr.credit === "mentioned").length ?? 0;
+    if (repoCount >= MENTIONED_MAX_PER_REPO) continue;
+    mentionedLeft.total -= 1;
+  }
   const group = byRepo.get(contribution.repo) ?? [];
   group.push(contribution);
   byRepo.set(contribution.repo, group);
 }
+
+// Within a repo, non-authored rows (co-authored or mentioned) win a top-3
+// slot ahead of recency: they are the ones visitors would otherwise never
+// see, while authored PRs are visible on GitHub regardless.
+const creditRank = (pr: Contribution) =>
+  pr.credit === "authored" ? 1 : 0;
 
 const repos = [...byRepo.entries()]
   .map(([repo, prs]) => ({
     repo,
     prs: prs.sort(
       (a, b) =>
+        creditRank(a) - creditRank(b) ||
         new Date(b.updatedAt).valueOf() - new Date(a.updatedAt).valueOf(),
     ),
   }))
@@ -76,6 +101,9 @@ const compactStars = (stars: number) =>
     Reads src/data/contributions.json, keeps PRs updated in the last year,
     groups by repository, sorts by latest activity, and shows three repos per
     page (vertical list on every breakpoint) with up to three PRs per repo.
+    Authored and co-authored PRs count as shipped work; PRs by others that
+    mention this work are capped at two per repo and seven overall, and carry
+    an italic "mentioned" tag.
     Autoplay pauses on hover or focus; reduced motion shows every page.
   </p>
   {
@@ -117,6 +145,11 @@ const compactStars = (stars: number) =>
                       {prs.slice(0, 3).map((pr) => (
                         <a href={pr.url} target="_blank" rel="noreferrer">
                           <span>{pr.title}</span>
+                          {pr.credit === "mentioned" && (
+                            <span class="credit" title="PR by another author mentioning or crediting this work">
+                              mentioned
+                            </span>
+                          )}
                           <span
                             class:list={[
                               "status",
@@ -441,6 +474,13 @@ const compactStars = (stars: number) =>
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+
+  .credit {
+    flex: none;
+    color: var(--muted);
+    font-size: 10.5px;
+    font-style: italic;
   }
 
   .status.merged {
