@@ -43,9 +43,12 @@ for (const contribution of contributions.prs as Contribution[]) {
   byRepo.set(contribution.repo, group);
 }
 
-// Within a repo, non-authored rows (co-authored or mentioned) win a top-3
-// slot ahead of recency: they are the ones visitors would otherwise never
-// see, while authored PRs are visible on GitHub regardless.
+// Within a repo, the top-3 slots are prioritized by impact over recency:
+// merged PRs first (they are shipped work), then non-authored rows
+// (co-authored or mentioned, the ones visitors would otherwise never see),
+// then most recently updated. Authored open PRs remain visible on GitHub
+// regardless, so they fill the remaining slots.
+const stateRank = (pr: Contribution) => (pr.state === "merged" ? 0 : 1);
 const creditRank = (pr: Contribution) =>
   pr.credit === "authored" ? 1 : 0;
 
@@ -54,6 +57,7 @@ const repos = [...byRepo.entries()]
     repo,
     prs: prs.sort(
       (a, b) =>
+        stateRank(a) - stateRank(b) ||
         creditRank(a) - creditRank(b) ||
         new Date(b.updatedAt).valueOf() - new Date(a.updatedAt).valueOf(),
     ),
