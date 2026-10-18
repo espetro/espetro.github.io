@@ -3,7 +3,7 @@ import path from "node:path";
 import { GITHUB } from "../consts";
 
 const API_URL = "https://api.github.com";
-const EXCLUDED_OWNERS = ["bolojs", "browser-containers"];
+const EXCLUDED_OWNERS = ["bolojs", "browser-containers", "i-amrita"];
 const MAX_MENTIONED_TOTAL = 7;
 const MAX_MENTIONED_PER_REPO = 2;
 
