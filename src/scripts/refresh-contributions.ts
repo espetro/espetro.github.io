@@ -105,18 +105,21 @@ interface CommitMessage {
 }
 
 // A mentions hit is co-authored when one of the PR's commits carries a
-// Co-authored-by trailer naming the user: by login, noreply email, or the
-// email GitHub exposes for the account ( josocjoq+dev@pm.me ). Search returns
-// issue-style API URLs; swap /issues/ for /pulls/ to hit the commits endpoint.
+// Co-authored-by trailer naming the user. Match the literal email in angle
+// brackets — the canonical trailer shape — for each identity the user
+// publishes under. The wrapper name and case are irrelevant after the
+// message is lower-cased. Search returns issue-style API URLs; swap
+// /issues/ for /pulls/ to hit the commits endpoint.
 async function isCoAuthored(apiUrl: string): Promise<boolean> {
   const commits = await ghJson<CommitMessage[]>(
     apiUrl.replace("/issues/", "/pulls/") + "/commits",
   );
   const needles = [
-    `co-authored-by: ${GITHUB.USER}@users.noreply.github.com`,
-    `co-authored-by: ${GITHUB.USER} <`,
+    "<26749475+espetro@users.noreply.github.com>",
     "<josocjoq+dev@pm.me>",
-  ];  return commits.some(({ commit }) => {
+    "<oss@illo.fyi>",
+  ];
+  return commits.some(({ commit }) => {
     const message = commit.message.toLowerCase();
     return needles.some((needle) => message.includes(needle));
   });
