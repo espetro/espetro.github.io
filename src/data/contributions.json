@@ -1,305 +1,305 @@
 {
-  "generatedAt": "2026-10-12T18:25:03.121Z",
+  "generatedAt": "2026-10-18T18:04:54.423Z",
   "prs": [
     {
-      "title": "perf(test): let ORCA_VITEST_WORKERS pin the fork pool size",
-      "url": "https://github.com/stablyai/orca/pull/28040",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/28040",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
+      "title": "Accept empty streamed model names on custom connections",
+      "url": "https://github.com/vercel-labs/fx/pull/1343",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/fx/issues/1343",
+      "repo": "vercel-labs/fx",
+      "repoStars": 3471,
       "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-12T18:24:35Z"
+      "credit": "mentioned",
+      "updatedAt": "2026-10-18T17:56:17Z"
     },
     {
-      "title": "perf(telemetry): lazy-load posthog-node behind consent gates",
-      "url": "https://github.com/stablyai/orca/pull/28041",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/28041",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
+      "title": "chore(release): merge develop into main (drop ogg, single m4a)",
+      "url": "https://github.com/i-amrita/site/pull/26",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/26",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-10-12T18:21:41Z"
+      "updatedAt": "2026-10-18T17:42:48Z"
     },
     {
-      "title": "perf(typecheck): enable incremental build-info caching across tsconfigs",
-      "url": "https://github.com/stablyai/orca/pull/28039",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/28039",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
+      "title": "feat(audio): ship a single 32 kbps mono AAC sprite, drop ogg fallback",
+      "url": "https://github.com/i-amrita/site/pull/25",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/25",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-10-12T18:21:37Z"
+      "updatedAt": "2026-10-18T17:34:07Z"
     },
     {
-      "title": "fix(orcad): show help before server startup",
-      "url": "https://github.com/stablyai/orca/pull/26855",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26855",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
+      "title": "release: projects/research, iOS audio resilience, astro 7 (develop → main)",
+      "url": "https://github.com/i-amrita/site/pull/24",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/24",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T16:27:25Z"
+    },
+    {
+      "title": "Answer undefined for missing Record and index-signature keys",
+      "url": "https://github.com/vercel-labs/scriptc/pull/1236",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/scriptc/pulls/1236",
+      "repo": "vercel-labs/scriptc",
+      "repoStars": 6220,
       "state": "merged",
       "credit": "co-authored",
-      "updatedAt": "2026-10-11T17:09:47Z"
+      "updatedAt": "2026-10-18T15:58:02Z"
     },
     {
-      "title": "fix(ui): keep scrollbar glyphs out of overlay copy",
-      "url": "https://github.com/tontinton/maki/pull/918",
-      "apiUrl": "https://api.github.com/repos/tontinton/maki/issues/918",
-      "repo": "tontinton/maki",
-      "repoStars": 1225,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-10T15:19:06Z"
-    },
-    {
-      "title": "fix(spawn): keep posix_spawn fast path to silence libmalloc MSL warning",
-      "url": "https://github.com/tontinton/maki/pull/926",
-      "apiUrl": "https://api.github.com/repos/tontinton/maki/issues/926",
-      "repo": "tontinton/maki",
-      "repoStars": 1225,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-10T15:19:06Z"
-    },
-    {
-      "title": "fix(web): mount offline instead of no-save degraded mode when the paired host is unreachable at startup",
-      "url": "https://github.com/stablyai/orca/pull/26623",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26623",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-08T17:59:38Z"
-    },
-    {
-      "title": "fix(web): answer the mobile API from host RPCs instead of stubs",
-      "url": "https://github.com/stablyai/orca/pull/26622",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26622",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-08T16:55:36Z"
-    },
-    {
-      "title": "feat: headless pairing (mobile pairing over WebSocket RPC, server link/add CLI)",
-      "url": "https://github.com/stablyai/orca/pull/26245",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26245",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-07T15:29:17Z"
-    },
-    {
-      "title": "fix(web): rebuild the runtime client once its status owner was disposed",
-      "url": "https://github.com/stablyai/orca/pull/26243",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26243",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-07T15:24:51Z"
-    },
-    {
-      "title": "fix(watcher): survive async EPIPE on a dying IPC channel",
-      "url": "https://github.com/stablyai/orca/pull/26242",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/26242",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-07T15:21:26Z"
-    },
-    {
-      "title": "fix(serve): make terminal tab rename survive browser reload",
-      "url": "https://github.com/stablyai/orca/pull/19583",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/19583",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-07T11:09:36Z"
-    },
-    {
-      "title": "ci(test): retry flaky tests once and surface them in the job summary",
-      "url": "https://github.com/stablyai/orca/pull/19649",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/19649",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-07T10:55:28Z"
-    },
-    {
-      "title": "feat(web): multi-host runtime environments (list storage, explicit activation)",
-      "url": "https://github.com/stablyai/orca/pull/18847",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/18847",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-07T10:51:17Z"
-    },
-    {
-      "title": "Wire approval-review-benchmark tests into the test step",
-      "url": "https://github.com/vercel-labs/fx/pull/550",
-      "apiUrl": "https://api.github.com/repos/vercel-labs/fx/issues/550",
-      "repo": "vercel-labs/fx",
-      "repoStars": 3374,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-07T09:04:38Z"
-    },
-    {
-      "title": "Add anthropic-messages protocol for configured providers",
-      "url": "https://github.com/vercel-labs/fx/pull/1176",
-      "apiUrl": "https://api.github.com/repos/vercel-labs/fx/issues/1176",
-      "repo": "vercel-labs/fx",
-      "repoStars": 3374,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-06T21:56:21Z"
-    },
-    {
-      "title": "Report catalog-gated reasoning effort drops instead of discarding silently",
-      "url": "https://github.com/vercel-labs/fx/pull/370",
-      "apiUrl": "https://api.github.com/repos/vercel-labs/fx/issues/370",
-      "repo": "vercel-labs/fx",
-      "repoStars": 3374,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-10-06T20:14:32Z"
-    },
-    {
-      "title": "llama, server: add /v1/systemone API (models: laya, julia-1, lev, openjev, kev)",
-      "url": "https://github.com/ggml-org/llama.cpp/pull/29818",
-      "apiUrl": "https://api.github.com/repos/ggml-org/llama.cpp/issues/29818",
-      "repo": "ggml-org/llama.cpp",
-      "repoStars": 130934,
-      "state": "merged",
-      "credit": "mentioned",
-      "updatedAt": "2026-10-03T10:50:57Z"
-    },
-    {
-      "title": "feat(config): make the auto-summarize thresholds configurable",
-      "url": "https://github.com/charmbracelet/crush/pull/3666",
-      "apiUrl": "https://api.github.com/repos/charmbracelet/crush/issues/3666",
-      "repo": "charmbracelet/crush",
-      "repoStars": 28602,
-      "state": "open",
-      "credit": "mentioned",
-      "updatedAt": "2026-10-01T10:21:10Z"
-    },
-    {
-      "title": "Add mise installation method for mmdr",
-      "url": "https://github.com/1jehuang/mermaid-rs-renderer/pull/149",
-      "apiUrl": "https://api.github.com/repos/1jehuang/mermaid-rs-renderer/issues/149",
-      "repo": "1jehuang/mermaid-rs-renderer",
-      "repoStars": 1762,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-09-14T15:16:44Z"
-    },
-    {
-      "title": "build(macos): parallelize native helpers with complete cancellation",
-      "url": "https://github.com/stablyai/orca/pull/19651",
-      "apiUrl": "https://api.github.com/repos/stablyai/orca/issues/19651",
-      "repo": "stablyai/orca",
-      "repoStars": 90524,
+      "title": "build(deps): astro 7, vite 8, @astrojs/react 7",
+      "url": "https://github.com/i-amrita/site/pull/22",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/22",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-09-13T04:18:41Z"
+      "updatedAt": "2026-10-18T15:17:17Z"
     },
     {
-      "title": "feat(agent): allow MCP tool calls in plan mode",
-      "url": "https://github.com/tontinton/maki/pull/888",
-      "apiUrl": "https://api.github.com/repos/tontinton/maki/issues/888",
-      "repo": "tontinton/maki",
-      "repoStars": 1225,
+      "title": "fix(audio): iOS keypad sound, resilient keypad and startup skeleton",
+      "url": "https://github.com/i-amrita/site/pull/19",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/19",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-08-27T19:19:36Z"
+      "updatedAt": "2026-10-18T15:17:10Z"
     },
     {
-      "title": "feat(ai-settings): auto-discover models for OpenAI-compatible providers",
-      "url": "https://github.com/browseros-ai/BrowserOS/pull/2415",
-      "apiUrl": "https://api.github.com/repos/browseros-ai/BrowserOS/issues/2415",
-      "repo": "browseros-ai/BrowserOS",
-      "repoStars": 13878,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-08-27T14:28:02Z"
-    },
-    {
-      "title": "POC: Schema IR — library-agnostic core with Valibot + Zod adapters",
-      "url": "https://github.com/open-circle/formisch/pull/197",
-      "apiUrl": "https://api.github.com/repos/open-circle/formisch/issues/197",
-      "repo": "open-circle/formisch",
-      "repoStars": 1202,
-      "state": "open",
-      "credit": "authored",
-      "updatedAt": "2026-08-11T14:39:07Z"
-    },
-    {
-      "title": "feat(core,methods): add react-native framework adapter (#117)",
-      "url": "https://github.com/open-circle/formisch/pull/137",
-      "apiUrl": "https://api.github.com/repos/open-circle/formisch/issues/137",
-      "repo": "open-circle/formisch",
-      "repoStars": 1202,
+      "title": "release: Safari compatibility fix (develop → main)",
+      "url": "https://github.com/i-amrita/site/pull/21",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/21",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-07-29T17:21:09Z"
+      "updatedAt": "2026-10-18T14:58:40Z"
     },
     {
-      "title": "feat(#221): migrate to ts-proto and @bufbuild/protobuf",
-      "url": "https://github.com/getgauge/gauge-ts/pull/224",
-      "apiUrl": "https://api.github.com/repos/getgauge/gauge-ts/issues/224",
-      "repo": "getgauge/gauge-ts",
-      "repoStars": 35,
+      "title": "feat(site): projects key, research cards and type filter",
+      "url": "https://github.com/i-amrita/site/pull/18",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/18",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-07-25T19:01:59Z"
+      "updatedAt": "2026-10-18T14:58:34Z"
     },
     {
-      "title": "fix(#219): repair genproto.sh and use HTTPS submodule URL",
-      "url": "https://github.com/getgauge/gauge-ts/pull/222",
-      "apiUrl": "https://api.github.com/repos/getgauge/gauge-ts/issues/222",
-      "repo": "getgauge/gauge-ts",
-      "repoStars": 35,
+      "title": "fix(site): Safari compatibility — drop light-dark(), lookbehind, toSorted",
+      "url": "https://github.com/i-amrita/site/pull/20",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/20",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-07-21T18:13:30Z"
+      "updatedAt": "2026-10-18T14:34:00Z"
     },
     {
-      "title": "refactor: migrate from experimentalDecorators to TC39 Stage 3 decorators (#207)",
-      "url": "https://github.com/getgauge/gauge-ts/pull/208",
-      "apiUrl": "https://api.github.com/repos/getgauge/gauge-ts/issues/208",
-      "repo": "getgauge/gauge-ts",
-      "repoStars": 35,
+      "title": "release: macropad redesign",
+      "url": "https://github.com/i-amrita/site/pull/17",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/17",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-06-12T09:43:09Z"
+      "updatedAt": "2026-10-18T14:03:05Z"
     },
     {
-      "title": "feat: Windows IPC support via Named Pipes",
-      "url": "https://github.com/mpiton/tauri-pilot/pull/64",
-      "apiUrl": "https://api.github.com/repos/mpiton/tauri-pilot/issues/64",
-      "repo": "mpiton/tauri-pilot",
-      "repoStars": 85,
+      "title": "feat(site): macropad home redesign, drawers, qr page and sound sprite",
+      "url": "https://github.com/i-amrita/site/pull/16",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/16",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-04-24T12:07:48Z"
+      "updatedAt": "2026-10-18T14:01:43Z"
     },
     {
-      "title": "feat: make skill available via skills.sh",
-      "url": "https://github.com/mpiton/tauri-pilot/pull/36",
-      "apiUrl": "https://api.github.com/repos/mpiton/tauri-pilot/issues/36",
-      "repo": "mpiton/tauri-pilot",
-      "repoStars": 85,
+      "title": "chore(deploy): release v0.1.0",
+      "url": "https://github.com/i-amrita/site/pull/13",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/13",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
       "state": "merged",
       "credit": "authored",
-      "updatedAt": "2026-04-10T08:31:47Z"
+      "updatedAt": "2026-10-18T13:31:53Z"
+    },
+    {
+      "title": "Keep declared methods of generic class instances after a computed-key write",
+      "url": "https://github.com/vercel-labs/scriptc/pull/1215",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/scriptc/pulls/1215",
+      "repo": "vercel-labs/scriptc",
+      "repoStars": 6220,
+      "state": "merged",
+      "credit": "co-authored",
+      "updatedAt": "2026-10-18T06:00:17Z"
+    },
+    {
+      "title": "fix(site): hide about overlay cv chip until url set",
+      "url": "https://github.com/i-amrita/site/pull/14",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/14",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T01:41:49Z"
+    },
+    {
+      "title": "feat(i18n): extract ui strings and translate",
+      "url": "https://github.com/i-amrita/site/pull/12",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/12",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T01:36:57Z"
+    },
+    {
+      "title": "feat(site): seo, a11y, og images and audio fallback",
+      "url": "https://github.com/i-amrita/site/pull/11",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/11",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T01:28:22Z"
+    },
+    {
+      "title": "feat(search): hybrid search, search modal and cmdk palette",
+      "url": "https://github.com/i-amrita/site/pull/10",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/10",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T01:03:54Z"
+    },
+    {
+      "title": "feat(site): about, projects and log overlays",
+      "url": "https://github.com/i-amrita/site/pull/9",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/9",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:58:21Z"
+    },
+    {
+      "title": "ci(ci): add workflows, playwright harness and audits",
+      "url": "https://github.com/i-amrita/site/pull/7",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/7",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:55:22Z"
+    },
+    {
+      "title": "feat(i18n): paraglide with intl-ai and locale switch",
+      "url": "https://github.com/i-amrita/site/pull/8",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/8",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:50:19Z"
+    },
+    {
+      "title": "feat(keyboard): keyboard hero, audio, navbar and home page",
+      "url": "https://github.com/i-amrita/site/pull/6",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/6",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:46:21Z"
+    },
+    {
+      "title": "feat(site): content pages, markdown companions and llms endpoints",
+      "url": "https://github.com/i-amrita/site/pull/5",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/5",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:44:36Z"
+    },
+    {
+      "title": "docs(agents): add agent docs, ui-loop skill and public PRD",
+      "url": "https://github.com/i-amrita/site/pull/4",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/4",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:42:42Z"
+    },
+    {
+      "title": "feat(content): seed projects, about and now content",
+      "url": "https://github.com/i-amrita/site/pull/3",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/3",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:40:32Z"
+    },
+    {
+      "title": "feat(site): shared URL-state, actions, providers, content schema",
+      "url": "https://github.com/i-amrita/site/pull/2",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/2",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:27:29Z"
+    },
+    {
+      "title": "build(deps): scaffold Astro 6 project, tokens, shadcn/ui",
+      "url": "https://github.com/i-amrita/site/pull/1",
+      "apiUrl": "https://api.github.com/repos/i-amrita/site/issues/1",
+      "repo": "i-amrita/site",
+      "repoStars": 0,
+      "state": "merged",
+      "credit": "authored",
+      "updatedAt": "2026-10-18T00:27:19Z"
+    },
+    {
+      "title": "Resolve host names in net.connect",
+      "url": "https://github.com/vercel-labs/scriptc/pull/1224",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/scriptc/pulls/1224",
+      "repo": "vercel-labs/scriptc",
+      "repoStars": 6220,
+      "state": "merged",
+      "credit": "co-authored",
+      "updatedAt": "2026-10-17T22:17:14Z"
+    },
+    {
+      "title": "Expose Promise.prototype methods on promises in untyped bindings",
+      "url": "https://github.com/vercel-labs/scriptc/pull/1219",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/scriptc/pulls/1219",
+      "repo": "vercel-labs/scriptc",
+      "repoStars": 6220,
+      "state": "merged",
+      "credit": "co-authored",
+      "updatedAt": "2026-10-17T21:41:39Z"
+    },
+    {
+      "title": "Report program type errors instead of npm package refusals",
+      "url": "https://github.com/vercel-labs/scriptc/pull/1216",
+      "apiUrl": "https://api.github.com/repos/vercel-labs/scriptc/pulls/1216",
+      "repo": "vercel-labs/scriptc",
+      "repoStars": 6220,
+      "state": "merged",
+      "credit": "co-authored",
+      "updatedAt": "2026-10-17T21:32:10Z"
     }
   ]
 }
