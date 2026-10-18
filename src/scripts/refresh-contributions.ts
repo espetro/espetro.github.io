@@ -125,14 +125,88 @@ async function isCoAuthored(apiUrl: string): Promise<boolean> {
   });
 }
 
+interface TimelineCrossReference {
+  event: string;
+  source?: {
+    issue?: {
+      number: number;
+      title: string;
+      html_url: string;
+      pull_request?: { merged_at: string | null; url: string };
+    };
+  };
+}
+
+// PRs that fix issues the user filed but that never mention the user carry
+// real co-authored work the mentions query can't see. Walk the timelines of
+// the user's closed issues for cross-referenced merged PRs and let the same
+// trailer check decide credit; a hit enters the cache as co-authored even
+// though no PR-level @-mention exists.
+async function linkedPrsForClosedIssues(): Promise<SearchResultItem[]> {
+  const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+  const query = [
+    `author:${GITHUB.USER}`,
+    "type:issue",
+    "is:public",
+    "is:closed",
+    `updated:>=${lastYear}`,
+    ...[...GITHUB.ORGS, ...EXCLUDED_OWNERS, GITHUB.USER].map(
+      (owner) => `-user:${owner}`,
+    ),
+  ].join(" ");
+  const url = new URL(`${API_URL}/search/issues`);
+  url.searchParams.set("q", query);
+  url.searchParams.set("sort", "updated");
+  url.searchParams.set("order", "desc");
+  url.searchParams.set("per_page", "50");
+  const { items } = await ghJson<{ items: SearchResultItem[] }>(
+    url.toString(),
+  );
+
+  const found: SearchResultItem[] = [];
+  const seen = new Set<string>();
+  for (const issue of items) {
+    const timeline = await ghJson<TimelineCrossReference[]>(
+      `${issue.url}/timeline?per_page=100`,
+    );
+    for (const event of timeline) {
+      const pr = event.source?.issue;
+      if (
+        event.event !== "cross-referenced" ||
+        !pr?.pull_request ||
+        !pr.pull_request.merged_at
+      )
+        continue;
+      if (seen.has(pr.html_url)) continue;
+      seen.add(pr.html_url);
+      found.push({
+        title: pr.title,
+        html_url: pr.html_url,
+        url: pr.pull_request.url,
+        updated_at: pr.pull_request.merged_at,
+        repository_url: issue.repository_url,
+      });
+    }
+  }
+  return found;
+}
+
 async function main() {
-  const [openAuthored, mergedAuthored, openMentioned, mergedMentioned] =
-    await Promise.all([
-      ghJson<{ items: SearchResultItem[] }>(searchUrl("authored", "open")),
-      ghJson<{ items: SearchResultItem[] }>(searchUrl("authored", "merged")),
-      ghJson<{ items: SearchResultItem[] }>(searchUrl("mentioned", "open")),
-      ghJson<{ items: SearchResultItem[] }>(searchUrl("mentioned", "merged")),
-    ]);
+  const [
+    openAuthored,
+    mergedAuthored,
+    openMentioned,
+    mergedMentioned,
+    linkedPrs,
+  ] = await Promise.all([
+    ghJson<{ items: SearchResultItem[] }>(searchUrl("authored", "open")),
+    ghJson<{ items: SearchResultItem[] }>(searchUrl("authored", "merged")),
+    ghJson<{ items: SearchResultItem[] }>(searchUrl("mentioned", "open")),
+    ghJson<{ items: SearchResultItem[] }>(searchUrl("mentioned", "merged")),
+    linkedPrsForClosedIssues(),
+  ]);
 
   const unique = new Map<string, PullRequest>();
 
@@ -159,6 +233,23 @@ async function main() {
         updatedAt: item.updated_at,
       });
     }
+  }
+
+  // Linked-PR pass: co-authored credit via the same trailer check. A PR that
+  // also appears above keeps its stronger credit; mentioned-only hits are
+  // verified below exactly like the mentions query results.
+  for (const item of linkedPrs) {
+    if (unique.has(item.html_url)) continue;
+    unique.set(item.html_url, {
+      title: item.title,
+      url: item.html_url,
+      apiUrl: item.url,
+      repo: repoFromUrl(item.repository_url),
+      repoStars: 0,
+      state: "merged",
+      credit: "mentioned",
+      updatedAt: item.updated_at,
+    });
   }
 
   // Verify co-authorship for mentioned-only PRs; those stay "mentioned".
