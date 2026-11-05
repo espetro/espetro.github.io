@@ -6,7 +6,7 @@ scale: product
 primary: { label: Try, url: https://usebrioso.com }
 labels: { surface: web, runtime: cloud, source: closed }
 highlight:
-  order: 1
+  order: 2
   proof: Brief to commercial-licensed track in minutes; catalog tracks from $4.90.
 cover: ./cover.webp
 ---

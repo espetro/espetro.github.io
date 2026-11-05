@@ -8,7 +8,7 @@ repo: espetro/cauce
 labels: { surface: api, runtime: self-host, source: open }
 stack: [Rust]
 highlight:
-  order: 5
+  order: 3
   proof: v0.9.2, Exa-compatible HTTP API and MCP in under 30MB RSS.
 cover: ./cover.webp
 clip: /media/cauce.mp4

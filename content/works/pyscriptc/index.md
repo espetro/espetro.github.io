@@ -9,7 +9,7 @@ repo: sigilco/pyscriptc
 labels: { surface: cli, runtime: local-first, source: open }
 stack: [Python, LLVM, C]
 highlight:
-  order: 4
+  order: 1
   proof: v0.8.0 on PyPI with Linux, macOS and Windows compiler binaries.
 cover: ./cover.webp
 ---

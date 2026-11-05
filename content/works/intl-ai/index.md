@@ -9,7 +9,7 @@ repo: sigilco/intl-ai
 labels: { surface: cli, runtime: build-time, source: open }
 stack: [TypeScript, Rust]
 highlight:
-  order: 3
+  order: 5
   proof: On npm, Homebrew and mise, with drop-in shims for Vite, Webpack, Next.js and Expo.
 cover: ./cover.webp
 clip: /media/intl-ai.mp4

@@ -12,9 +12,15 @@ const { works } = Astro.props;
 
 // Cards appear only for works that ship media (a `cover` still and/or a
 // `clip` loop); everything else stays text-only in the rows below.
+// Highlighted works lead, by `highlight.order` across scales (the owner picks
+// the sequence); the rest follow in the usual work order.
 const mediaWorks = sortWorks(
   works.filter((work) => work.data.cover ?? work.data.clip),
-);
+).sort((a, b) => {
+  const aOrder = a.data.highlight?.order ?? Number.POSITIVE_INFINITY;
+  const bOrder = b.data.highlight?.order ?? Number.POSITIVE_INFINITY;
+  return aOrder - bOrder;
+});
 
 const cards = await Promise.all(
   mediaWorks.map(async (work) => {

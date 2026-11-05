@@ -9,7 +9,7 @@ repo: espetro/calca
 labels: { surface: desktop, runtime: local-first, source: open }
 stack: [Electrobun, React, Hono, TypeScript]
 highlight:
-  order: 2
+  order: 4
   proof: v0.6.1 desktop app for macOS and Windows.
 cover: ./cover.webp
 ---
