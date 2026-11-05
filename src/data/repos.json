@@ -1253,6 +1253,34 @@
         "url": "https://github.com/sigilco/intl-ai/releases/tag/v0.6.0",
         "publishedAt": "2026-09-30T06:38:49Z"
       }
+    },
+    {
+      "id": "sigilco/pyscriptc",
+      "description": "Compile annotated Python to native binaries. Typed subset, opt-in CPython fallback.",
+      "url": "https://github.com/sigilco/pyscriptc",
+      "homepage": "pyscriptc.pages.dev",
+      "stars": 7,
+      "language": "Python",
+      "license": "Apache-2.0",
+      "topics": [
+        "aot",
+        "compiler",
+        "cpython",
+        "llvm",
+        "native-binary",
+        "python",
+        "python314",
+        "zig"
+      ],
+      "createdAt": "2026-10-14T16:57:06Z",
+      "pushedAt": "2026-11-05T21:49:22Z",
+      "archived": false,
+      "fork": false,
+      "latestRelease": {
+        "tag": "v0.7.0",
+        "url": "https://github.com/sigilco/pyscriptc/releases/tag/v0.7.0",
+        "publishedAt": "2026-10-27T19:32:29Z"
+      }
     }
   ]
 }
